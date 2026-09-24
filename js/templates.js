@@ -3,7 +3,7 @@
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const pad = (n, w) => String(n).padStart(w || 2, "0");
-const bgUrl = (id, w) => "background-image:url(&quot;" + px(id, w) + "&quot;)";
+const bgUrl = (ref, w) => "background-image:url(&quot;" + esc(px(ref, w)) + "&quot;)";
 
 const grain = (id, opts) => {
   const o = opts || {};
@@ -21,16 +21,16 @@ function marquee(names, cls) {
 
 function workCard(c, i, prefix) {
   return '<a class="work" href="#/cases/' + c.slug + '" data-work data-fade>' +
-    '<img data-work-img class="cover" src="' + px(c.imgs[0], 1100) + '" alt="' + esc(c.name) + '" decoding="async">' +
+    '<img data-work-img class="cover" src="' + esc(px(c.imgs[0], 1100)) + '" alt="' + esc(c.name) + '" decoding="async">' +
     '<div class="work-shade"></div>' +
-    '<div class="work-ov" data-work-ov><div class="abs-fill" style="background:' + WORK_GRADS[i] + '"></div>' + grain(prefix + i, { rectOpacity: ".7" }) +
+    '<div class="work-ov" data-work-ov><div class="abs-fill" style="background:' + WORK_GRADS[i % WORK_GRADS.length] + '"></div>' + grain(prefix + i, { rectOpacity: ".7" }) +
     '<span class="work-go">' + ARROW_UR(16) + "</span></div>" +
     '<div class="work-name">' + esc(c.name) + "</div>" +
     '<p class="work-desc">' + esc(c.card) + "</p></a>";
 }
 
-function workGrid(prefix) {
-  return '<div class="work-grid">' + CASES.map((c, i) => workCard(c, i, prefix)).join("") + "</div>";
+function workGrid(prefix, limit) {
+  return '<div class="work-grid">' + CASES.slice(0, limit || CASES.length).map((c, i) => workCard(c, i, prefix)).join("") + "</div>";
 }
 
 function contactSection(lowercase) {
@@ -74,7 +74,7 @@ function pageHome() {
   return '<main>' +
   '<section class="home-hero">' +
     '<div class="abs-fill" style="z-index:0;overflow:hidden"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="ken">' +
-      '<img class="cover" src="' + px(6615058) + '" alt="" decoding="async"></div></div></div></div>' +
+      '<img class="cover" src="' + esc(px(slot("home.hero"))) + '" alt="" decoding="async"></div></div></div></div>' +
     '<div class="shade"></div>' +
     '<div class="home-hero-content">' +
       '<span class="hero-tag" data-intro>Bow / Digital Studio</span>' +
@@ -121,7 +121,7 @@ function pageHome() {
     '<div class="works-head"><div><span class="pill pill--light" data-fade data-tag>Trabalhos</span>' +
       '<h2 data-reveal class="lc">Trabalhos que falam<span class="dot">.</span></h2></div>' +
       '<a class="btn-ghost-dark" href="#/cases" data-fade>Ver todos</a></div>' +
-    workGrid("bowwg") +
+    workGrid("bowwg", 6) +
   "</div></section>" +
 
   contactSection(true) +
@@ -165,7 +165,7 @@ function pageCases() {
       "<p data-fade>Projetos que nasceram de desafios reais e ganharam forma através de estratégia, criatividade e tecnologia.</p>" +
       '<a class="btn-green btn-lg" data-fade href="' + CONTACT.waHref + '" target="_blank" rel="noopener" data-magnetic>Começar um projeto</a>' +
     "</div>" +
-    marquee(CASES_CLIENTS, "cases-marquee") +
+    marquee(CASES.map((c) => c.name.toUpperCase()), "cases-marquee") +
   "</section>" +
   '<section class="cases-grid-sec"><div class="wrap">' + workGrid("bowcwg") + "</div></section>" +
   contactSection(false) +
@@ -178,7 +178,7 @@ function pageCase(i) {
   const c = CASES[i], nx = (i + 1) % CASES.length, next = CASES[nx];
   const meta = [["Cliente", c.name], ["Segmento", c.segment], ["Serviços", c.services], ["Ano", c.year]].map(([k, v]) =>
     '<div><span class="meta-k" data-tag>' + k + '</span><span class="meta-v">' + esc(v) + "</span></div>").join("");
-  const deliver = c.deliver.map((t, k) => '<div class="deliver-row" data-fade><span class="n">' + pad(k + 1) + '</span><span class="t">' + esc(t) + "</span></div>").join("");
+  const deliver = (c.deliver || []).map((t, k) => '<div class="deliver-row" data-fade><span class="n">' + pad(k + 1) + '</span><span class="t">' + esc(t) + "</span></div>").join("");
 
   return '<main>' +
   '<section class="detail-hero case-hero">' +
@@ -222,7 +222,7 @@ function pageServico(i) {
 
   return '<main>' +
   '<section class="detail-hero svc-hero">' +
-    '<div class="hero-media"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="bg-cover" style="' + bgUrl(s.img) + '"></div></div></div></div>' +
+    '<div class="hero-media"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="bg-cover" style="' + bgUrl(slot("sol." + s.slug + ".hero")) + '"></div></div></div></div>' +
     '<div class="svc-hero-shade"></div>' +
     '<div class="detail-hero-content">' +
       '<div class="crumbs" data-intro><span class="kicker">Soluções</span><span class="crumb-count">' + pad(i + 1) + " / " + pad(SVC_PAGES.length) + "</span></div>" +
@@ -242,7 +242,7 @@ function pageServico(i) {
     '<div class="how-grid">' + steps + "</div>" +
   "</div></section>" +
   '<section class="statement-sec"><div class="statement" data-scrub-scale>' +
-    '<div class="bg-cover" style="' + bgUrl(s.img2) + '"></div><div class="st-shade"></div><p>' + esc(s.statement) + "</p></div></section>" +
+    '<div class="bg-cover" style="' + bgUrl(slot("sol." + s.slug + ".statement")) + '"></div><div class="st-shade"></div><p>' + esc(s.statement) + "</p></div></section>" +
   '<section class="others"><div class="wrap-wide">' +
     '<div style="margin-bottom:clamp(28px,3vw,44px)"><span class="kicker" data-tag>Outras soluções</span></div>' +
     '<div class="others-list">' + others + "</div>" +
@@ -255,18 +255,18 @@ function pageServico(i) {
 
 function pageSobre() {
   const lines = (arr, attr) => arr.map((l) => '<span class="mline"><span ' + attr + ">" + l + "</span></span>").join("");
-  const uni = UNIVERSE.map(([id, label, sp, clip, pos, ratio]) =>
+  const uni = UNIVERSE.map(([, label, sp, clip, pos, ratio], i) =>
     '<div class="uni" data-sb-par="' + sp + '" style="' + pos + '"><div class="uni-img"' + (clip ? " data-sb-clip" : "") + ' style="aspect-ratio:' + ratio + '">' +
-    '<img class="cover" src="' + px(id, 1200) + '" alt="' + label + '" decoding="async"></div><span class="uni-label" data-tag>' + label + "</span></div>").join("");
+    '<img class="cover" src="' + esc(px(slot("sobre.uni." + i), 1200)) + '" alt="' + label + '" decoding="async"></div><span class="uni-label" data-tag>' + label + "</span></div>").join("");
   const prins = PRINCIPLES.map(([n, t, d], i) =>
     '<div class="prin" data-prin="' + i + '"><span class="prin-n">' + n + '</span><div class="prin-body"><div class="prin-title"><span class="prin-dash"></span><h3>' + t + "</h3></div><p>" + d + "</p></div></div>").join("");
-  const pimgs = PRINCIPLES.map(([, , , id], i) => '<div class="pimg' + (i === 0 ? " is-on" : "") + '" data-pimg="' + i + '"><div class="bg-cover" style="' + bgUrl(id, 900) + '"></div></div>').join("");
+  const pimgs = PRINCIPLES.map((_, i) => '<div class="pimg' + (i === 0 ? " is-on" : "") + '" data-pimg="' + i + '"><div class="bg-cover" style="' + bgUrl(slot("sobre.prin." + i), 900) + '"></div></div>').join("");
 
   return '<main>' +
   '<section class="sb-hero"><div class="cols"></div>' +
     '<div class="sb-row sb-top"><span class="kicker kicker--45" data-sb-stag>Sobre a Bow</span><span class="label-up" data-sb-stag>Design · Estratégia · Tecnologia</span></div>' +
     '<div class="sb-row sb-mid"><h1>' + lines(["Não somos só", "uma agência. Somos", "parte do que faz sua", 'marca <span class="dot">acontecer.</span>'], "data-sb-line") + "</h1>" +
-      '<div class="sb-hero-img" data-sb-hero-img><div class="abs-fill"><img class="cover" src="' + px(6803583, 1200) + '" alt="Time Bow" decoding="async"></div></div></div>' +
+      '<div class="sb-hero-img" data-sb-hero-img><div class="abs-fill"><img class="cover" src="' + esc(px(slot("sobre.hero"), 1200)) + '" alt="Time Bow" decoding="async"></div></div></div>' +
     '<div class="sb-row sb-bottom"><p data-sb-stag>Uma agência para quem acredita que comunicação não precisa ser igual a todo mundo.</p><span data-sb-stag>Role para conhecer ↓</span></div>' +
   "</section>" +
 
@@ -274,8 +274,8 @@ function pageSobre() {
     '<div class="sb-who-copy"><span class="kicker kicker--45" data-sb-stag>(01) Quem é a Bow</span>' +
       "<h2 data-sb-rev>" + lines(["Somos estrategistas, designers,", "criativos e desenvolvedores", "trabalhando juntos para transformar", '<span class="muted-45">negócios através do digital.</span>'], "data-sb-rline") + "</h2>" +
       '<div class="sb-who-ps" data-sb-fadeup><p>Não seguimos fórmulas prontas. Observamos, pensamos, criamos, testamos e construímos.</p><p>Porque cada negócio tem uma história diferente, e cada marca merece uma forma própria de contá-la.</p></div></div>' +
-    '<div class="sb-who-media"><div class="sb-who-main" data-sb-par="0.06"><div class="abs-fill" data-sb-scale><img class="cover" src="' + px(6615058, 1200) + '" alt="Bastidores" decoding="async"></div></div>' +
-      '<div class="sb-who-small" data-sb-par="0.2"><img class="cover" src="' + px(5717294, 1200) + '" alt="Detalhe" decoding="async"></div></div>' +
+    '<div class="sb-who-media"><div class="sb-who-main" data-sb-par="0.06"><div class="abs-fill" data-sb-scale><img class="cover" src="' + esc(px(slot("sobre.who"), 1200)) + '" alt="Bastidores" decoding="async"></div></div>' +
+      '<div class="sb-who-small" data-sb-par="0.2"><img class="cover" src="' + esc(px(slot("sobre.whoSmall"), 1200)) + '" alt="Detalhe" decoding="async"></div></div>' +
   "</div></section>" +
 
   '<section class="sb-universe"><div class="sb-sticky"><div>' +

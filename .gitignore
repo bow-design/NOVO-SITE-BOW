@@ -1,0 +1,5 @@
+# Dados do servidor (criados pelo painel): não vão para o repositório.
+data/*
+!data/.htaccess
+uploads/*
+!uploads/.htaccess

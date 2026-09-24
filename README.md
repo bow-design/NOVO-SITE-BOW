@@ -17,9 +17,38 @@ assets/           logos e gota da Bow
 
 **Rodar localmente:** `python3 -m http.server` na raiz e abrir `http://localhost:8000`.
 
-**Publicar no GitHub Pages:** Settings → Pages → Branch `main`, pasta `/ (root)` → Save.
+## Painel (cases e imagens)
 
-**Pendências herdadas do design:** clientes 03–06, textos dos cases e fotos (Pexels) são provisórios; o formulário só mostra "Enviado ✓" e ainda não envia para lugar nenhum; os links de Política de privacidade e Termos não têm página.
+O endereço `/painel/` abre uma página com login onde dá para:
+
+- adicionar, editar, remover e reordenar cases, cada um com 4 fotos;
+- trocar qualquer foto do site ou voltar à original;
+- trocar a senha.
+
+As mudanças entram no site na hora. O painel precisa de PHP 8, que a hospedagem Hostinger já tem; no GitHub Pages ele não funciona, e o site mostra o conteúdo padrão de `js/data.js`.
+
+```
+painel/           página do painel (index.html, painel.js, painel.css) e api.php
+api/content.php   entrega ao site os cases e imagens salvos
+data/             config.php (usuário e senha) e content.json. Pasta bloqueada ao navegador
+uploads/          imagens enviadas (reduzidas para no máximo 2400 px)
+```
+
+`data/` e `uploads/` ficam só no servidor (estão no `.gitignore`). Ao enviar uma nova versão do site, não apague essas duas pastas, ou os cases e imagens voltam ao padrão.
+
+### Subir na Hostinger
+
+1. No hPanel, abra o **Gerenciador de Arquivos** e entre em `public_html`.
+2. Envie todos os arquivos deste repositório, exceto as pastas `project/` e `chats/`, que são só referência do design.
+3. Abra **`seudominio.com.br/painel/`** logo em seguida. No primeiro acesso, o painel pede para criar o usuário e a senha (mínimo 10 caracteres). Faça isso antes de divulgar o endereço: até lá, quem abrir a página primeiro cria o acesso.
+
+Se esquecer a senha, apague `data/config.php` pelo Gerenciador de Arquivos e abra o painel de novo para criar outra. Os cases e imagens não são perdidos.
+
+Segurança: senha guardada só como hash, bloqueio de 15 min após 5 tentativas erradas, proteção contra envio de formulário por outros sites (CSRF), e só imagens JPG, PNG ou WebP são aceitas.
+
+## Pendências
+
+Clientes 03–06, textos dos cases e fotos (Pexels) são provisórios e agora podem ser trocados pelo painel. O formulário de contato só mostra "Enviado ✓" e ainda não envia para lugar nenhum. Os links de Política de privacidade e Termos não têm página.
 
 ---
 

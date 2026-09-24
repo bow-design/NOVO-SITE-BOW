@@ -15,10 +15,12 @@ const CONTACT = {
   waTech: wa("Olá! Quero criar uma solução em SaaS/tecnologia com a Bow."),
 };
 
-/* Fotos de banco (Pexels), provisórias. */
-const px = (id, w) => "https://images.pexels.com/videos/" + id + "/pexels-photo-" + id + ".jpeg?auto=compress&cs=tinysrgb&w=" + (w || 1800);
+/* Imagens: um número é uma foto de banco (Pexels, provisória); um texto é um
+   caminho de imagem enviada pelo painel (ex.: "uploads/abc.jpg"). */
+const px = (ref, w) => typeof ref === "string" ? ref : "https://images.pexels.com/videos/" + ref + "/pexels-photo-" + ref + ".jpeg?auto=compress&cs=tinysrgb&w=" + (w || 1800);
 
-const CASES = [
+/* Cases padrão. Depois que o painel salva, a lista vem de api/content.php. */
+let CASES = [
   { slug: "attualize", name: "Attualize", segment: "Esquadrias de alumínio", services: "Posicionamento, Social Media", year: "2025", imgs: [6615058, 6803583, 5717294, 33170797],
     card: "Posicionamento e presença que fortalecem a marca",
     lead: "Posicionamento e presença que fortalecem a marca.",
@@ -138,7 +140,6 @@ const METHOD = [
 ];
 
 const HOME_CLIENTS = ["CLIENTE 01", "CLIENTE 02", "CLIENTE 03", "CLIENTE 04", "CLIENTE 05", "CLIENTE 06"];
-const CASES_CLIENTS = ["ATTUALIZE", "IOA BLUMENAU", "CLIENTE 03", "CLIENTE 04", "CLIENTE 05", "CLIENTE 06"];
 
 const PRINCIPLES = [
   ["01", "Resultado", "Criatividade precisa gerar impacto.", 5647320],
@@ -158,3 +159,28 @@ const UNIVERSE = [
   [6803583, "Design", 0.16, true, "right:22%;top:70%;width:clamp(140px,19vw,310px)", "4/5"],
   [5717294, "Social", 0.34, false, "left:46%;top:86%;width:clamp(100px,11vw,190px)", "3/4"],
 ];
+
+/* ---------- Imagens editáveis pelo painel ---------- */
+/* [chave, grupo, nome, foto padrão] */
+const IMAGE_SLOTS = [
+  ["home.hero", "Home", "Fundo do topo", 6615058],
+  ...SVC_PAGES.flatMap((s) => [
+    ["sol." + s.slug + ".hero", "Solução: " + s.title, "Fundo do topo", s.img],
+    ["sol." + s.slug + ".statement", "Solução: " + s.title, "Foto da frase de impacto", s.img2],
+  ]),
+  ["sobre.hero", "Sobre", "Foto do topo", 6803583],
+  ["sobre.who", "Sobre", "Quem é a Bow (grande)", 6615058],
+  ["sobre.whoSmall", "Sobre", "Quem é a Bow (pequena)", 5717294],
+  ...UNIVERSE.map(([id, label], i) => ["sobre.uni." + i, "Sobre: Nosso universo", label, id]),
+  ...PRINCIPLES.map(([, t, , id], i) => ["sobre.prin." + i, "Sobre: No que acreditamos", t, id]),
+];
+const SLOT_DEFAULTS = Object.fromEntries(IMAGE_SLOTS.map(([k, , , d]) => [k, d]));
+let IMAGES = {};
+const slot = (key) => (IMAGES[key] != null ? IMAGES[key] : SLOT_DEFAULTS[key]);
+
+/* Aplica o conteúdo salvo pelo painel (api/content.php) por cima dos padrões. */
+function applyContent(c) {
+  if (!c || typeof c !== "object") return;
+  if (Array.isArray(c.cases) && c.cases.length) CASES = c.cases;
+  if (c.images && typeof c.images === "object" && !Array.isArray(c.images)) IMAGES = c.images;
+}

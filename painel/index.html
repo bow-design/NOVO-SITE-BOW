@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel — Bow</title>
+<link rel="icon" type="image/png" href="../assets/mark-bow.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="painel.css">
+<script src="../js/data.js" defer></script>
+<script src="painel.js" defer></script>
+</head>
+<body>
+
+<!-- Login / primeiro acesso -->
+<div class="auth" id="auth" hidden>
+  <form class="auth-card" id="auth-form" autocomplete="on">
+    <img src="../assets/logo-bow-white.svg" alt="bow." class="auth-logo">
+    <h1 id="auth-title">Entrar no painel</h1>
+    <p id="auth-sub" class="muted">Acesso restrito à equipe Bow.</p>
+    <label class="fld"><span>Usuário</span><input name="user" autocomplete="username" required></label>
+    <label class="fld"><span>Senha</span><input name="password" type="password" autocomplete="current-password" required></label>
+    <label class="fld" id="auth-confirm" hidden><span>Repita a senha</span><input name="confirm" type="password" autocomplete="new-password"></label>
+    <p class="err" id="auth-err" role="alert"></p>
+    <button class="btn btn-green" type="submit" id="auth-btn">Entrar</button>
+  </form>
+</div>
+
+<!-- Painel -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="top-l"><img src="../assets/logo-bow-white.svg" alt="bow." class="top-logo"><span class="top-tag">Painel</span></div>
+    <nav class="tabs" role="tablist">
+      <button class="tab is-on" data-tab="cases" role="tab">Cases</button>
+      <button class="tab" data-tab="images" role="tab">Imagens do site</button>
+    </nav>
+    <div class="top-r">
+      <a class="btn btn-ghost" href="../" target="_blank" rel="noopener">Ver site ↗</a>
+      <button class="btn btn-ghost" id="btn-pwd">Trocar senha</button>
+      <button class="btn btn-ghost" id="btn-logout">Sair</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section data-panel="cases">
+      <div class="sec-head">
+        <div><h2>Cases</h2><p class="muted">A ordem desta lista é a ordem no site. A Home mostra os 6 primeiros; a página Cases mostra todos.</p></div>
+        <button class="btn btn-green" id="btn-new">+ Novo case</button>
+      </div>
+      <ul class="case-list" id="case-list"></ul>
+    </section>
+
+    <section data-panel="images" hidden>
+      <div class="sec-head">
+        <div><h2>Imagens do site</h2><p class="muted">Troque qualquer foto do site. As fotos dos cases ficam dentro de cada case, na aba Cases.</p></div>
+      </div>
+      <div id="slot-groups"></div>
+    </section>
+  </main>
+</div>
+
+<!-- Editor de case -->
+<dialog class="modal" id="editor">
+  <form id="case-form" class="modal-body">
+    <div class="modal-head"><h2 id="editor-title">Novo case</h2><button type="button" class="x" data-close aria-label="Fechar">×</button></div>
+
+    <h3>Imagens</h3>
+    <div class="img-grid" id="case-imgs"></div>
+
+    <h3>Informações</h3>
+    <div class="grid2">
+      <label class="fld"><span>Nome do cliente *</span><input name="name" maxlength="80" required></label>
+      <label class="fld"><span>Segmento</span><input name="segment" maxlength="80" placeholder="Ex.: Saúde"></label>
+      <label class="fld"><span>Serviços</span><input name="services" maxlength="120" placeholder="Ex.: Estratégia, Campanhas"></label>
+      <label class="fld"><span>Ano</span><input name="year" maxlength="10" placeholder="2026"></label>
+    </div>
+    <label class="fld"><span>Frase do card <em>aparece sobre a foto na grade de cases</em></span><input name="card" maxlength="140"></label>
+    <label class="fld"><span>Frase de abertura <em>abaixo do nome, no topo da página do case</em></span><input name="lead" maxlength="240"></label>
+
+    <h3>O desafio</h3>
+    <label class="fld"><span>Título</span><input name="challengeH" maxlength="160"></label>
+    <label class="fld"><span>Texto</span><textarea name="challenge" rows="3" maxlength="800"></textarea></label>
+
+    <h3>A solução</h3>
+    <label class="fld"><span>Título</span><input name="solutionH" maxlength="160"></label>
+    <label class="fld"><span>Texto</span><textarea name="solution" rows="3" maxlength="800"></textarea></label>
+
+    <h3>O que entregamos</h3>
+    <label class="fld"><span>Título</span><input name="resultH" maxlength="160"></label>
+    <label class="fld"><span>Itens <em>um por linha</em></span><textarea name="deliver" rows="4"></textarea></label>
+
+    <p class="err" id="editor-err" role="alert"></p>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+      <button type="submit" class="btn btn-green" id="editor-save">Salvar case</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Trocar senha -->
+<dialog class="modal modal-sm" id="pwd">
+  <form id="pwd-form" class="modal-body">
+    <div class="modal-head"><h2>Trocar senha</h2><button type="button" class="x" data-close aria-label="Fechar">×</button></div>
+    <label class="fld"><span>Senha atual</span><input name="current" type="password" autocomplete="current-password" required></label>
+    <label class="fld"><span>Nova senha <em>mínimo 10 caracteres</em></span><input name="password" type="password" autocomplete="new-password" minlength="10" required></label>
+    <p class="err" id="pwd-err" role="alert"></p>
+    <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>Cancelar</button><button type="submit" class="btn btn-green">Salvar</button></div>
+  </form>
+</dialog>
+
+<input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden>
+<div class="toast" id="toast" role="status"></div>
+</body>
+</html>

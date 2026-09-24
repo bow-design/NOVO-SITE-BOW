@@ -115,7 +115,20 @@ function initLinks() {
   });
 }
 
-function boot() {
+/* Conteúdo salvo pelo painel. Sem PHP (GitHub Pages, arquivo local) ou em caso
+   de erro, o site segue com os padrões de data.js. */
+async function loadContent() {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 3000);
+    const res = await fetch("api/content.php", { cache: "no-store", signal: ctrl.signal });
+    clearTimeout(t);
+    if (res.ok) applyContent(await res.json());
+  } catch (e) { /* usa os padrões */ }
+}
+
+async function boot() {
+  await loadContent();
   initHeader();
   initFooter();
   initLinks();
