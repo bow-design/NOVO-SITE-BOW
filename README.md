@@ -39,6 +39,8 @@ uploads/          imagens (reduzidas para no máximo 2400 px) e vídeos enviados
 
 `data/` e `uploads/` ficam só no servidor (estão no `.gitignore`). Ao enviar uma nova versão do site, não apague essas duas pastas, ou os cases e imagens voltam ao padrão.
 
+**Atualizando o código:** quando mudar algum CSS ou JS, troque o número `?v=...` nos links do `index.html` (e do `painel/index.html`). Assim os navegadores baixam a versão nova, em vez de misturar arquivos novos e antigos.
+
 ### Subir na Hostinger
 
 1. No hPanel, abra o **Gerenciador de Arquivos** e entre em `public_html`.

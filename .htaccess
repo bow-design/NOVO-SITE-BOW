@@ -1,0 +1,12 @@
+# As páginas HTML sempre são conferidas com o servidor, para uma atualização do
+# site aparecer na hora. CSS e JS têm ?v=... no endereço (ver index.html) e podem
+# ficar em cache: quando mudam, o número muda.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html?$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+Options -Indexes
