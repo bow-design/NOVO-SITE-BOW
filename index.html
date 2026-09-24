@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bow — Marca, digital e tecnologia</title>
+<meta name="description" content="Bow: marca, digital e tecnologia no mesmo lugar. Social media, identidade visual, sites, SaaS e marketing.">
+<link rel="icon" type="image/png" href="assets/mark-bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="vendor/lenis.min.js" defer></script>
+<script src="js/data.js" defer></script>
+<script src="js/templates.js" defer></script>
+<script src="js/motion.js" defer></script>
+<script src="js/app.js" defer></script>
+</head>
+<body>
+<div id="root">
+
+  <div class="nav-shell" data-intro-nav>
+    <header class="site-header">
+      <a class="logo-btn" href="#/" aria-label="Bow — início">
+        <span class="logo-stack">
+          <img class="logo-white" src="assets/logo-bow-white.svg" alt="bow.">
+          <img class="logo-black" src="assets/logo-bow-black.svg" alt="">
+        </span>
+      </a>
+      <nav class="main-nav">
+        <a class="nav-link" href="#/solucoes" data-menu-trigger>Soluções <span class="chev">▾</span></a>
+        <a class="nav-link" href="#/cases" data-menu-close>Cases</a>
+        <a class="nav-link" href="#/sobre" data-menu-close>Sobre</a>
+      </nav>
+      <div class="header-ctas">
+        <a class="btn-outline-nav" href="https://wa.me/5551989373400?text=Ol%C3%A1!%20Quero%20um%20or%C3%A7amento%20com%20a%20Bow." target="_blank" rel="noopener" data-menu-close>Orçamento</a>
+        <a class="btn-green btn-nav-cta" href="https://wa.me/5551989373400?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Bow%20e%20quero%20falar%20sobre%20um%20projeto." target="_blank" rel="noopener" data-menu-close data-magnetic>Ser cliente Bow</a>
+      </div>
+    </header>
+    <div class="mega"><div class="mega-inner" data-mega></div></div>
+  </div>
+
+  <main></main>
+
+  <footer class="site-footer">
+    <svg class="grain" style="opacity:.5"><filter id="bowfgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowfgrain)"></rect></svg>
+    <div class="footer-inner">
+      <img class="footer-logo" data-fi src="assets/logo-bow-white.svg" alt="bow.">
+      <div class="footer-cols">
+        <div class="fcol" data-fi>
+          <p class="fcol-title">Soluções</p>
+          <div class="fcol" data-foot-svc></div>
+        </div>
+        <div class="fcol" data-fi>
+          <p class="fcol-title">Bow</p>
+          <a class="flink" href="#/">Home</a>
+          <a class="flink" href="#/solucoes">Soluções</a>
+          <a class="flink" href="#/cases">Cases</a>
+          <a class="flink" href="#/sobre">Sobre</a>
+        </div>
+        <div class="fcol" data-fi>
+          <p class="fcol-title">Redes sociais</p>
+          <div class="socials">
+            <a class="social" href="https://instagram.com/agencia.bow" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM17 7h.01"></path></svg></a>
+            <a class="social" href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM8 10v6M8 7.5v.01M12 16v-6M12 13a2.5 2.5 0 0 1 5 0v3"></path></svg></a>
+            <a class="social" data-wa="waHref" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>
+          </div>
+        </div>
+        <div class="fcol" data-fi>
+          <p class="fcol-title">Fale conosco</p>
+          <a class="flink" data-wa="waHref" href="#" target="_blank" rel="noopener">+55 51 98937-3400</a>
+          <a class="flink" href="mailto:bowagencydesign@gmail.com">bowagencydesign@gmail.com</a>
+          <a class="flink" href="https://instagram.com/agencia.bow" target="_blank" rel="noopener">@agencia.bow</a>
+          <a class="btn-green fcta" data-wa="waOrcamento" href="#" target="_blank" rel="noopener" data-magnetic>Pedir orçamento</a>
+        </div>
+      </div>
+      <div class="footer-tagline" data-fi>
+        <p>Estratégia, criatividade e tecnologia para marcas que querem ir além do óbvio.</p>
+      </div>
+      <div class="footer-legal" data-fi>
+        <p data-year>© 2026 Bow Agência. Todos os direitos reservados.</p>
+        <a href="#privacidade">Política de privacidade</a>
+        <a href="#termos">Termos</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

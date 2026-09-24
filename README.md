@@ -1,3 +1,28 @@
+# Site Bow
+
+Site estático (HTML, CSS e JS puro, sem build), implementado a partir de `project/Site Bow.dc.html`.
+
+```
+index.html        header, footer e ponto de montagem das páginas
+css/style.css     estilos
+js/data.js        conteúdo: cases, soluções, textos, fotos, contatos  ← edite aqui
+js/templates.js   HTML de cada página
+js/motion.js      animações (GSAP + ScrollTrigger + Lenis)
+js/app.js         rotas, header, formulário
+vendor/           GSAP 3.12.5, ScrollTrigger, Lenis 1.1.13 (cópias locais)
+assets/           logos e gota da Bow
+```
+
+**Páginas e links diretos:** `#/` · `#/solucoes` · `#/solucoes/<social-media|identidade-visual|sites|saas-tecnologia|marketing>` · `#/cases` · `#/cases/<attualize|ioa-blumenau|cliente-03…06>` · `#/sobre`
+
+**Rodar localmente:** `python3 -m http.server` na raiz e abrir `http://localhost:8000`.
+
+**Publicar no GitHub Pages:** Settings → Pages → Branch `main`, pasta `/ (root)` → Save.
+
+**Pendências herdadas do design:** clientes 03–06, textos dos cases e fotos (Pexels) são provisórios; o formulário só mostra "Enviado ✓" e ainda não envia para lugar nenhum; os links de Política de privacidade e Termos não têm página.
+
+---
+
 # CODING AGENTS: READ THIS FIRST
 
 This is a **handoff bundle** from Claude Design (claude.ai/design).
