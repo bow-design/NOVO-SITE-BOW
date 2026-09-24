@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/tokens/typography.css">
+<script src="./image-slot.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>
+  body { margin:0; background:#050505; color:#f5f5f5; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:#06e006; text-decoration:none; }
+  a:hover { color:#3cf13c; }
+  input, textarea { font-family:'Inter',sans-serif; }
+  html.lenis, html.lenis body { height:auto; }
+  .lenis.lenis-smooth { scroll-behavior:auto !important; }
+  .w { display:inline-block; will-change:transform,opacity; }
+  @keyframes bowDrift { 0%{transform:translate(-52%,-50%) scale(1)} 100%{transform:translate(-48%,-53%) scale(1.06)} }
+  @keyframes bowBlobA { 0%{transform:translate(0,0)} 100%{transform:translate(18vw,10vh)} }
+  @keyframes bowBlobB { 0%{transform:translate(0,0)} 100%{transform:translate(-20vw,-12vh)} }
+  @keyframes bowKen { from { transform:scale(1.05) } to { transform:scale(1.16) } }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="position:relative;background:#050505;overflow-x:clip">
+
+<div data-intro-nav="1" onMouseEnter="{{ headerEnter }}" onMouseLeave="{{ headerLeave }}" style="position:fixed;top:0;left:0;right:0;z-index:60">
+<header style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(16px,5vw,56px);background:{{ headerBg }};border-bottom:1px solid {{ headerBorder }};transition:background .25s,border-color .25s">
+  <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center">
+    <span style="position:relative;display:block;height:20px">
+      <img src="assets/logo-bow-white.svg" alt="bow." style="height:20px;display:block;opacity:{{ logoWhiteOp }};transition:opacity .25s">
+      <img src="assets/logo-bow-black.svg" alt="" style="position:absolute;top:0;left:0;height:20px;display:block;opacity:{{ logoBlackOp }};transition:opacity .25s">
+    </span>
+  </button>
+  <nav style="display:flex;align-items:center;gap:clamp(16px,2.4vw,34px);flex-wrap:wrap;justify-content:center">
+    <button onMouseEnter="{{ menuEnter }}" style="display:flex;align-items:center;gap:5px;background:none;border:0;padding:6px 0;cursor:pointer;font-size:14.5px;font-weight:500;color:{{ navColor }};transition:color .2s">Soluções <span style="font-size:10px;opacity:.6;transform:{{ chevronRot }};display:inline-block;transition:transform .2s">▾</span></button>
+    <button onClick="{{ goCases }}" onMouseEnter="{{ menuLeaveKeepHeader }}" style="background:none;border:0;padding:6px 0;cursor:pointer;font-size:14.5px;font-weight:500;color:{{ navColor }};transition:color .2s">Cases</button>
+    <button onClick="{{ goSobre }}" onMouseEnter="{{ menuLeaveKeepHeader }}" style="background:none;border:0;padding:6px 0;cursor:pointer;font-size:14.5px;font-weight:500;color:{{ navColor }};transition:color .2s">Sobre</button>
+  </nav>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a href="{{ waOrcamento }}" target="_blank" rel="noopener" onMouseEnter="{{ menuLeaveKeepHeader }}" style="padding:11px 20px;border-radius:999px;border:1px solid {{ navBorder }};background:transparent;color:{{ navColor }};font-size:13.5px;font-weight:500;cursor:pointer;transition:border-color .2s,color .2s">Orçamento</a>
+    <a href="{{ waHref }}" target="_blank" rel="noopener" onMouseEnter="{{ menuLeaveKeepHeader }}" data-magnetic="1" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:999px;background:linear-gradient(135deg,#06e006,#049604);color:#031a03;font-size:13.5px;font-weight:600;white-space:nowrap;transition:filter .2s,transform .2s" style-hover="filter:brightness(1.12)" style-active="transform:scale(.96)">Ser cliente Bow</a>
+  </div>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border-bottom:1px solid #e4e4e4;box-shadow:0 24px 48px rgba(0,0,0,.14)">
+  <div style="max-width:1240px;margin:0 auto;padding:clamp(24px,3vw,40px) clamp(16px,5vw,56px);display:grid;grid-template-columns:1fr;gap:clamp(28px,4vw,56px)">
+    <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px 28px">
+      <sc-for list="{{ menuItems }}" as="it" hint-placeholder-count="5">
+        <button onClick="{{ it.go }}" style="display:flex;align-items:flex-start;gap:12px;text-align:left;padding:12px 8px;border-radius:12px;background:none;border:0;cursor:pointer" style-hover="background:#f5f5f5">
+          <span style="flex:none;width:34px;height:34px;border-radius:10px;background:#f0f0f0;color:#8a9c8a;display:flex;align-items:center;justify-content:center;font-size:14px">{{ it.icon }}</span>
+          <span><span style="display:block;font-size:.95rem;font-weight:600;color:#050505">{{ it.title }}</span><span style="display:block;font-size:.82rem;color:#777;margin-top:2px">{{ it.short }}</span></span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+</div>
+
+<!-- ===================== HOME ===================== -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main style="position:relative;z-index:1;display:block;background:#050505;overflow:clip">
+
+  <section style="position:relative;min-height:min(88vh,780px);display:flex;flex-direction:column;justify-content:flex-end;padding:90px clamp(16px,5vw,56px) clamp(56px,7vw,90px);overflow:hidden">
+    <div style="position:absolute;inset:0;z-index:0;overflow:hidden"><div data-mouse-par="1" style="position:absolute;inset:0"><div data-hero-bg="1" style="position:absolute;inset:0">
+      <div style="width:100%;height:100%;animation:bowKen 28s ease-in-out infinite alternate">
+        <image-slot id="bow-hero" shape="rect" src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1800" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Hero"></image-slot>
+      </div></div></div>
+    </div>
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,5,5,.35) 0%,rgba(5,5,5,.55) 55%,rgba(5,5,5,.96) 100%)"></div>
+    <div style="position:relative;z-index:2;width:100%;max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:22px">
+      <span data-intro="1" style="align-self:flex-start;padding:7px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.3);font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.75)">Bow / Digital Studio</span>
+      <h1 data-intro-h="1" style="margin:0;font-weight:600;font-size:clamp(2.1rem,4.8vw,4.3rem);line-height:1.05;letter-spacing:-.03em;max-width:16ch;text-transform:lowercase">Marca, <span style="color:#06e006">digital</span> e <span style="color:#06e006">tecnologia</span>. Tudo no mesmo lugar<span style="color:#06e006">.</span></h1>
+      <p data-intro="1" style="margin:0;font-size:clamp(.95rem,1.1vw,1.05rem);line-height:1.6;color:rgba(255,255,255,.62);max-width:50ch">Criamos marcas, experiências digitais e estratégias que fazem empresas serem percebidas, lembradas e escolhidas.</p>
+      <a data-intro="1" href="#contato" style="align-self:flex-start;margin-top:6px;display:inline-flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;color:#fff;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:3px;transition:border-color .2s" style-hover="border-color:#06e006">Começar um projeto <span style="color:#06e006">→</span></a>
+    </div>
+  </section>
+
+  <div style="position:relative;overflow:hidden;padding:34px 0;background:#050505">
+    <div data-mtrack="1" style="display:flex;width:max-content;will-change:transform">
+      <div style="display:flex;align-items:center;gap:56px;padding-right:56px">
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 01</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 02</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 03</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 04</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 05</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 06</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:56px;padding-right:56px">
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 01</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 02</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 03</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 04</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 05</span>
+        <span style="font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.38);white-space:nowrap">CLIENTE 06</span>
+      </div>
+    </div>
+  </div>
+
+  <section data-bg-a="1" style="padding:clamp(70px,9vw,120px) clamp(16px,5vw,56px) clamp(60px,7vw,100px);background:#050505">
+    <div style="max-width:900px;margin:0 auto">
+      <span data-fade="1" style="display:inline-flex;margin-bottom:20px;padding:6px 14px;border-radius:999px;background:rgba(6,224,6,.12);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#06e006">Nosso método</span>
+      <h2 data-reveal="1" style="margin:0;font-weight:600;font-size:clamp(1.4rem,2.6vw,2.2rem);line-height:1.25;letter-spacing:-.025em;text-transform:lowercase">Conectamos estratégia, criação e tecnologia para que cada projeto avance mais forte que o anterior<span style="color:#06e006">.</span></h2>
+      <p data-fade="1" style="margin:18px 0 0;font-size:clamp(.95rem,1.1vw,1.05rem);line-height:1.65;color:rgba(255,255,255,.55);max-width:56ch">Um processo claro, do primeiro diagnóstico à evolução contínua, para você saber exatamente o que está sendo feito e por quê.</p>
+    </div>
+
+    <div ref="{{ pathWrapRef }}" style="position:relative;max-width:1240px;margin:clamp(60px,8vw,110px) auto 0">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none" fill="none"><path data-path-base="1" stroke="rgba(255,255,255,.14)" stroke-width="1"></path><path ref="{{ pathRef }}" stroke="#06e006" stroke-width="2" stroke-linecap="round"></path></svg>
+      <span data-node="1" style="position:absolute;left:0;top:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#050505;border:1px solid rgba(255,255,255,.35);z-index:1;transition:background .4s,border-color .4s,transform .4s"></span><span data-node="1" style="position:absolute;left:0;top:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#050505;border:1px solid rgba(255,255,255,.35);z-index:1;transition:background .4s,border-color .4s,transform .4s"></span><span data-node="1" style="position:absolute;left:0;top:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#050505;border:1px solid rgba(255,255,255,.35);z-index:1;transition:background .4s,border-color .4s,transform .4s"></span><span data-node="1" style="position:absolute;left:0;top:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#050505;border:1px solid rgba(255,255,255,.35);z-index:1;transition:background .4s,border-color .4s,transform .4s"></span><span data-node="1" style="position:absolute;left:0;top:0;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:#050505;border:1px solid rgba(255,255,255,.35);z-index:1;transition:background .4s,border-color .4s,transform .4s"></span>
+      <img ref="{{ pathBaseRef }}" src="assets/mark-bow.png" alt="" style="position:absolute;left:0;top:0;width:22px;height:auto;z-index:2;will-change:transform;filter:drop-shadow(0 4px 14px rgba(6,224,6,.35))">
+      <div style="position:relative">
+      <div data-row="1" style="position:relative;display:flex;justify-content:flex-start;align-items:center;min-height:clamp(360px,40vw,500px)">
+        <div data-fade="1" style="max-width:360px;display:flex;flex-direction:column;gap:12px;">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#06e006">001</span>
+          <h3 style="margin:0;font-weight:500;font-size:clamp(1.3rem,2.1vw,1.8rem);line-height:1.15;letter-spacing:-.025em;color:#fff">Entender</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.6)">Conhecemos sua empresa, seu mercado, seu público, seus desafios e seus objetivos. Uma boa solução começa fazendo as perguntas certas.</p>
+        </div>
+      </div>
+      <div data-row="1" style="position:relative;display:flex;justify-content:flex-end;align-items:center;min-height:clamp(360px,40vw,500px)">
+        <div data-fade="1" style="max-width:360px;display:flex;flex-direction:column;gap:12px;text-align:right;align-items:flex-end">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#06e006">002</span>
+          <h3 style="margin:0;font-weight:500;font-size:clamp(1.3rem,2.1vw,1.8rem);line-height:1.15;letter-spacing:-.025em;color:#fff">Estrategizar</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.6)">Definimos posicionamento, linguagem, prioridades e caminhos para transformar objetivos em ações. Menos achismo, mais intenção.</p>
+        </div>
+      </div>
+      <div data-row="1" style="position:relative;display:flex;justify-content:flex-start;align-items:center;min-height:clamp(360px,40vw,500px)">
+        <div data-fade="1" style="max-width:360px;display:flex;flex-direction:column;gap:12px;">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#06e006">003</span>
+          <h3 style="margin:0;font-weight:500;font-size:clamp(1.3rem,2.1vw,1.8rem);line-height:1.15;letter-spacing:-.025em;color:#fff">Criar</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.6)">Transformamos estratégia em algo que pode ser visto, usado e lembrado: marcas, conteúdos, sites, campanhas e produtos digitais.</p>
+        </div>
+      </div>
+      <div data-row="1" style="position:relative;display:flex;justify-content:flex-end;align-items:center;min-height:clamp(360px,40vw,500px)">
+        <div data-fade="1" style="max-width:360px;display:flex;flex-direction:column;gap:12px;text-align:right;align-items:flex-end">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#06e006">004</span>
+          <h3 style="margin:0;font-weight:500;font-size:clamp(1.3rem,2.1vw,1.8rem);line-height:1.15;letter-spacing:-.025em;color:#fff">Colocar no ar</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.6)">Ideia parada não gera impacto. Conteúdo publicado, site no ar, campanha rodando, produto funcionando.</p>
+        </div>
+      </div>
+      <div data-row="1" style="position:relative;display:flex;justify-content:flex-start;align-items:center;min-height:clamp(360px,40vw,500px)">
+        <div data-fade="1" style="max-width:360px;display:flex;flex-direction:column;gap:12px;">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#06e006">005</span>
+          <h3 style="margin:0;font-weight:500;font-size:clamp(1.3rem,2.1vw,1.8rem);line-height:1.15;letter-spacing:-.025em;color:#fff">Evoluir</h3>
+          <p style="margin:0;font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.6)">O projeto não termina quando vai para o ar. Analisamos, aprendemos e ajustamos, porque marcas crescem e o digital nunca fica parado.</p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-bg-b="1" style="padding:0 clamp(16px,5vw,56px) clamp(70px,9vw,120px);background:#f5f5f5;color:#050505">
+    <div style="max-width:1240px;margin:0 auto;padding-top:clamp(50px,6vw,80px)">
+      <div style="max-width:34ch;margin-bottom:clamp(36px,4vw,56px)">
+        <span data-fade="1" style="display:inline-flex;margin-bottom:18px;padding:6px 14px;border-radius:999px;background:#e8e8e8;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#0a8c0a">O que fazemos</span>
+        <h2 data-reveal="1" style="margin:0;font-weight:600;font-size:clamp(1.5rem,2.6vw,2.3rem);line-height:1.15;letter-spacing:-.03em;text-transform:lowercase">Cinco frentes, uma só direção<span style="color:#06e006">.</span></h2>
+      </div>
+      <div ref="{{ carRef }}" style="position:relative;width:100vw;margin-left:calc(50% - 50vw);height:clamp(400px,46vw,500px);touch-action:pan-y;cursor:none;user-select:none;-webkit-user-select:none">
+        <sc-for list="{{ svcCards }}" as="c" hint-placeholder-count="5">
+          <div data-card="{{ c.idx }}" style="position:absolute;left:50%;top:50%;width:clamp(230px,24vw,320px);aspect-ratio:320/410;margin-left:calc(clamp(230px,24vw,320px) / -2);margin-top:calc(clamp(230px,24vw,320px) * -0.64);border-radius:20px;background:#fff;border:1px solid #d9d9d9;overflow:hidden;will-change:transform">
+            <div data-face="1" style="position:absolute;inset:0;opacity:0;background:{{ c.grad }}"></div>
+            <svg data-face="1" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;mix-blend-mode:overlay;pointer-events:none"><filter id="bowgrain{{ c.idx }}"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowgrain{{ c.idx }})" opacity=".75"></rect></svg>
+            <svg data-ink="1" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#6b6b6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:22px;left:22px"><path d="{{ c.icon }}"></path></svg>
+            <span data-ink="1" style="position:absolute;left:22px;right:22px;bottom:22px;font-weight:600;font-size:1.05rem;letter-spacing:-.01em;color:#111">{{ c.title }}</span>
+            
+          </div>
+        </sc-for>
+        
+        <span ref="{{ cursorRef }}" style="position:absolute;left:0;top:0;z-index:300;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 8px 30px rgba(0,0,0,.12);color:#111;font-size:10.5px;font-weight:700;letter-spacing:.14em;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transform:scale(.6);transition:opacity .25s,transform .25s">ARRASTE</span>
+      </div>
+      <div style="text-align:center;max-width:64ch;margin:0 auto">
+        <h3 style="margin:0 0 12px;font-weight:600;font-size:1.4rem;letter-spacing:-.02em">{{ svcActive.title }}</h3>
+        <p style="margin:0;font-size:1rem;line-height:1.7;color:#555">{{ svcActive.desc }}</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);background:#f5f5f5;color:#050505">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px clamp(32px,6vw,110px);align-items:center;margin-bottom:clamp(36px,4vw,56px)">
+        <div data-fade="1">
+          <span style="display:inline-flex;margin-bottom:18px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,#06e006,#049604);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#031a03">Tecnologia</span>
+          <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(1.9rem,3.8vw,3.3rem);line-height:1.08;letter-spacing:-.035em;color:#1a1a1a;text-transform:lowercase">Tecnologia sob medida para transformar processos em resultado<span style="color:#06e006">.</span></h2>
+        </div>
+        <div data-fade="1" style="display:flex;flex-direction:column;gap:22px">
+          <p style="margin:0;font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.6;color:#6b6b6b;max-width:46ch">Quando uma ideia precisa virar produto, sistema ou operação, a Bow entra no desenvolvimento. Do conceito à interface, da interface ao funcionamento.</p>
+          <a href="{{ waTech }}" target="_blank" rel="noopener" data-magnetic="1" style="align-self:flex-start;display:inline-flex;padding:15px 28px;border-radius:12px;background:linear-gradient(135deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;transition:filter .2s" style-hover="filter:brightness(1.1)">Criar uma solução</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(12px,1.4vw,20px)">
+        <div data-fade="1" style="flex:2 1 560px;min-width:0;min-height:clamp(320px,32vw,400px);border-radius:28px;background:#ecedea;border:1px solid #e0e2de;padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:32px;overflow:hidden;isolation:isolate">
+          <div style="display:flex;flex-direction:column;gap:12px;max-width:44ch"><span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#0a8c0a">01</span><h3 style="margin:0;font-weight:500;font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:-.035em;color:#1a1a1a">automações<span style="color:#06e006">.</span></h3><p style="margin:0;font-size:1rem;line-height:1.6;color:#5a5a5a">Os processos da sua empresa rodando sozinhos, do pedido à entrega, sem retrabalho.</p></div>
+          <div data-auto="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:10px">
+            <div data-auto-step="1" style="display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:16px;background:#fff;border:1px solid #e0e2de">
+              <span style="display:flex;align-items:center;justify-content:space-between"><span data-auto-check="1" style="width:26px;height:26px;border-radius:50%;border:1px solid #cfd3cc;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#031a03" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" data-auto-tick="1" style="opacity:0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size:11px;font-weight:600;color:#9a9a9a">01</span></span>
+              <span style="font-size:14px;font-weight:500;line-height:1.3;color:#1a1a1a">Pedido criado</span>
+            </div>
+            <div data-auto-step="1" style="display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:16px;background:#fff;border:1px solid #e0e2de">
+              <span style="display:flex;align-items:center;justify-content:space-between"><span data-auto-check="1" style="width:26px;height:26px;border-radius:50%;border:1px solid #cfd3cc;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#031a03" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" data-auto-tick="1" style="opacity:0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size:11px;font-weight:600;color:#9a9a9a">02</span></span>
+              <span style="font-size:14px;font-weight:500;line-height:1.3;color:#1a1a1a">Em produção</span>
+            </div>
+            <div data-auto-step="1" style="display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:16px;background:#fff;border:1px solid #e0e2de">
+              <span style="display:flex;align-items:center;justify-content:space-between"><span data-auto-check="1" style="width:26px;height:26px;border-radius:50%;border:1px solid #cfd3cc;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#031a03" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" data-auto-tick="1" style="opacity:0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size:11px;font-weight:600;color:#9a9a9a">03</span></span>
+              <span style="font-size:14px;font-weight:500;line-height:1.3;color:#1a1a1a">Produzido</span>
+            </div>
+            <div data-auto-step="1" style="display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:16px;background:#fff;border:1px solid #e0e2de">
+              <span style="display:flex;align-items:center;justify-content:space-between"><span data-auto-check="1" style="width:26px;height:26px;border-radius:50%;border:1px solid #cfd3cc;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#031a03" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" data-auto-tick="1" style="opacity:0"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span style="font-size:11px;font-weight:600;color:#9a9a9a">04</span></span>
+              <span style="font-size:14px;font-weight:500;line-height:1.3;color:#1a1a1a">Entregue</span>
+            </div>
+          </div>
+        </div>
+        <div data-fade="1" style="position:relative;flex:1 1 300px;min-width:0;min-height:clamp(320px,32vw,400px);border-radius:28px;padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:32px;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 10% 0%,#c6ff7a 0%,transparent 60%),radial-gradient(100% 80% at 90% 100%,#07590f 0%,transparent 60%),linear-gradient(170deg,#6df26d,#0b8a14)">
+          <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none;opacity:.6"><filter id="bowtgrain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowtgrain)"></rect></svg>
+          <div style="position:relative;display:flex;flex-direction:column;gap:12px"><span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#031a03">02</span><h3 style="margin:0;font-weight:500;font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:-.035em;color:#031a03">dashboards<span style="color:#fff">.</span></h3><p style="margin:0;font-size:1rem;line-height:1.6;color:#031a03">Indicadores do seu negócio reunidos em um só painel, em tempo real.</p></div>
+          <div data-bars="1" style="position:relative;display:flex;align-items:flex-end;gap:8px;height:110px">
+            <span style="flex:1;height:38%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span><span style="flex:1;height:52%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span><span style="flex:1;height:46%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span><span style="flex:1;height:68%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span><span style="flex:1;height:60%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span><span style="flex:1;height:84%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span><span style="flex:1;height:92%;border-radius:6px 6px 2px 2px;background:rgba(3,26,3,.82);transform-origin:bottom center"></span>
+          </div>
+        </div>
+        <div data-sys="1" data-fade="1" style="flex:1 1 100%;min-width:0;border-radius:28px;background:#fff;border:1px solid #e4e4e4;padding:clamp(24px,3vw,40px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:clamp(28px,4vw,64px);overflow:hidden">
+          <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:12px;max-width:46ch"><span style="font-size:12px;font-weight:700;letter-spacing:.12em;color:#0a8c0a">03</span><h3 style="margin:0;font-weight:500;font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:-.035em;color:#1a1a1a">sistemas<span style="color:#06e006">.</span></h3><p style="margin:0;font-size:1rem;line-height:1.6;color:#5a5a5a">Sistemas sob medida para a sua empresa, feitos para a sua operação. Do conceito à interface, da interface ao funcionamento.</p></div>
+          <div style="position:relative;flex:1 1 360px;max-width:520px;height:190px">
+            <div data-win="0" style="position:absolute;left:0;top:0px;width:min(calc(100% - 60px),340px);border-radius:16px;background:#111;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 50px rgba(0,0,0,.18);overflow:hidden;will-change:transform">
+                <div style="display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06)"><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="margin-left:8px;font-size:11px;color:rgba(255,255,255,.55)">Estoque</span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;padding:14px"><span style="height:8px;width:70%;border-radius:4px;background:#222"></span><span style="height:8px;width:52%;border-radius:4px;background:#222"></span><span style="height:8px;width:84%;border-radius:4px;background:#222"></span></div>
+              </div><div data-win="1" style="position:absolute;left:0;top:18px;width:min(calc(100% - 60px),340px);border-radius:16px;background:#111;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 50px rgba(0,0,0,.18);overflow:hidden;will-change:transform">
+                <div style="display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06)"><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="margin-left:8px;font-size:11px;color:rgba(255,255,255,.55)">Pedidos</span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;padding:14px"><span style="height:8px;width:70%;border-radius:4px;background:#222"></span><span style="height:8px;width:52%;border-radius:4px;background:#222"></span><span style="height:8px;width:84%;border-radius:4px;background:#222"></span></div>
+              </div><div data-win="2" style="position:absolute;left:0;top:36px;width:min(calc(100% - 60px),340px);border-radius:16px;background:#111;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 50px rgba(0,0,0,.18);overflow:hidden;will-change:transform">
+                <div style="display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06)"><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="width:7px;height:7px;border-radius:50%;background:#333"></span><span style="margin-left:8px;font-size:11px;color:rgba(255,255,255,.55)">Financeiro</span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;padding:14px"><span style="height:8px;width:70%;border-radius:4px;background:#222"></span><span style="height:8px;width:52%;border-radius:4px;background:#222"></span><span style="height:8px;width:84%;border-radius:4px;background:rgba(6,224,6,.5)"></span></div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);background:#f5f5f5;color:#050505;border-top:1px solid #e2e2e2">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:clamp(30px,3.6vw,48px)">
+        <div>
+          <span data-fade="1" style="display:inline-flex;margin-bottom:16px;padding:6px 14px;border-radius:999px;background:#e8e8e8;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#0a8c0a">Trabalhos</span>
+          <h2 data-reveal="1" style="margin:0;font-weight:600;font-size:clamp(1.45rem,2.4vw,2.1rem);line-height:1.15;letter-spacing:-.025em;text-transform:lowercase">Trabalhos que falam<span style="color:#06e006">.</span></h2>
+        </div>
+        <button onClick="{{ goCases }}" data-fade="1" style="padding:13px 24px;border-radius:999px;border:1px solid #ccc;background:transparent;color:#050505;font-size:13.5px;font-weight:500;cursor:pointer" style-hover="background:#050505;color:#fff">Ver todos</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,1.4vw,22px)">
+        <article onClick="{{ goCase0 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Attualize" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 20% 80%,#06e006 0%,transparent 55%),radial-gradient(90% 80% at 85% 10%,#b8ff5c 0%,transparent 55%),linear-gradient(160deg,#0f7a1a,#043d0a)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowwg0"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowwg0)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Attualize</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Posicionamento e presença que fortalecem a marca</p>
+        </article>
+        <article onClick="{{ goCase1 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="IOA Blumenau" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 80% 85%,#3cf13c 0%,transparent 55%),radial-gradient(80% 70% at 20% 15%,#021a04 0%,transparent 60%),linear-gradient(150deg,#0a5c12,#06a806)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowwg1"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowwg1)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">IOA Blumenau</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Campanhas e conteúdo que aproximam pacientes</p>
+        </article>
+        <article onClick="{{ goCase2 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 03" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(100% 90% at 50% 100%,#06e006 0%,transparent 60%),radial-gradient(90% 70% at 90% 0%,#0b2e0b 0%,transparent 60%),linear-gradient(170deg,#031a03,#0b8a14)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowwg2"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowwg2)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 03</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Uma identidade visual com personalidade própria</p>
+        </article>
+        <article onClick="{{ goCase3 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/33170797/pexels-photo-33170797.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 04" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 10% 20%,#9dff6a 0%,transparent 50%),radial-gradient(100% 90% at 90% 90%,#034d0a 0%,transparent 60%),linear-gradient(140deg,#06c406,#0a3d0a)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowwg3"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowwg3)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 04</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Um site pensado para converter visitas</p>
+        </article>
+        <article onClick="{{ goCase4 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/5647320/pexels-photo-5647320.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 05" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(120% 100% at 85% 80%,#06e006 0%,transparent 55%),radial-gradient(80% 70% at 15% 10%,#0c3b3b 0%,transparent 60%),linear-gradient(160deg,#021a0f,#0b7a2a)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowwg4"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowwg4)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 05</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Sistema sob medida para a operação</p>
+        </article>
+        <article onClick="{{ goCase5 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/6615514/pexels-photo-6615514.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 06" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 30% 90%,#3cf13c 0%,transparent 55%),radial-gradient(90% 80% at 80% 15%,#063d06 0%,transparent 60%),linear-gradient(150deg,#0b8a14,#021a04)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowwg5"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowwg5)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 06</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Social media que constrói comunidade</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" style="position:relative;padding:clamp(80px,10vw,140px) clamp(16px,5vw,56px);background:radial-gradient(90% 110% at 0% 0%,#3cf13c 0%,transparent 55%),radial-gradient(80% 90% at 100% 100%,#021a04 0%,transparent 60%),linear-gradient(135deg,#0ba813 0%,#076b10 45%,#03300a 100%);overflow:hidden">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcgrain)" opacity=".6"></rect></svg>
+    <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08;letter-spacing:-.035em;color:#fff;text-transform:lowercase">Tem um projeto em mente? Vamos conversar<span style="color:#06e006">.</span></h2>
+        <p data-ci="1" style="margin:0;max-width:46ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.65;color:rgba(255,255,255,.92)">Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p>
+      </div>
+      <form data-ci-card="1" onSubmit="{{ onSubmit }}" style="will-change:transform;display:flex;flex-direction:column;gap:22px;padding:clamp(26px,3.4vw,48px);border-radius:26px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)">
+        <div data-ci="1">
+          <h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.4rem,2vw,1.8rem);letter-spacing:-.02em;color:#1a1a1a">Fale com a Bow</h3>
+          <p style="margin:0;font-size:.98rem;color:#777">Preencha e retornamos em até um dia útil.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px">
+          <label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Nome</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Empresa</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">E-mail</span><input type="email" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">WhatsApp</span><input type="tel" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label>
+        </div>
+        <button type="submit" data-ci="1" data-magnetic="1" style="margin-top:8px;padding:17px 28px;border:0;border-radius:12px;background:linear-gradient(90deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;cursor:pointer;transition:filter .2s" style-hover="filter:brightness(1.08)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<!-- ===================== SOLUÇÕES ===================== -->
+<sc-if value="{{ isSolucoes }}" hint-placeholder-val="{{ false }}">
+<main style="position:relative;z-index:1;display:block;background:#050505;overflow:clip">
+  <section style="padding:clamp(70px,10vh,130px) clamp(16px,5vw,56px) clamp(40px,5vw,64px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <span data-fade="1" style="display:inline-flex;margin-bottom:18px;padding:6px 14px;border-radius:999px;background:rgba(6,224,6,.12);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#06e006">Soluções</span>
+      <h1 data-split="1" style="margin:0 0 20px;font-weight:600;font-size:clamp(1.9rem,3.8vw,3.3rem);line-height:1.02;letter-spacing:-.035em;max-width:22ch">Cinco frentes que fazem sua marca avançar.</h1>
+      <p data-fade="1" style="margin:0;font-size:1.05rem;line-height:1.65;color:rgba(255,255,255,.62);max-width:54ch">Da primeira ideia ao projeto no ar, reunimos diferentes disciplinas para construir uma presença digital consistente.</p>
+    </div>
+  </section>
+
+  <section style="padding:0 clamp(16px,5vw,56px) clamp(64px,8vw,110px)">
+    <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden">
+      <div data-fade="1" onClick="{{ goSvc0 }}" style="background:#0a0a0a;padding:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(20px,4vw,56px);cursor:pointer;transition:background .35s" style-hover="background:#111">
+        <span style="font-weight:700;font-size:2.4rem;color:#06e006;opacity:.5">01</span>
+        <div><h2 data-reveal="1" style="margin:0 0 12px;font-weight:600;font-size:1.5rem;letter-spacing:-.02em">Social Media</h2><p style="margin:0 0 8px;font-size:1rem;line-height:1.65;color:rgba(255,255,255,.62);max-width:60ch">Planejamos, criamos e gerenciamos conteúdos que transformam suas redes sociais em uma extensão real da sua marca.</p><p style="margin:0;font-size:.85rem;color:rgba(255,255,255,.4)">Planejamento · Conteúdo · Design · Reels · Gestão</p></div><span style="font-size:13px;font-weight:600;color:#06e006;white-space:nowrap">Ver solução <span>→</span></span>
+      </div>
+      <div data-fade="1" onClick="{{ goSvc1 }}" style="background:#0a0a0a;padding:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(20px,4vw,56px);cursor:pointer;transition:background .35s" style-hover="background:#111">
+        <span style="font-weight:700;font-size:2.4rem;color:#06e006;opacity:.5">02</span>
+        <div><h2 data-reveal="1" style="margin:0 0 12px;font-weight:600;font-size:1.5rem;letter-spacing:-.02em">Identidade Visual</h2><p style="margin:0 0 8px;font-size:1rem;line-height:1.65;color:rgba(255,255,255,.62);max-width:60ch">Criamos identidades visuais que traduzem posicionamento, personalidade e valor em cada ponto de contato.</p><p style="margin:0;font-size:.85rem;color:rgba(255,255,255,.4)">Estratégia · Logo · Identidade · Direção visual · Aplicações</p></div><span style="font-size:13px;font-weight:600;color:#06e006;white-space:nowrap">Ver solução <span>→</span></span>
+      </div>
+      <div data-fade="1" onClick="{{ goSvc2 }}" style="background:#0a0a0a;padding:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(20px,4vw,56px);cursor:pointer;transition:background .35s" style-hover="background:#111">
+        <span style="font-weight:700;font-size:2.4rem;color:#06e006;opacity:.5">03</span>
+        <div><h2 data-reveal="1" style="margin:0 0 12px;font-weight:600;font-size:1.5rem;letter-spacing:-.02em">Sites</h2><p style="margin:0 0 8px;font-size:1rem;line-height:1.65;color:rgba(255,255,255,.62);max-width:60ch">Criamos sites que combinam estratégia, design e tecnologia para transformar visitas em oportunidades.</p><p style="margin:0;font-size:.85rem;color:rgba(255,255,255,.4)">UX/UI · Design · Desenvolvimento · Landing Pages · Performance</p></div><span style="font-size:13px;font-weight:600;color:#06e006;white-space:nowrap">Ver solução <span>→</span></span>
+      </div>
+      <div data-fade="1" onClick="{{ goSvc3 }}" style="background:#0a0a0a;padding:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(20px,4vw,56px);cursor:pointer;transition:background .35s" style-hover="background:#111">
+        <span style="font-weight:700;font-size:2.4rem;color:#06e006;opacity:.5">04</span>
+        <div><h2 data-reveal="1" style="margin:0 0 12px;font-weight:600;font-size:1.5rem;letter-spacing:-.02em">SaaS &amp; Tecnologia</h2><p style="margin:0 0 8px;font-size:1rem;line-height:1.65;color:rgba(255,255,255,.62);max-width:60ch">Transformamos processos, problemas e oportunidades em ferramentas digitais feitas sob medida.</p><p style="margin:0;font-size:.85rem;color:rgba(255,255,255,.4)">SaaS · Sistemas · Dashboards · Automações · Integrações</p></div><span style="font-size:13px;font-weight:600;color:#06e006;white-space:nowrap">Ver solução <span>→</span></span>
+      </div>
+      <div data-fade="1" onClick="{{ goSvc4 }}" style="background:#0a0a0a;padding:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(20px,4vw,56px);cursor:pointer;transition:background .35s" style-hover="background:#111">
+        <span style="font-weight:700;font-size:2.4rem;color:#06e006;opacity:.5">05</span>
+        <div><h2 data-reveal="1" style="margin:0 0 12px;font-weight:600;font-size:1.5rem;letter-spacing:-.02em">Marketing</h2><p style="margin:0 0 8px;font-size:1rem;line-height:1.65;color:rgba(255,255,255,.62);max-width:60ch">Conectamos canais, ideias e ações para construir presença, gerar demanda e aproximar sua marca das pessoas certas.</p><p style="margin:0;font-size:.85rem;color:rgba(255,255,255,.4)">Estratégia · Campanhas · Tráfego · Conteúdo · Performance</p></div><span style="font-size:13px;font-weight:600;color:#06e006;white-space:nowrap">Ver solução <span>→</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,110px) clamp(16px,5vw,56px);background:#f5f5f5;color:#050505">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(24px,3vw,56px)">
+      <div data-fade="1">
+        <span style="display:inline-flex;margin-bottom:16px;padding:6px 14px;border-radius:999px;background:#e8e8e8;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#0a8c0a">SaaS &amp; Tecnologia</span>
+        <h2 data-reveal="1" style="margin:0;font-weight:600;font-size:clamp(1.45rem,2.4vw,2.1rem);line-height:1.15;letter-spacing:-.025em">Do conceito à interface. Da ideia ao funcionamento.</h2>
+      </div>
+      <div data-fade="1" style="display:flex;flex-direction:column;gap:16px;justify-content:center">
+        <p style="margin:0;font-size:1rem;line-height:1.7;color:#4a4a4a">Quando uma ideia precisa virar produto, sistema ou operação, a Bow entra no desenvolvimento — sites, dashboards, automações e integrações.</p>
+        <a href="{{ waTech }}" target="_blank" rel="noopener" style="align-self:flex-start;display:inline-flex;padding:14px 26px;border-radius:999px;background:#050505;color:#fff;font-size:13.5px;font-weight:600" style-hover="background:#1a1a1a">Criar uma solução</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" style="position:relative;padding:clamp(80px,10vw,140px) clamp(16px,5vw,56px);background:radial-gradient(90% 110% at 0% 0%,#3cf13c 0%,transparent 55%),radial-gradient(80% 90% at 100% 100%,#021a04 0%,transparent 60%),linear-gradient(135deg,#0ba813 0%,#076b10 45%,#03300a 100%);overflow:hidden">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcgrain)" opacity=".6"></rect></svg>
+    <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08;letter-spacing:-.035em;color:#fff">Tem um projeto em mente? Vamos conversar.</h2>
+        <p data-ci="1" style="margin:0;max-width:46ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.65;color:rgba(255,255,255,.92)">Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p>
+      </div>
+      <form data-ci-card="1" onSubmit="{{ onSubmit }}" style="will-change:transform;display:flex;flex-direction:column;gap:22px;padding:clamp(26px,3.4vw,48px);border-radius:26px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)">
+        <div data-ci="1">
+          <h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.4rem,2vw,1.8rem);letter-spacing:-.02em;color:#1a1a1a">Fale com a Bow</h3>
+          <p style="margin:0;font-size:.98rem;color:#777">Preencha e retornamos em até um dia útil.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px">
+          <label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Nome</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Empresa</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">E-mail</span><input type="email" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">WhatsApp</span><input type="tel" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label>
+        </div>
+        <button type="submit" data-ci="1" data-magnetic="1" style="margin-top:8px;padding:17px 28px;border:0;border-radius:12px;background:linear-gradient(90deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;cursor:pointer;transition:filter .2s" style-hover="filter:brightness(1.08)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== CASES ===================== -->
+<sc-if value="{{ isCases }}" hint-placeholder-val="{{ false }}">
+<main style="position:relative;z-index:1;display:block;background:#050505;overflow:clip">
+  <section style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:120px clamp(16px,5vw,56px) 0;overflow:hidden;background:#07100a">
+    <div style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none">
+      <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-weight:800;font-size:clamp(12rem,38vw,34rem);letter-spacing:-.06em;line-height:1;color:#1f6b2a;filter:blur(18px);opacity:.75;white-space:nowrap;animation:bowDrift 14s ease-in-out infinite alternate;will-change:transform;backface-visibility:hidden">bow.</div>
+      <div style="position:absolute;width:38vw;height:38vw;left:8%;top:18%;border-radius:50%;background:radial-gradient(circle,#06e006 0%,transparent 65%);filter:blur(60px);opacity:.35;animation:bowBlobA 18s ease-in-out infinite alternate;will-change:transform;backface-visibility:hidden"></div>
+      <div style="position:absolute;width:30vw;height:30vw;right:6%;bottom:12%;border-radius:50%;background:radial-gradient(circle,#b8ff5c 0%,transparent 65%);filter:blur(70px);opacity:.22;animation:bowBlobB 22s ease-in-out infinite alternate;will-change:transform;backface-visibility:hidden"></div>
+      <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;opacity:.55"><filter id="bowchgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowchgrain)"></rect></svg>
+      <div style="position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 45%,rgba(5,5,5,.15),rgba(5,5,5,.75))"></div>
+    </div>
+    <div style="position:relative;z-index:1;max-width:980px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:24px">
+      <h1 data-split="1" style="margin:0;font-weight:500;font-size:clamp(2.2rem,5.4vw,4.6rem);line-height:1.06;letter-spacing:-.035em;color:#fff">Marcas que transformam presença em resultado.</h1>
+      <p data-fade="1" style="margin:0;font-size:clamp(1rem,1.3vw,1.2rem);line-height:1.6;color:rgba(255,255,255,.75);max-width:44ch">Projetos que nasceram de desafios reais e ganharam forma através de estratégia, criatividade e tecnologia.</p>
+      <a data-fade="1" href="{{ waHref }}" target="_blank" rel="noopener" data-magnetic="1" style="margin-top:6px;display:inline-flex;padding:15px 30px;border-radius:12px;background:linear-gradient(135deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;transition:filter .2s" style-hover="filter:brightness(1.1)">Começar um projeto</a>
+    </div>
+    <div style="position:relative;z-index:1;width:100vw;overflow:hidden;margin-top:clamp(60px,9vh,110px);padding:0 0 clamp(40px,6vh,70px)">
+      <div data-mtrack="1" style="display:flex;width:max-content;will-change:transform">
+        <div style="display:flex;align-items:center;gap:72px;padding-right:72px"><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">ATTUALIZE</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">IOA BLUMENAU</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 03</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 04</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 05</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 06</span></div>
+        <div style="display:flex;align-items:center;gap:72px;padding-right:72px"><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">ATTUALIZE</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">IOA BLUMENAU</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 03</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 04</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 05</span><span style="font-size:1.25rem;font-weight:600;letter-spacing:-.01em;color:rgba(255,255,255,.55);white-space:nowrap">CLIENTE 06</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(56px,7vw,100px) clamp(16px,5vw,56px);background:#f5f5f5">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,1.4vw,22px)">
+        <article onClick="{{ goCase0 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Attualize" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 20% 80%,#06e006 0%,transparent 55%),radial-gradient(90% 80% at 85% 10%,#b8ff5c 0%,transparent 55%),linear-gradient(160deg,#0f7a1a,#043d0a)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcwg0"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcwg0)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Attualize</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Posicionamento e presença que fortalecem a marca</p>
+        </article>
+        <article onClick="{{ goCase1 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="IOA Blumenau" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 80% 85%,#3cf13c 0%,transparent 55%),radial-gradient(80% 70% at 20% 15%,#021a04 0%,transparent 60%),linear-gradient(150deg,#0a5c12,#06a806)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcwg1"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcwg1)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">IOA Blumenau</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Campanhas e conteúdo que aproximam pacientes</p>
+        </article>
+        <article onClick="{{ goCase2 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 03" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(100% 90% at 50% 100%,#06e006 0%,transparent 60%),radial-gradient(90% 70% at 90% 0%,#0b2e0b 0%,transparent 60%),linear-gradient(170deg,#031a03,#0b8a14)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcwg2"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcwg2)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 03</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Uma identidade visual com personalidade própria</p>
+        </article>
+        <article onClick="{{ goCase3 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/33170797/pexels-photo-33170797.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 04" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 10% 20%,#9dff6a 0%,transparent 50%),radial-gradient(100% 90% at 90% 90%,#034d0a 0%,transparent 60%),linear-gradient(140deg,#06c406,#0a3d0a)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcwg3"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcwg3)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 04</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Um site pensado para converter visitas</p>
+        </article>
+        <article onClick="{{ goCase4 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/5647320/pexels-photo-5647320.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 05" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(120% 100% at 85% 80%,#06e006 0%,transparent 55%),radial-gradient(80% 70% at 15% 10%,#0c3b3b 0%,transparent 60%),linear-gradient(160deg,#021a0f,#0b7a2a)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcwg4"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcwg4)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 05</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Sistema sob medida para a operação</p>
+        </article>
+        <article onClick="{{ goCase5 }}" data-work="1" data-fade="1" style="position:relative;isolation:isolate;aspect-ratio:1/1;border-radius:24px;overflow:hidden;background:#111;cursor:pointer">
+          <img data-work-img="1" src="https://images.pexels.com/videos/6615514/pexels-photo-6615514.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1100" alt="Cliente 06" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(10,10,14,.62);pointer-events:none"></div>
+          <div data-work-ov="1" style="position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none">
+            <div style="position:absolute;inset:0;background:radial-gradient(110% 90% at 30% 90%,#3cf13c 0%,transparent 55%),radial-gradient(90% 80% at 80% 15%,#063d06 0%,transparent 60%),linear-gradient(150deg,#0b8a14,#021a04)"></div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcwg5"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcwg5)" opacity=".7"></rect></svg>
+            <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+          </div>
+          <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-weight:700;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;color:#fff">Cliente 06</span>
+          </div>
+          <p style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,32px);z-index:2;margin:0;font-size:clamp(.9rem,1.1vw,1.02rem);line-height:1.45;color:#fff;pointer-events:none">Social media que constrói comunidade</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <section id="contato" style="position:relative;padding:clamp(80px,10vw,140px) clamp(16px,5vw,56px);background:radial-gradient(90% 110% at 0% 0%,#3cf13c 0%,transparent 55%),radial-gradient(80% 90% at 100% 100%,#021a04 0%,transparent 60%),linear-gradient(135deg,#0ba813 0%,#076b10 45%,#03300a 100%);overflow:hidden">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcgrain)" opacity=".6"></rect></svg>
+    <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08;letter-spacing:-.035em;color:#fff">Tem um projeto em mente? Vamos conversar.</h2>
+        <p data-ci="1" style="margin:0;max-width:46ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.65;color:rgba(255,255,255,.92)">Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p>
+      </div>
+      <form data-ci-card="1" onSubmit="{{ onSubmit }}" style="will-change:transform;display:flex;flex-direction:column;gap:22px;padding:clamp(26px,3.4vw,48px);border-radius:26px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)">
+        <div data-ci="1">
+          <h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.4rem,2vw,1.8rem);letter-spacing:-.02em;color:#1a1a1a">Fale com a Bow</h3>
+          <p style="margin:0;font-size:.98rem;color:#777">Preencha e retornamos em até um dia útil.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px">
+          <label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Nome</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Empresa</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">E-mail</span><input type="email" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">WhatsApp</span><input type="tel" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label>
+        </div>
+        <button type="submit" data-ci="1" data-magnetic="1" style="margin-top:8px;padding:17px 28px;border:0;border-radius:12px;background:linear-gradient(90deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;cursor:pointer;transition:filter .2s" style-hover="filter:brightness(1.08)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== CASE ===================== -->
+<sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
+<main style="position:relative;z-index:1;display:block;background:#050505;overflow:clip">
+  <section style="position:relative;min-height:100vh;padding:140px clamp(16px,5vw,56px) clamp(44px,5vw,72px);display:flex;flex-direction:column;justify-content:flex-end;background:#050505;overflow:clip">
+    <div style="position:absolute;inset:0;overflow:hidden"><div data-mouse-par="1" style="position:absolute;inset:0"><div data-hero-bg="1" style="position:absolute;inset:0"><div style="position:absolute;inset:0;background-color:#111;background-size:cover;background-position:center;background-image:{{ cs.bgImg }}"></div></div></div></div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,.25) 40%,rgba(5,5,5,.96) 100%)"></div>
+    <div style="position:relative;max-width:1320px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,30px)">
+      <div data-intro="1" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><button onClick="{{ goCases }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:0;cursor:pointer;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55)" style-hover="color:#fff">← Cases</button><span style="font-size:11px;font-weight:600;letter-spacing:.2em;color:rgba(255,255,255,.35)">{{ cs.n }} / 06</span></div>
+      <h1 style="margin:0;font-weight:500;font-size:clamp(2.8rem,8vw,7.4rem);line-height:.98;letter-spacing:-.05em;color:#fff">{{ cs.name }}<span style="color:#06e006">.</span></h1>
+      <p style="margin:0;font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.55;color:rgba(255,255,255,.75);max-width:48ch">{{ cs.lead }}</p>
+      <div data-intro="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:20px clamp(24px,3vw,48px);padding-top:24px;margin-top:clamp(16px,3vw,40px);border-top:1px solid rgba(255,255,255,.14)">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Cliente</span><span style="font-size:.98rem;color:#fff">{{ cs.name }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Segmento</span><span style="font-size:.98rem;color:#fff">{{ cs.segment }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Serviços</span><span style="font-size:.98rem;color:#fff">{{ cs.services }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Ano</span><span style="font-size:.98rem;color:#fff">{{ cs.year }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(80px,10vw,150px) clamp(16px,5vw,56px);background:#f5f5f5;color:#050505">
+    <div style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(40px,6vw,110px)">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(5,5,5,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>O desafio</span>
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(1.8rem,3.4vw,2.9rem);line-height:1.1;letter-spacing:-.035em">{{ cs.challengeH }}</h2>
+        <p style="margin:0;font-size:1rem;line-height:1.7;color:#5a5a5a;max-width:48ch">{{ cs.challenge }}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(5,5,5,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>A solução</span>
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(1.8rem,3.4vw,2.9rem);line-height:1.1;letter-spacing:-.035em">{{ cs.solutionH }}</h2>
+        <p style="margin:0;font-size:1rem;line-height:1.7;color:#5a5a5a;max-width:48ch">{{ cs.solution }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(80px,10vw,150px) clamp(16px,5vw,56px);background:#050505">
+    <div style="max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(14px,1.6vw,22px)">
+      <div data-scrub-scale="1" style="position:relative;aspect-ratio:16/8;min-height:300px;border-radius:24px;overflow:hidden;background:#111"><div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ cs.img1 }}"></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,1.6vw,22px)">
+        <div data-fade="1" style="position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:#111"><div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ cs.img2 }}"></div></div>
+        <div data-fade="1" style="position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;background:#111;margin-top:clamp(0px,6vw,90px)"><div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ cs.img3 }}"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(70px,9vw,130px) clamp(16px,5vw,56px);background:#050505;border-top:1px solid rgba(255,255,255,.08)">
+    <div style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(36px,5vw,90px)">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>O que entregamos</span>
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(1.8rem,3.4vw,2.9rem);line-height:1.1;letter-spacing:-.035em;color:#fff">{{ cs.resultH }}</h2>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ cs.deliver }}" as="d" hint-placeholder-count="4">
+          <div data-fade="1" style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;padding:clamp(18px,2vw,26px) 0;border-top:1px solid rgba(255,255,255,.1)"><span style="font-size:12px;font-weight:700;color:#06e006;padding-top:.3em">{{ d.n }}</span><span style="font-size:clamp(1.05rem,1.5vw,1.3rem);color:#fff">{{ d.t }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 clamp(16px,5vw,56px) clamp(70px,8vw,120px);background:#050505">
+    <button onClick="{{ cs.goNext }}" style="position:relative;display:block;width:100%;max-width:1320px;margin:0 auto;aspect-ratio:16/6;min-height:260px;border:0;padding:0;border-radius:28px;overflow:hidden;cursor:pointer;background:#111;isolation:isolate;text-align:left">
+      <div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:{{ cs.nextImg }};transition:transform 1.2s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.04)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,5,.9),rgba(5,5,5,.35));pointer-events:none"></div>
+      <div style="position:absolute;left:clamp(24px,4vw,64px);right:clamp(24px,4vw,64px);bottom:clamp(24px,4vw,56px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;pointer-events:none">
+        <div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55)">Próximo case</span><span style="font-weight:500;font-size:clamp(2rem,5vw,4.4rem);line-height:1;letter-spacing:-.045em;color:#fff">{{ cs.nextName }}</span></div>
+        <span style="width:56px;height:56px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg></span>
+      </div>
+    </button>
+  </section>
+
+  <section id="contato" style="position:relative;padding:clamp(80px,10vw,140px) clamp(16px,5vw,56px);background:radial-gradient(90% 110% at 0% 0%,#3cf13c 0%,transparent 55%),radial-gradient(80% 90% at 100% 100%,#021a04 0%,transparent 60%),linear-gradient(135deg,#0ba813 0%,#076b10 45%,#03300a 100%);overflow:hidden">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcgrain)" opacity=".6"></rect></svg>
+    <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08;letter-spacing:-.035em;color:#fff">Tem um projeto em mente? Vamos conversar.</h2>
+        <p data-ci="1" style="margin:0;max-width:46ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.65;color:rgba(255,255,255,.92)">Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p>
+      </div>
+      <form data-ci-card="1" onSubmit="{{ onSubmit }}" style="will-change:transform;display:flex;flex-direction:column;gap:22px;padding:clamp(26px,3.4vw,48px);border-radius:26px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)">
+        <div data-ci="1">
+          <h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.4rem,2vw,1.8rem);letter-spacing:-.02em;color:#1a1a1a">Fale com a Bow</h3>
+          <p style="margin:0;font-size:.98rem;color:#777">Preencha e retornamos em até um dia útil.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px">
+          <label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Nome</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Empresa</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">E-mail</span><input type="email" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">WhatsApp</span><input type="tel" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label>
+        </div>
+        <button type="submit" data-ci="1" data-magnetic="1" style="margin-top:8px;padding:17px 28px;border:0;border-radius:12px;background:linear-gradient(90deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;cursor:pointer;transition:filter .2s" style-hover="filter:brightness(1.08)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== SERVIÇO ===================== -->
+<sc-if value="{{ isServico }}" hint-placeholder-val="{{ false }}">
+<main style="position:relative;z-index:1;display:block;background:#050505;overflow:clip">
+  <section style="position:relative;min-height:100vh;padding:140px clamp(16px,5vw,56px) clamp(44px,5vw,72px);display:flex;flex-direction:column;justify-content:flex-end;background:#050505;overflow:clip">
+    <div style="position:absolute;inset:0;overflow:hidden"><div data-mouse-par="1" style="position:absolute;inset:0"><div data-hero-bg="1" style="position:absolute;inset:0"><div style="position:absolute;inset:0;background-color:#111;background-size:cover;background-position:center;background-image:{{ sv.bgImg }}"></div></div></div></div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(5,5,5,.95) 0%,rgba(5,5,5,.8) 45%,rgba(5,5,5,.35) 100%),linear-gradient(180deg,rgba(5,5,5,.4),rgba(5,5,5,0) 30%,rgba(5,5,5,.95))"></div>
+    <div style="position:relative;max-width:1320px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,30px)">
+      <div data-intro="1" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>Soluções</span><span style="font-size:11px;font-weight:600;letter-spacing:.2em;color:rgba(255,255,255,.35)">{{ sv.n }} / 05</span></div>
+      <p data-intro="1" style="margin:0;font-size:clamp(1rem,1.3vw,1.15rem);font-weight:600;color:#06e006">{{ sv.title }}</p>
+      <h1 style="margin:0;font-weight:500;font-size:clamp(2.4rem,6vw,5.6rem);line-height:1.02;letter-spacing:-.045em;color:#fff;max-width:14ch">{{ sv.headline }}</h1>
+      <p style="margin:0;font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.6;color:rgba(255,255,255,.7);max-width:52ch">{{ sv.intro }}</p>
+      <div data-intro="1" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">
+        <a href="{{ sv.wa }}" target="_blank" rel="noopener" data-magnetic="1" style="display:inline-flex;align-items:center;gap:10px;padding:16px 28px;border-radius:999px;background:linear-gradient(135deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600">Quero começar <span>→</span></a>
+        <button onClick="{{ goCases }}" style="padding:16px 26px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;font-size:15px;font-weight:500;cursor:pointer;transition:background .3s,color .3s" style-hover="background:#fff;color:#050505">Ver cases</button>
+      </div>
+      <div data-intro="1" style="display:flex;flex-wrap:wrap;gap:8px 22px;padding-top:22px;margin-top:clamp(16px,3vw,40px);border-top:1px solid rgba(255,255,255,.12)">
+        <sc-for list="{{ sv.tags }}" as="t" hint-placeholder-count="5"><span style="font-size:13px;color:rgba(255,255,255,.55)">{{ t }}</span></sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(80px,10vw,150px) clamp(16px,5vw,56px);background:#f5f5f5;color:#050505">
+    <div style="max-width:1320px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(40px,5vw,70px)">
+        <div style="display:flex;flex-direction:column;gap:18px"><span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(5,5,5,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>O que entregamos</span><h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(1.9rem,4vw,3.4rem);line-height:1.06;letter-spacing:-.04em">O que está incluído.</h2></div>
+        <p style="margin:0;font-size:1rem;line-height:1.65;color:#5a5a5a;max-width:40ch">{{ sv.deliverIntro }}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 clamp(28px,4vw,72px)">
+        <sc-for list="{{ sv.items }}" as="it" hint-placeholder-count="5">
+          <div data-fade="1" style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:6px 16px;padding:clamp(22px,2.6vw,32px) 0;border-top:1px solid rgba(5,5,5,.12)">
+            <span style="padding-top:.35em;font-size:12px;font-weight:700;color:#0a8c0a">{{ it.n }}</span>
+            <div><h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.2rem,1.8vw,1.5rem);letter-spacing:-.02em">{{ it.t }}</h3><p style="margin:0;font-size:.97rem;line-height:1.65;color:#5a5a5a">{{ it.d }}</p></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(80px,10vw,150px) clamp(16px,5vw,56px);background:#050505">
+    <div style="max-width:1320px;margin:0 auto">
+      <div style="display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(40px,5vw,70px)"><span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>Como funciona</span><h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(1.9rem,4vw,3.4rem);line-height:1.06;letter-spacing:-.04em;color:#fff">Do primeiro passo ao resultado.</h2></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(24px,3vw,40px)">
+        <sc-for list="{{ sv.steps }}" as="st" hint-placeholder-count="4">
+          <div data-fade="1" style="display:flex;flex-direction:column;gap:14px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14)">
+            <span style="display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.1em;color:#06e006"><span style="width:8px;height:8px;border-radius:50%;background:#06e006"></span>{{ st.n }}</span>
+            <h3 style="margin:0;font-weight:500;font-size:1.3rem;letter-spacing:-.02em;color:#fff">{{ st.t }}</h3>
+            <p style="margin:0;font-size:.95rem;line-height:1.65;color:rgba(255,255,255,.6)">{{ st.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 clamp(16px,5vw,56px) clamp(80px,10vw,150px);background:#050505">
+    <div data-scrub-scale="1" style="position:relative;max-width:1320px;margin:0 auto;aspect-ratio:16/8;min-height:320px;border-radius:28px;overflow:hidden;isolation:isolate">
+      <div style="position:absolute;inset:0;background-color:#111;background-size:cover;background-position:center;background-image:{{ sv.bgImg2 }}"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.15),rgba(5,5,5,.85))"></div>
+      <p style="position:absolute;left:clamp(24px,4vw,64px);right:clamp(24px,4vw,64px);bottom:clamp(24px,4vw,56px);margin:0;font-weight:500;font-size:clamp(1.6rem,3.6vw,3.2rem);line-height:1.1;letter-spacing:-.035em;color:#fff;max-width:20ch">{{ sv.statement }}</p>
+    </div>
+  </section>
+
+  <section style="padding:clamp(70px,8vw,120px) clamp(16px,5vw,56px);background:#0a0a0a;border-top:1px solid rgba(255,255,255,.06)">
+    <div style="max-width:1320px;margin:0 auto">
+      <div style="margin-bottom:clamp(28px,3vw,44px)"><span style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>Outras soluções</span></div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ svOthers }}" as="o" hint-placeholder-count="4">
+          <button onClick="{{ o.go }}" style="display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;padding:clamp(20px,2.4vw,30px) 0;background:none;border:0;border-top:1px solid rgba(255,255,255,.1);color:#fff;cursor:pointer;text-align:left;transition:padding .45s cubic-bezier(.2,.7,.2,1),color .3s" style-hover="padding-left:14px;color:#06e006">
+            <span style="display:flex;align-items:baseline;gap:20px"><span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.4)">{{ o.n }}</span><span style="font-weight:500;font-size:clamp(1.5rem,3.4vw,2.8rem);letter-spacing:-.035em">{{ o.t }}</span></span>
+            <span style="font-size:1.4rem">→</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" style="position:relative;padding:clamp(80px,10vw,140px) clamp(16px,5vw,56px);background:radial-gradient(90% 110% at 0% 0%,#3cf13c 0%,transparent 55%),radial-gradient(80% 90% at 100% 100%,#021a04 0%,transparent 60%),linear-gradient(135deg,#0ba813 0%,#076b10 45%,#03300a 100%);overflow:hidden">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcgrain)" opacity=".6"></rect></svg>
+    <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08;letter-spacing:-.035em;color:#fff">Tem um projeto em mente? Vamos conversar.</h2>
+        <p data-ci="1" style="margin:0;max-width:46ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.65;color:rgba(255,255,255,.92)">Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p>
+      </div>
+      <form data-ci-card="1" onSubmit="{{ onSubmit }}" style="will-change:transform;display:flex;flex-direction:column;gap:22px;padding:clamp(26px,3.4vw,48px);border-radius:26px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)">
+        <div data-ci="1">
+          <h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.4rem,2vw,1.8rem);letter-spacing:-.02em;color:#1a1a1a">Fale com a Bow</h3>
+          <p style="margin:0;font-size:.98rem;color:#777">Preencha e retornamos em até um dia útil.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px">
+          <label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Nome</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Empresa</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">E-mail</span><input type="email" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">WhatsApp</span><input type="tel" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label>
+        </div>
+        <button type="submit" data-ci="1" data-magnetic="1" style="margin-top:8px;padding:17px 28px;border:0;border-radius:12px;background:linear-gradient(90deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;cursor:pointer;transition:filter .2s" style-hover="filter:brightness(1.08)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<!-- ===================== SOBRE ===================== -->
+<sc-if value="{{ isSobre }}" hint-placeholder-val="{{ false }}">
+<main style="position:relative;z-index:1;display:block;background:#050505;overflow:clip">
+  <section style="position:relative;min-height:100vh;padding:140px clamp(16px,5vw,56px) clamp(40px,5vw,72px);display:flex;flex-direction:column;justify-content:space-between;gap:48px;background:#050505;overflow:clip">
+    <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:25% 100%"></div>
+    <div style="position:relative;max-width:1320px;width:100%;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <span data-sb-stag="1" style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>Sobre a Bow</span>
+      <span data-sb-stag="1" style="font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45)">Design · Estratégia · Tecnologia</span>
+    </div>
+    <div style="position:relative;max-width:1320px;width:100%;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-end;gap:clamp(32px,5vw,80px)">
+      <h1 style="flex:1 1 620px;min-width:0;margin:0;font-weight:500;font-size:clamp(2.6rem,6.2vw,6rem);line-height:1.02;letter-spacing:-.045em;color:#fff">
+        <span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-sb-line="1" style="display:block">Não somos só</span></span><span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-sb-line="1" style="display:block">uma agência. Somos</span></span><span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-sb-line="1" style="display:block">parte do que faz sua</span></span><span style="display:block;overflow:hidden;padding-bottom:.08em"><span data-sb-line="1" style="display:block">marca <span style="color:#06e006">acontecer.</span></span></span>
+      </h1>
+      <div data-sb-hero-img="1" style="flex:0 1 320px;position:relative;aspect-ratio:3/4;border-radius:18px;overflow:hidden;clip-path:inset(0% 0% 0% 0%)">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Time Bow" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+    </div>
+    <div style="position:relative;max-width:1320px;width:100%;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
+      <p data-sb-stag="1" style="margin:0;font-size:1rem;line-height:1.6;color:rgba(255,255,255,.6);max-width:44ch">Uma agência para quem acredita que comunicação não precisa ser igual a todo mundo.</p>
+      <span data-sb-stag="1" style="font-size:12px;color:rgba(255,255,255,.4)">Role para conhecer ↓</span>
+    </div>
+  </section>
+
+  <section style="position:relative;padding:clamp(90px,12vw,180px) clamp(16px,5vw,56px);background:#050505">
+    <div style="max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(40px,7vw,120px);align-items:flex-start">
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:clamp(28px,3vw,44px);padding-top:clamp(0px,6vw,90px)">
+        <span data-sb-stag="1" style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>(01) Quem é a Bow</span>
+        <h2 data-sb-rev="1" style="margin:0;font-weight:500;font-size:clamp(1.8rem,3.4vw,3rem);line-height:1.14;letter-spacing:-.03em;color:#fff"><span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-sb-rline="1" style="display:block">Somos estrategistas, designers,</span></span><span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-sb-rline="1" style="display:block">criativos e desenvolvedores</span></span><span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-sb-rline="1" style="display:block">trabalhando juntos para transformar</span></span><span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-sb-rline="1" style="display:block;color:rgba(255,255,255,.45)">negócios através do digital.</span></span></h2>
+        <div data-sb-fadeup="1" style="display:flex;flex-wrap:wrap;gap:24px 48px;max-width:720px">
+          <p style="margin:0;flex:1 1 260px;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.62)">Não seguimos fórmulas prontas. Observamos, pensamos, criamos, testamos e construímos.</p>
+          <p style="margin:0;flex:1 1 260px;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.62)">Porque cada negócio tem uma história diferente, e cada marca merece uma forma própria de contá-la.</p>
+        </div>
+      </div>
+      <div style="flex:0 1 440px;position:relative;min-width:260px">
+        <div data-sb-par="0.06" style="position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden">
+          <div data-sb-scale="1" style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Bastidores" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        </div>
+        <div data-sb-par="0.2" style="position:absolute;left:-18%;bottom:-12%;width:46%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;border:6px solid #050505"><img src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Detalhe" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;height:clamp(1500px,200vh,2100px);background:#050505;overflow:clip">
+    <div style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none;padding:0 clamp(16px,5vw,56px)">
+      <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px">
+        <span data-sb-stag="1" style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>(02) Nosso universo</span>
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,5vw,4.4rem);line-height:1.04;letter-spacing:-.04em;color:#fff">Design, campanhas,<br>sites e tecnologia.</h2>
+      </div>
+    </div>
+    <div data-sb-par="0.14" style="will-change:transform;position:absolute;left:4%;top:5%;width:clamp(150px,22vw,360px);z-index:1">
+      <div data-sb-clip="1" style="position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Branding" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Branding</span>
+    </div>
+    <div data-sb-par="0.3" style="will-change:transform;position:absolute;right:6%;top:3%;width:clamp(120px,15vw,250px);z-index:1">
+      <div style="position:relative;aspect-ratio:1/1;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/33170797/pexels-photo-33170797.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Campanhas" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Campanhas</span>
+    </div>
+    <div data-sb-par="0.08" style="will-change:transform;position:absolute;left:30%;top:36%;width:clamp(110px,13vw,210px);z-index:1">
+      <div style="position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/5647320/pexels-photo-5647320.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Tecnologia" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Tecnologia</span>
+    </div>
+    <div data-sb-par="0.1" style="will-change:transform;position:absolute;right:3%;top:34%;width:clamp(170px,26vw,420px);z-index:1">
+      <div data-sb-clip="1" style="position:relative;aspect-ratio:16/11;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/6615514/pexels-photo-6615514.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Websites" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Websites</span>
+    </div>
+    <div data-sb-par="0.24" style="will-change:transform;position:absolute;left:7%;top:62%;width:clamp(130px,18vw,290px);z-index:1">
+      <div style="position:relative;aspect-ratio:1/1;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/27980029/pexels-photo-27980029.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Bastidores" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Bastidores</span>
+    </div>
+    <div data-sb-par="0.16" style="will-change:transform;position:absolute;right:22%;top:70%;width:clamp(140px,19vw,310px);z-index:1">
+      <div data-sb-clip="1" style="position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Design" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Design</span>
+    </div>
+    <div data-sb-par="0.34" style="will-change:transform;position:absolute;left:46%;top:86%;width:clamp(100px,11vw,190px);z-index:1">
+      <div style="position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden">
+        <div style="position:absolute;inset:0"><img src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" alt="Social" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+      <span style="display:block;margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)">Social</span>
+    </div>
+  </section>
+
+  <section style="padding:clamp(100px,14vw,200px) clamp(16px,5vw,56px);background:#f5f5f5;color:#050505">
+    <div style="max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3vw,44px)">
+      <span data-sb-stag="1" style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(5,5,5,.5)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>(03) Nossa visão</span>
+      <h2 data-sb-words="1" style="margin:0;font-weight:500;font-size:clamp(2.6rem,7.4vw,7rem);line-height:1;letter-spacing:-.05em;color:#050505"><span data-sb-wline="1" style="display:block">Design não é decoração.</span><span data-sb-wline="1" style="display:block">É percepção.</span></h2>
+      <div style="display:flex;justify-content:flex-end;margin-top:clamp(20px,4vw,60px)">
+        <div data-sb-fadeup="1" style="max-width:46ch;display:flex;flex-direction:column;gap:18px">
+          <p style="margin:0;font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.55;color:#050505">Antes do post, existe uma estratégia. Antes do site, uma experiência. Antes da campanha, um objetivo.</p>
+          <p style="margin:0;font-size:1rem;line-height:1.7;color:#5a5a5a">Por isso design, marketing e tecnologia fazem parte do mesmo pensamento na Bow. A estética chama atenção, a estratégia dá sentido e a tecnologia faz tudo isso ganhar escala.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;padding:clamp(90px,12vw,170px) clamp(16px,5vw,56px);background:#0a0a0a;border-top:1px solid rgba(255,255,255,.06)">
+    <div style="max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,100px);align-items:flex-start">
+      <div style="flex:1 1 560px;min-width:0">
+        <span data-sb-stag="1" style="display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45)"><span style="width:6px;height:6px;border-radius:50%;background:#06e006"></span>(04) No que acreditamos</span>
+        <div onMouseLeave="{{ sbLeave }}" style="margin-top:36px;border-top:1px solid rgba(255,255,255,.1)">
+          <sc-for list="{{ principles }}" as="p" hint-placeholder-count="5">
+            <div onMouseEnter="{{ p.enter }}" style="display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px 20px;padding:clamp(22px,2.6vw,34px) 0;border-bottom:1px solid rgba(255,255,255,.1);opacity:{{ p.op }};transition:opacity .45s cubic-bezier(.2,.7,.2,1)">
+              <span style="padding-top:1.1em;font-size:13px;font-weight:600;color:{{ p.numColor }};transition:color .3s">{{ p.n }}</span>
+              <div style="transform:{{ p.tx }};transition:transform .55s cubic-bezier(.2,.7,.2,1)">
+                <div style="display:flex;align-items:center;gap:14px"><span style="flex:none;display:block;height:2px;width:{{ p.dash }};background:#06e006;transition:width .45s cubic-bezier(.2,.7,.2,1)"></span><h3 style="margin:0;font-weight:500;font-size:clamp(1.8rem,4vw,3.4rem);line-height:1.05;letter-spacing:-.035em;color:#fff">{{ p.t }}</h3></div>
+                <p style="margin:10px 0 0;font-size:1rem;line-height:1.6;color:rgba(255,255,255,.6);max-width:40ch">{{ p.d }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:0 1 380px;min-width:240px;position:sticky;top:120px">
+        <div style="position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#111">
+          <sc-for list="{{ principleImgs }}" as="im" hint-placeholder-count="5">
+            <div style="position:absolute;inset:0;opacity:{{ im.op }};transform:{{ im.sc }};transition:opacity .6s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)"><div style="position:absolute;inset:0;background-color:#111;background-size:cover;background-position:center;background-image:{{ im.bg }}"></div></div>
+          </sc-for>
+          <span style="position:absolute;left:18px;bottom:16px;z-index:2;padding:6px 12px;border-radius:999px;background:rgba(5,5,5,.7);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff">{{ activeP }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;padding:clamp(110px,16vw,220px) clamp(16px,5vw,56px);background:#050505;overflow:clip">
+    <div data-sb-cta="1" style="max-width:1320px;margin:0 auto;transform-origin:50% 100%">
+      <h2 data-sb-rev="1" style="margin:0;font-weight:500;font-size:clamp(3rem,9vw,8.6rem);line-height:.98;letter-spacing:-.055em;color:#fff"><span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-sb-rline="1" style="display:block">Tem uma ideia?</span></span><span style="display:block;overflow:hidden;padding-bottom:.06em"><span data-sb-rline="1" style="display:block;color:rgba(255,255,255,.4)">Vamos fazer acontecer.</span></span></h2>
+      <div data-sb-fadeup="1" style="margin-top:clamp(36px,5vw,64px);padding-top:28px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+        <p style="margin:0;font-size:1rem;line-height:1.6;color:rgba(255,255,255,.6);max-width:40ch">Conte o que você está construindo. A gente começa pela conversa.</p>
+        <a href="{{ waHref }}" target="_blank" rel="noopener" data-magnetic="1" style="display:inline-flex;align-items:center;gap:12px;padding:18px 32px;border-radius:999px;background:#fff;color:#050505;font-size:16px;font-weight:600;transition:background .3s,color .3s,transform .3s" style-hover="background:#06e006;color:#031a03;transform:translateY(-2px)">Ser cliente Bow <span>→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" style="position:relative;padding:clamp(80px,10vw,140px) clamp(16px,5vw,56px);background:radial-gradient(90% 110% at 0% 0%,#3cf13c 0%,transparent 55%),radial-gradient(80% 90% at 100% 100%,#021a04 0%,transparent 60%),linear-gradient(135deg,#0ba813 0%,#076b10 45%,#03300a 100%);overflow:hidden">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none"><filter id="bowcgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowcgrain)" opacity=".6"></rect></svg>
+    <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,40px)">
+        <h2 data-reveal="1" style="margin:0;font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08;letter-spacing:-.035em;color:#fff">Tem um projeto em mente? Vamos conversar.</h2>
+        <p data-ci="1" style="margin:0;max-width:46ch;font-size:clamp(1rem,1.2vw,1.1rem);line-height:1.65;color:rgba(255,255,255,.92)">Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p>
+      </div>
+      <form data-ci-card="1" onSubmit="{{ onSubmit }}" style="will-change:transform;display:flex;flex-direction:column;gap:22px;padding:clamp(26px,3.4vw,48px);border-radius:26px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.18)">
+        <div data-ci="1">
+          <h3 style="margin:0 0 8px;font-weight:500;font-size:clamp(1.4rem,2vw,1.8rem);letter-spacing:-.02em;color:#1a1a1a">Fale com a Bow</h3>
+          <p style="margin:0;font-size:.98rem;color:#777">Preencha e retornamos em até um dia útil.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px">
+          <label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Nome</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">Empresa</span><input type="text" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">E-mail</span><input type="email" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label><label data-ci="1" style="display:flex;flex-direction:column;gap:9px"><span style="font-size:14px;font-weight:500;color:#1a1a1a">WhatsApp</span><input type="tel" style="background:#f3f3f2;color:#050505;border:1px solid #dcdcdc;border-radius:12px;padding:15px 16px;font-size:15px;outline:none"></label>
+        </div>
+        <button type="submit" data-ci="1" data-magnetic="1" style="margin-top:8px;padding:17px 28px;border:0;border-radius:12px;background:linear-gradient(90deg,#06e006,#049604);color:#031a03;font-size:15px;font-weight:600;cursor:pointer;transition:filter .2s" style-hover="filter:brightness(1.08)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<footer ref="{{ footRef }}" style="position:relative;z-index:0;background:#050505;overflow:hidden">
+  <svg style="position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:overlay;pointer-events:none;opacity:.5"><filter id="bowfgrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#bowfgrain)"></rect></svg>
+  <div data-footin="1" style="position:relative;max-width:1240px;margin:0 auto;padding:clamp(80px,9vw,120px) clamp(16px,5vw,56px) 32px">
+    <img data-fi="1" src="assets/logo-bow-white.svg" alt="bow." style="display:block;height:24px;margin-bottom:clamp(40px,5vw,64px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:36px clamp(24px,3vw,56px)">
+      <div data-fi="1" style="display:flex;flex-direction:column;gap:14px">
+        <p style="margin:0 0 6px;font-size:.98rem;font-weight:600;color:#fff">Soluções</p>
+        <button onClick="{{ goSvc0 }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Social Media</button><button onClick="{{ goSvc1 }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Identidade Visual</button><button onClick="{{ goSvc2 }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Sites</button><button onClick="{{ goSvc3 }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">SaaS &amp; Tecnologia</button><button onClick="{{ goSvc3 }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Sistemas</button><button onClick="{{ goSvc4 }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Marketing</button>
+      </div>
+      <div data-fi="1" style="display:flex;flex-direction:column;gap:14px">
+        <p style="margin:0 0 6px;font-size:.98rem;font-weight:600;color:#fff">Bow</p>
+        <button onClick="{{ goHome }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Home</button><button onClick="{{ goSolucoes }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Soluções</button><button onClick="{{ goCases }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Cases</button><button onClick="{{ goSobre }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-size:.93rem;color:rgba(255,255,255,.62);transition:color .2s" style-hover="color:#06e006">Sobre</button>
+      </div>
+      <div data-fi="1" style="display:flex;flex-direction:column;gap:14px">
+        <p style="margin:0 0 6px;font-size:.98rem;font-weight:600;color:#fff">Redes sociais</p>
+        <div style="display:flex;gap:10px">
+          <a href="https://instagram.com/agencia.bow" target="_blank" rel="noopener" style="width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s" style-hover="border-color:#06e006;background:rgba(6,224,6,.08)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM17 7h.01"></path></svg></a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener" style="width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s" style-hover="border-color:#06e006;background:rgba(6,224,6,.08)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM8 10v6M8 7.5v.01M12 16v-6M12 13a2.5 2.5 0 0 1 5 0v3"></path></svg></a>
+          <a href="{{ waHref }}" target="_blank" rel="noopener" style="width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s" style-hover="border-color:#06e006;background:rgba(6,224,6,.08)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>
+        </div>
+      </div>
+      <div data-fi="1" style="display:flex;flex-direction:column;gap:14px">
+        <p style="margin:0 0 6px;font-size:.98rem;font-weight:600;color:#fff">Fale conosco</p>
+        <a href="{{ waHref }}" target="_blank" rel="noopener" style="font-size:.93rem;color:rgba(255,255,255,.62)" style-hover="color:#06e006">+55 51 98937-3400</a>
+        <a href="mailto:bowagencydesign@gmail.com" style="font-size:.93rem;color:rgba(255,255,255,.62)" style-hover="color:#06e006">bowagencydesign@gmail.com</a>
+        <a href="https://instagram.com/agencia.bow" target="_blank" rel="noopener" style="font-size:.93rem;color:rgba(255,255,255,.62)" style-hover="color:#06e006">@agencia.bow</a>
+        <a href="{{ waOrcamento }}" target="_blank" rel="noopener" data-magnetic="1" style="margin-top:6px;align-self:flex-start;padding:11px 20px;border-radius:999px;background:linear-gradient(135deg,#06e006,#049604);color:#031a03;font-size:13px;font-weight:600" style-hover="filter:brightness(1.1)">Pedir orçamento</a>
+      </div>
+    </div>
+    <div data-fi="1" style="margin-top:clamp(48px,6vw,80px);padding-top:28px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-wrap:wrap;align-items:center;gap:20px clamp(24px,3vw,48px)">
+            <p style="margin:0;font-size:.85rem;line-height:1.6;color:rgba(255,255,255,.45);max-width:52ch">Estratégia, criatividade e tecnologia para marcas que querem ir além do óbvio.</p>
+    </div>
+    <div data-fi="1" style="margin-top:22px;display:flex;flex-wrap:wrap;gap:10px 24px">
+      <p style="margin:0;font-size:.8rem;color:rgba(255,255,255,.35)">© 2026 Bow Agência. Todos os direitos reservados.</p>
+      <a href="#privacidade" style="font-size:.8rem;color:rgba(255,255,255,.55)" style-hover="color:#06e006">Política de privacidade</a>
+      <a href="#termos" style="font-size:.8rem;color:rgba(255,255,255,.55)" style-hover="color:#06e006">Termos</a>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const CASES = [
+  { name: "Attualize", segment: "Esquadrias de alumínio", services: "Posicionamento, Social Media", year: "2025", imgs: [6615058, 6803583, 5717294, 33170797],
+    lead: "Posicionamento e presença que fortalecem a marca.",
+    challengeH: "Uma marca forte no mercado, pouco percebida no digital.", challenge: "A Attualize tinha qualidade e reputação, mas a comunicação online não refletia o nível do trabalho entregue nas obras.",
+    solutionH: "Uma linguagem visual à altura do produto.", solution: "Redefinimos o posicionamento, criamos uma direção visual consistente e estruturamos um calendário de conteúdo focado em projetos reais.",
+    resultH: "Uma presença que representa a empresa.", deliver: ["Posicionamento de marca", "Direção visual para redes", "Planejamento e produção de conteúdo", "Gestão de Social Media"] },
+  { name: "IOA Blumenau", segment: "Saúde", services: "Estratégia, Campanhas", year: "2025", imgs: [6803583, 6615514, 5647320, 6615058],
+    lead: "Estratégia e campanhas para aproximar a clínica de novos pacientes.",
+    challengeH: "Muita informação técnica, pouca conexão.", challenge: "A comunicação era correta, mas distante. Faltava traduzir a especialidade da clínica em algo próximo do paciente.",
+    solutionH: "Conteúdo que educa e aproxima.", solution: "Criamos uma estratégia de conteúdo educativo e campanhas segmentadas, com uma identidade de comunicação mais humana.",
+    resultH: "Uma comunicação mais próxima de quem importa.", deliver: ["Estratégia de comunicação", "Campanhas de mídia paga", "Conteúdo educativo", "Gestão de Social Media"] },
+  { name: "Cliente 03", segment: "Varejo", services: "Identidade Visual", year: "2025", imgs: [5717294, 33170797, 6615058, 5647320],
+    lead: "Uma identidade visual construída para ser reconhecida.",
+    challengeH: "Uma marca sem unidade.", challenge: "Cada ponto de contato comunicava de um jeito diferente, e a marca não era lembrada.",
+    solutionH: "Um sistema visual completo.", solution: "Desenvolvemos logo, paleta, tipografia e aplicações, criando um sistema coerente do digital ao físico.",
+    resultH: "Uma marca coerente em cada ponto de contato.", deliver: ["Estratégia de marca", "Logo e identidade visual", "Manual de marca", "Aplicações"] },
+  { name: "Cliente 04", segment: "Serviços", services: "Site, UX/UI", year: "2025", imgs: [33170797, 5647320, 6803583, 6615514],
+    lead: "Um site que apresenta, convence e gera oportunidades.",
+    challengeH: "Um site que não acompanhava a empresa.", challenge: "O site antigo era lento, difícil de navegar e não gerava contatos.",
+    solutionH: "Experiência pensada para conversão.", solution: "Redesenhamos a arquitetura, a interface e o conteúdo, com foco em clareza e velocidade.",
+    resultH: "Um site à altura do negócio.", deliver: ["Arquitetura de informação", "UX/UI design", "Desenvolvimento", "Otimização de performance"] },
+  { name: "Cliente 05", segment: "Indústria", services: "Sistema sob medida", year: "2026", imgs: [5647320, 6615514, 33170797, 5717294],
+    lead: "Um sistema sob medida para organizar a operação.",
+    challengeH: "Processos espalhados em planilhas.", challenge: "Pedidos, produção e entregas eram controlados manualmente, com retrabalho e pouca visibilidade.",
+    solutionH: "Tudo em um só lugar.", solution: "Criamos um sistema que acompanha o pedido do início à entrega, com dashboards e automações.",
+    resultH: "Uma operação mais simples de acompanhar.", deliver: ["Mapeamento de processos", "Sistema web sob medida", "Dashboards", "Automações"] },
+  { name: "Cliente 06", segment: "Educação", services: "Marketing, Tráfego", year: "2026", imgs: [6615514, 5717294, 6615058, 6803583],
+    lead: "Marketing e tráfego para colocar a marca em movimento.",
+    challengeH: "Investimento em anúncios sem direção.", challenge: "As campanhas rodavam sem estratégia clara e sem acompanhamento de resultado.",
+    solutionH: "Canais conectados a um objetivo.", solution: "Estruturamos funil, campanhas e acompanhamento contínuo, conectando conteúdo e mídia paga.",
+    resultH: "Campanhas com direção e acompanhamento.", deliver: ["Planejamento de marketing", "Gestão de tráfego pago", "Criativos para campanhas", "Relatórios mensais"] },
+];
+const SVC_PAGES = [
+  { title: "Social Media", headline: "Conteúdo que constrói presença.", intro: "Planejamos, criamos e gerenciamos conteúdos que transformam suas redes sociais em uma extensão real da sua marca.",
+    tags: ["Planejamento", "Conteúdo", "Design", "Reels", "Gestão"], img: 6615514, img2: 6803583,
+    deliverIntro: "Tudo o que sua marca precisa para aparecer com consistência, do planejamento à análise.",
+    items: [["Planejamento editorial", "Linha editorial, pilares de conteúdo e calendário mensal alinhados ao seu objetivo."], ["Conteúdo e design", "Posts, carrosséis e stories com a identidade da sua marca."], ["Reels e vídeos curtos", "Roteiros e edição pensados para alcance e retenção."], ["Gestão e publicação", "Agendamento, publicação e acompanhamento das redes."], ["Relatórios", "Leitura dos resultados e ajustes para o mês seguinte."]],
+    steps: [["Diagnóstico", "Entendemos seu público, suas redes e seus concorrentes."], ["Linha editorial", "Definimos pilares, tom de voz e cadência."], ["Produção", "Criamos, revisamos e aprovamos com você."], ["Publicação e análise", "Publicamos, medimos e ajustamos a rota."]],
+    statement: "Presença não é postar todo dia. É ser lembrado." },
+  { title: "Identidade Visual", headline: "Marcas com presença antes mesmo de falar.", intro: "Criamos identidades visuais que traduzem posicionamento, personalidade e valor em cada ponto de contato.",
+    tags: ["Estratégia", "Logo", "Identidade", "Direção visual", "Aplicações"], img: 5717294, img2: 27980029,
+    deliverIntro: "Um sistema visual completo, pronto para ser usado com coerência em qualquer canal.",
+    items: [["Estratégia de marca", "Posicionamento, personalidade e atributos que guiam o design."], ["Logo e símbolo", "Uma assinatura única, pensada para funcionar em qualquer tamanho."], ["Cores e tipografia", "Paleta e famílias tipográficas que dão consistência à marca."], ["Manual de marca", "Regras claras de uso para o seu time e seus parceiros."], ["Aplicações", "Papelaria, redes sociais, embalagens e peças do dia a dia."]],
+    steps: [["Imersão", "Conhecemos sua história, seu mercado e seu público."], ["Conceito", "Definimos a ideia central que a marca vai comunicar."], ["Design", "Desenvolvemos e refinamos o sistema visual."], ["Entrega", "Manual e arquivos prontos para uso."]],
+    statement: "Estética chama atenção. Estratégia dá sentido." },
+  { title: "Sites", headline: "Experiências digitais que geram oportunidades.", intro: "Criamos sites que combinam estratégia, design e tecnologia para apresentar sua empresa, fortalecer sua marca e transformar visitas em oportunidades.",
+    tags: ["UX/UI", "Design", "Desenvolvimento", "Landing pages", "Performance"], img: 33170797, img2: 6615514,
+    deliverIntro: "Do planejamento da navegação ao site no ar, rápido e fácil de atualizar.",
+    items: [["UX e arquitetura", "Estrutura de páginas e jornada pensadas para converter."], ["UI design", "Interfaces com a cara da sua marca, em todas as telas."], ["Desenvolvimento", "Sites rápidos, responsivos e fáceis de gerenciar."], ["Landing pages", "Páginas focadas em campanhas e captação."], ["Performance", "Velocidade, SEO técnico e métricas configuradas."]],
+    steps: [["Briefing", "Objetivos, público e conteúdo do site."], ["Wireframe", "Estrutura e hierarquia de cada página."], ["Design", "Layout final com a identidade da marca."], ["Desenvolvimento", "Programação, testes e lançamento."]],
+    statement: "Seu site é a primeira impressão. Faça valer." },
+  { title: "SaaS & Tecnologia", headline: "Ideias que viram produtos.", intro: "Transformamos processos, problemas e oportunidades em ferramentas digitais feitas para simplificar operações e criar novas possibilidades.",
+    tags: ["SaaS", "Sistemas", "Dashboards", "Automações", "Integrações"], img: 5647320, img2: 33170797,
+    deliverIntro: "Tecnologia sob medida para a sua operação, do conceito ao produto funcionando.",
+    items: [["SaaS", "Produtos digitais prontos para escalar e gerar receita recorrente."], ["Sistemas sob medida", "Ferramentas internas feitas para o jeito que sua empresa trabalha."], ["Dashboards", "Indicadores do negócio reunidos em um só painel."], ["Automações", "Tarefas repetitivas rodando sozinhas, sem retrabalho."], ["Integrações", "CRM, planilhas, pagamentos e canais conversando entre si."]],
+    steps: [["Descoberta", "Mapeamos o processo e o problema a resolver."], ["Protótipo", "Validamos a solução antes de desenvolver."], ["Desenvolvimento", "Construímos em etapas, com entregas frequentes."], ["Evolução", "Acompanhamos o uso e melhoramos continuamente."]],
+    statement: "Do conceito à interface. Da ideia ao funcionamento." },
+  { title: "Marketing", headline: "Estratégia para colocar sua marca em movimento.", intro: "Conectamos diferentes canais, ideias e ações para construir presença, gerar demanda e aproximar sua marca das pessoas certas.",
+    tags: ["Estratégia", "Campanhas", "Tráfego", "Conteúdo", "Performance"], img: 6615058, img2: 5647320,
+    deliverIntro: "Canais e ações conectados ao mesmo objetivo de crescimento.",
+    items: [["Planejamento", "Metas, público e canais definidos a partir do seu objetivo."], ["Campanhas", "Conceito criativo e peças para cada etapa da jornada."], ["Tráfego pago", "Meta Ads e Google Ads com otimização contínua."], ["Conteúdo", "Materiais que educam, atraem e convertem."], ["Performance", "Acompanhamento de indicadores e relatórios claros."]],
+    steps: [["Diagnóstico", "Entendemos onde sua marca está e onde pode chegar."], ["Plano", "Definimos canais, verba e cronograma."], ["Execução", "Colocamos as campanhas no ar."], ["Otimização", "Medimos, aprendemos e ajustamos."]],
+    statement: "Menos achismo. Mais intenção." },
+];
+const SERVICES = [
+  { title: "Social Media", desc: "Conteúdo que constrói presença. Planejamento, design, Reels e gestão." },
+  { title: "Identidade Visual", desc: "Marcas com presença antes mesmo de falar. Estratégia, logo e aplicações." },
+  { title: "Sites", desc: "Experiências digitais que apresentam sua empresa e geram oportunidades." },
+  { title: "SaaS & Tecnologia", desc: "Ideias que viram produtos: sistemas, dashboards e automações." },
+  { title: "Marketing", desc: "Estratégia para colocar sua marca em movimento: campanhas e performance." },
+];
+
+const ICONS = [
+  "M21 11.5a8.38 8.38 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z",
+  "M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z",
+  "M3 5h18v14H3zM3 9h18M7 7h.01",
+  "M4 17l6-6 4 4 6-8M14 7h6v6",
+  "M3 11v2l13 5V6L3 11zM16 9a3 3 0 0 1 0 6",
+];
+const GRADS = [
+  "radial-gradient(120% 90% at 15% 85%,#06e006 0%,transparent 55%),radial-gradient(90% 80% at 85% 10%,#b8ff5c 0%,transparent 55%),linear-gradient(160deg,#0f7a1a,#043d0a)",
+  "radial-gradient(110% 90% at 80% 85%,#3cf13c 0%,transparent 55%),radial-gradient(80% 70% at 20% 15%,#021a04 0%,transparent 60%),linear-gradient(150deg,#0a5c12,#06a806)",
+  "radial-gradient(100% 90% at 50% 100%,#06e006 0%,transparent 60%),radial-gradient(90% 70% at 90% 0%,#0b2e0b 0%,transparent 60%),linear-gradient(170deg,#031a03,#0b8a14)",
+  "radial-gradient(110% 90% at 10% 20%,#9dff6a 0%,transparent 50%),radial-gradient(100% 90% at 90% 90%,#034d0a 0%,transparent 60%),linear-gradient(140deg,#06c406,#0a3d0a)",
+  "radial-gradient(120% 100% at 85% 80%,#06e006 0%,transparent 55%),radial-gradient(80% 70% at 15% 10%,#0c3b3b 0%,transparent 60%),linear-gradient(160deg,#021a0f,#0b7a2a)",
+];
+
+class Component extends DCLogic {
+  state = { page: "home", sent: false, svc: 2, menuOpen: false, headerHover: false };
+  rootRef = (el) => { this.root = el; };
+
+  go = (page, svc) => {
+    const main = this.root && this.root.querySelector("main");
+    const changed = page !== this.state.page || (page === "servico" && svc !== this.state.svcPage) || (page === "case" && svc !== this.state.caseIdx);
+    if (window.gsap && main && changed) {
+      let done = false;
+      const fire = () => { if (done) return; done = true; this._go(page, svc); };
+      window.gsap.to(main, { opacity: 0, y: -12, duration: .28, ease: "power2.in", onComplete: fire });
+      setTimeout(fire, 360);
+    } else this._go(page, svc);
+  };
+  _go = (page, svc) => {
+    this._visit = (this._visit || 0) + 1;
+    this.setState({ page, svcPage: page === "servico" && svc != null ? svc : (this.state.svcPage || 0), caseIdx: page === "case" && svc != null ? svc : (this.state.caseIdx || 0), menuOpen: false }, () => {
+      if (this.lenis) this.lenis.scrollTo(0, { immediate: true }); else window.scrollTo({ top: 0 });
+      if (page !== "sobre" && this._sctx) { this._sctx.revert(); this._sctx = null; }
+    });
+  };
+  wa(msg) { return "https://wa.me/5551989373400?text=" + encodeURIComponent(msg); }
+
+  splitWords(el) {
+    if (el.dataset.splitDone) return;
+    el.dataset.splitDone = "1";
+    Array.from(el.childNodes).forEach((child) => {
+      if (child.nodeType === 3) {
+        const words = child.textContent.split(/(\s+)/).filter((w) => w.length);
+        const frag = document.createDocumentFragment();
+        words.forEach((w) => {
+          if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(" ")); return; }
+          const s = document.createElement("span");
+          s.className = "w";
+          s.textContent = w;
+          frag.appendChild(s);
+        });
+        el.replaceChild(frag, child);
+      } else if (child.nodeType === 1) {
+        this.splitWordsDeep(child);
+      }
+    });
+  }
+  splitWordsDeep(el) {
+    Array.from(el.childNodes).forEach((child) => {
+      if (child.nodeType === 3) {
+        const words = child.textContent.split(/(\s+)/).filter((w) => w.length);
+        const frag = document.createDocumentFragment();
+        const cs = getComputedStyle(el);
+        const grad = cs.webkitBackgroundClip === "text" || cs.backgroundClip === "text";
+        const isColored = cs.color !== "rgb(255, 255, 255)" && cs.color !== "rgba(0, 0, 0, 0)";
+        words.forEach((w) => {
+          if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(" ")); return; }
+          const s = document.createElement("span");
+          s.className = "w";
+          s.textContent = w;
+          if (isColored) s.style.color = cs.color;
+          frag.appendChild(s);
+        });
+        el.parentNode.replaceChild(frag, el);
+      }
+    });
+  }
+
+  async waitFor(test, tries) {
+    for (let i = 0; i < (tries || 100); i++) { if (test()) return true; await new Promise((r) => setTimeout(r, 60)); }
+    return false;
+  }
+
+  async initAnim() {
+    const ok = await this.waitFor(() => window.gsap);
+    if (!ok || !this.root) return;
+    const gsap = window.gsap;
+    if (this._ctx) this._ctx.revert();
+    if (this._marquees) this._marquees.forEach((m) => m.kill());
+    this._marquees = [];
+
+    this._ctx = gsap.context(() => {
+      const q = (sel) => Array.from(this.root.querySelectorAll(sel));
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          if (el.dataset.split) {
+            this.splitWords(el);
+            const words = el.querySelectorAll(".w");
+            gsap.fromTo(words, { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .9, ease: "power3.out", stagger: .03 });
+          } else {
+            gsap.fromTo(el, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: .8, ease: "power2.out" });
+          }
+          io.unobserve(el);
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: .1 });
+      [].forEach((el) => {
+        if (el.dataset.split) { el.style.overflow = "hidden"; el.style.paddingBottom = ".12em"; }
+        io.observe(el);
+      });
+
+      q("[data-mtrack]").forEach((track) => {
+        const half = track.scrollWidth / 2;
+        gsap.set(track, { x: 0 });
+        this._marquees.push(gsap.to(track, { x: -half, duration: 38, ease: "none", repeat: -1, modifiers: { x: (v) => (parseFloat(v) % half) + "px" } }));
+      });
+      q("[data-ptrack]").forEach((track) => {
+        const half = track.scrollWidth / 2;
+        gsap.set(track, { x: 0 });
+        this._marquees.push(gsap.to(track, { x: -half, duration: 44, ease: "none", repeat: -1, modifiers: { x: (v) => (parseFloat(v) % half) + "px" } }));
+      });
+    }, this.root);
+  }
+
+  carPos = 2;
+  cursorRef = (el) => { this.cur = el; };
+  carRef = (el) => {
+    this.car = el;
+    if (!el || el._bound) return;
+    el._bound = true;
+    let start = 0, startPos = 0, down = false, moved = 0;
+    const spacing = () => Math.min(400, (el.clientWidth || 1000) * 0.26);
+    el.addEventListener("pointerdown", (e) => {
+      down = true; moved = 0; start = e.clientX; startPos = this.carPos;
+      if (this._carTw) this._carTw.kill();
+      el.setPointerCapture(e.pointerId); if (this.cur) this.cur.style.transform = "scale(.85)";
+    });
+    el.addEventListener("pointermove", (e) => {
+      if (this.cur) { const r = el.getBoundingClientRect(); this.cur.style.left = (e.clientX - r.left) + "px"; this.cur.style.top = (e.clientY - r.top) + "px"; }
+      if (!down) return;
+      const dx = e.clientX - start; moved = Math.max(moved, Math.abs(dx));
+      this.carPos = startPos - dx / spacing();
+      this.applyCar();
+      
+    });
+    const up = (e) => {
+      if (!down) return;
+      down = false; if (this.cur) this.cur.style.transform = "scale(1)";
+      let target = Math.round(this.carPos);
+      if (moved < 6) {
+        const card = document.elementsFromPoint(e.clientX, e.clientY).find((n) => n.dataset && n.dataset.card != null);
+        if (card) target = Math.round(this.carPos + this.wrapOff(+card.dataset.card - this.carPos));
+      }
+      this.snapCar(target);
+    };
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse" && this.cur) { this.cur.style.opacity = 1; this.cur.style.transform = "scale(1)"; } });
+    el.addEventListener("pointerleave", () => { if (this.cur) { this.cur.style.opacity = 0; this.cur.style.transform = "scale(.6)"; } });
+    el.addEventListener("pointercancel", up);
+    if (window.ResizeObserver) { this._carRO = new ResizeObserver(() => this.applyCar()); this._carRO.observe(el); }
+    if (window.MutationObserver) { this._carMO = new MutationObserver(() => this.applyCar()); this._carMO.observe(el, { childList: true, subtree: true }); }
+    [150, 600, 1500].forEach((t) => setTimeout(() => this.applyCar(), t));
+    requestAnimationFrame(() => this.applyCar());
+  };
+  wrapOff(o) { const n = SERVICES.length; return ((o % n) + n + n / 2) % n - n / 2; }
+  snapCar(target) {
+    const n = SERVICES.length;
+    const g = window.gsap;
+    const done = () => this.setState({ svc: ((target % n) + n) % n });
+    if (!g) { this.carPos = target; this.applyCar(); done(); return; }
+    this._carTw = g.to(this, { carPos: target, duration: .7, ease: "power3.out", onUpdate: () => this.applyCar(), onComplete: done });
+  }
+  applyCar() {
+    if (!this.car) return;
+    const W = this.car.clientWidth;
+    if (!W) return;
+    const sp = Math.min(400, W * 0.26);
+    this.car.querySelectorAll("[data-card]").forEach((card) => {
+      const o = this.wrapOff(+card.dataset.card - this.carPos), a = Math.abs(o);
+      const act = Math.max(0, 1 - a);
+      card.style.transform = "translateX(" + (o * sp) + "px) translateY(" + (Math.pow(a, 1.4) * 34) + "px) rotate(" + (o * 7) + "deg) scale(" + (1 - Math.min(a, 2) * 0.03) + ")";
+      card.style.zIndex = String(100 - Math.round(a * 10));
+      card.style.opacity = String(Math.max(0, Math.min(1, 2.7 - a)));
+      card.style.borderColor = act > .5 ? "transparent" : "#d9d9d9";
+      card.querySelectorAll("[data-face]").forEach((f) => { f.style.opacity = act; });
+
+      const ink = act > .5 ? "#fff" : "#111";
+      card.querySelectorAll("[data-ink]").forEach((k) => { if (k.tagName === "svg") k.setAttribute("stroke", act > .5 ? "#fff" : "#6b6b6b"); else k.style.color = ink; });
+    });
+  }
+
+  pathWrapRef = (el) => {
+    this.pathWrap = el;
+    if (this._pathRO) { this._pathRO.disconnect(); this._pathRO = null; }
+    if (!el) return;
+    if (window.ResizeObserver) { this._pathRO = new ResizeObserver(() => this.layoutPath()); this._pathRO.observe(el); }
+    requestAnimationFrame(this.layoutPath);
+  };
+  pathRef = (el) => { this.pathEl = el; };
+  pathBaseRef = (el) => { this.pathBase = el; };
+
+  layoutPath = () => {
+    const wrap = this.pathWrap, p = this.pathEl;
+    if (!wrap || !p) return;
+    const base = wrap.querySelector("[data-path-base]");
+    const W = wrap.clientWidth;
+    if (W < 200) return;
+    const narrow = W < 720;
+    const rows = Array.from(wrap.querySelectorAll("[data-row]"));
+    rows.forEach((r, i) => {
+      const inner0 = narrow ? 64 : W * .5, outer = narrow ? 0 : W * .07;
+      r.style.paddingLeft = (narrow || i % 2 === 0 ? inner0 : outer) + "px";
+      r.style.paddingRight = (!narrow && i % 2 ? inner0 : outer) + "px";
+      r.style.justifyContent = narrow || i % 2 === 0 ? "flex-start" : "flex-end";
+      const inner = r.firstElementChild;
+      if (inner) { inner.style.textAlign = !narrow && i % 2 ? "right" : "left"; inner.style.alignItems = !narrow && i % 2 ? "flex-end" : "flex-start"; }
+    });
+    const H = wrap.clientHeight;
+    const pts = rows.map((r, i) => [narrow ? 24 + (i % 2 ? 16 : 0) : W * (i % 2 ? .86 : .14), r.offsetTop + r.offsetHeight / 2]);
+    const x0 = narrow ? 24 : W * .5;
+    let d = "M" + x0 + ",0", px = x0, py = 0;
+    pts.concat([[x0, H]]).forEach(([x, y]) => { const k = (y - py) * .62; d += " C" + px + "," + (py + k) + " " + x + "," + (y - k) + " " + x + "," + y; px = x; py = y; });
+    p.setAttribute("d", d); if (base) base.setAttribute("d", d);
+    const len = p.getTotalLength();
+    this.pathLen = len; p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+    const lut = []; for (let i = 0; i <= 240; i++) { const L = len * i / 240; lut.push([L, p.getPointAtLength(L).y]); }
+    this._lut = lut;
+    const nodes = Array.from(wrap.querySelectorAll("[data-node]"));
+    this._nodeY = pts.map((pt) => pt[1]);
+    nodes.forEach((n, i) => { if (!pts[i]) return; n.style.left = pts[i][0] + "px"; n.style.top = pts[i][1] + "px"; });
+    this.onPathScroll();
+  };
+  onPathScroll = () => {
+    const wrap = this.pathWrap, p = this.pathEl, drop = this.pathBase, lut = this._lut;
+    if (!wrap || !p || !drop || !lut || !this.pathLen) return;
+    const r = wrap.getBoundingClientRect(), vh = window.innerHeight;
+    const ty = Math.max(0, Math.min(r.height, vh * .55 - r.top));
+    let L = 0;
+    for (let i = 1; i < lut.length; i++) { if (lut[i][1] >= ty) { const [l0, y0] = lut[i - 1], [l1, y1] = lut[i]; L = l0 + (l1 - l0) * ((ty - y0) / Math.max(.001, y1 - y0)); break; } L = lut[i][0]; }
+    p.style.strokeDashoffset = this.pathLen - L;
+    const pt = p.getPointAtLength(L);
+    drop.style.transform = "translate(" + (pt.x - 11).toFixed(1) + "px," + (pt.y - 15).toFixed(1) + "px)";
+    wrap.querySelectorAll("[data-node]").forEach((n, i) => {
+      const on = (this._nodeY || [])[i] <= ty + 2;
+      if (n._on === on) return; n._on = on;
+      n.style.background = on ? "#06e006" : "#050505";
+      n.style.borderColor = on ? "#06e006" : "rgba(255,255,255,.35)";
+      n.style.transform = on ? "scale(1.3)" : "scale(1)";
+    });
+  };
+
+  bgInit = () => {
+    if (!this.root) return;
+    this._bgA = this.root.querySelector("[data-bg-a]");
+    this._bgB = this.root.querySelector("[data-bg-b]");
+    this.root.querySelectorAll("main > section, main > div").forEach((el) => {
+      if (/^linear-gradient\(rgba?\(/.test(el.style.background || "")) el.style.background = el.dataset.bgO3 || "";
+    });
+    this.onBgScroll();
+  };
+  onBgScroll = () => {
+    if (this._bgRaf) return;
+    this._bgRaf = requestAnimationFrame(() => {
+      this._bgRaf = 0;
+      const A = this._bgA, B = this._bgB;
+      if (!A || !B || !A.isConnected) return;
+      const vh = window.innerHeight, top = B.getBoundingClientRect().top;
+      const t = Math.min(1, Math.max(0, (vh * .65 - top) / (vh * .5)));
+      const e = t * t * (3 - 2 * t);
+      const c = Math.round(5 + (245 - 5) * e);
+      const col = "rgb(" + c + "," + c + "," + c + ")";
+      A.style.background = col;
+      B.style.background = col;
+    });
+  };
+
+  footRef = (el) => {
+    this.foot = el;
+    if (this._footRO) { this._footRO.disconnect(); this._footRO = null; }
+    if (!el) return;
+    if (window.ResizeObserver) { this._footRO = new ResizeObserver(this.fitFooter); this._footRO.observe(el); }
+    this.fitFooter();
+  };
+  fitForms = () => {
+    if (!this.root) return;
+    const vh = window.innerHeight;
+    this.root.querySelectorAll("section#contato").forEach((sec) => {
+      const r = sec.getBoundingClientRect();
+      const card = sec.querySelector("[data-ci-card]");
+      if (card) {
+        const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * .75)));
+        const e = 1 - Math.pow(1 - p, 3), q = 1 - e;
+        card.style.transform = q < .002 ? "none" : "translateY(" + (q * 90).toFixed(1) + "px) scale(" + (1 - q * .05).toFixed(4) + ")";
+      }
+      const items = Array.from(sec.querySelectorAll("[data-ci]"));
+      if (!sec.dataset.ciInit) {
+        sec.dataset.ciInit = "1";
+        items.forEach((el) => { el.style.opacity = "0"; el.style.transform = "translateY(22px)"; el.style.filter = "blur(5px)"; });
+      }
+      const show = r.top < vh * .78 && r.bottom > 0;
+      if (show && sec.dataset.ciOn !== "1") {
+        sec.dataset.ciOn = "1";
+        items.forEach((el, i) => {
+          const d = 120 + i * 80;
+          el.style.transition = "opacity .9s cubic-bezier(.2,.7,.2,1) " + d + "ms, transform 1s cubic-bezier(.2,.7,.2,1) " + d + "ms, filter .9s ease " + d + "ms";
+          el.style.opacity = "1"; el.style.transform = "translateY(0)"; el.style.filter = "blur(0)";
+        });
+      } else if (!show && r.top > vh && sec.dataset.ciOn === "1") {
+        sec.dataset.ciOn = "0";
+        items.forEach((el) => { el.style.transition = "opacity .3s ease, transform .3s ease, filter .3s ease"; el.style.opacity = "0"; el.style.transform = "translateY(22px)"; el.style.filter = "blur(5px)"; });
+      }
+    });
+  };
+  fitFooter = () => {
+    this.fitForms();
+    const f = this.foot;
+    if (!f) return;
+    if (f.style.clipPath) f.style.clipPath = "";
+    const r = f.getBoundingClientRect(), vh = window.innerHeight;
+    const span = Math.min(r.height, vh) * .95;
+    const p = Math.min(1, Math.max(0, (vh - r.top) / span));
+    const items = Array.from(f.querySelectorAll("[data-fi]"));
+    const n = items.length || 1;
+    items.forEach((el, i) => {
+      const start = i / n * .45;
+      const lp = Math.min(1, Math.max(0, (p - start) / .55));
+      const e = 1 - Math.pow(1 - lp, 3), q = 1 - e;
+      el.style.transition = "none";
+      el.style.opacity = (e).toFixed(3);
+      el.style.transform = q < .002 ? "none" : "translateY(" + (q * 70).toFixed(1) + "px)";
+      el.style.filter = q < .01 ? "none" : "blur(" + (q * 8).toFixed(2) + "px)";
+    });
+  };
+
+  sobreVals() {
+    const A = this.state.sbActive ?? -1;
+    const PR = [
+      ["01", "Resultado", "Criatividade precisa gerar impacto.", 5647320],
+      ["02", "Design", "Tudo comunica.", 5717294],
+      ["03", "Estratégia", "Não criamos por criar.", 6615514],
+      ["04", "Tecnologia", "Usamos tecnologia para ampliar ideias.", 33170797],
+      ["05", "Parceria", "Trabalhamos junto com nossos clientes.", 6803583],
+    ];
+    const show = A < 0 ? 0 : A;
+    return {
+      sbLeave: () => this.setState({ sbActive: -1 }),
+      principles: PR.map(([n, t, d], i) => ({
+        n, t, d,
+        enter: () => this.setState({ sbActive: i }),
+        op: A < 0 || A === i ? 1 : .28,
+        numColor: A === i ? "#06e006" : "rgba(255,255,255,.4)",
+        dash: A === i ? "34px" : "0px",
+        tx: A === i ? "translateX(10px)" : "translateX(0)",
+      })),
+      principleImgs: PR.map(([, t, , pid], i) => ({
+        id: "bow-sb-p" + (i + 1),
+        bg: "url(\"https://images.pexels.com/videos/" + pid + "/pexels-photo-" + pid + ".jpeg?auto=compress&cs=tinysrgb&w=900\")",
+        op: show === i ? 1 : 0,
+        sc: show === i ? "scale(1)" : "scale(1.08)",
+      })),
+      activeP: PR[show][1],
+    };
+  }
+
+  async initSobre() {
+    if (this.state.page !== "sobre") return;
+    const visit = this._visit || 0;
+    if (this._sobreVisit === visit && this._sctx) return;
+    this._sobreVisit = visit;
+    if (this._sobreBusy) return;
+    this._sobreBusy = true;
+    try { await this._initSobre(); } finally { this._sobreBusy = false; }
+  }
+  async _initSobre() {
+    if (this._sctx) { this._sctx.revert(); this._sctx = null; }
+    const ok = await this.waitFor(() => window.gsap && window.ScrollTrigger);
+    if (!ok || !this.root || this.state.page !== "sobre") return;
+    const { gsap, ScrollTrigger } = window;
+    gsap.registerPlugin(ScrollTrigger);
+    await new Promise((r) => setTimeout(r, 60));
+    if (!this.root.querySelector("[data-sb-line]")) return;
+    const q = (s) => Array.from(this.root.querySelectorAll(s));
+    this._sctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: .1 });
+      tl.from(q("[data-sb-line]"), { yPercent: 110, duration: 1.15, ease: "power4.out", stagger: .09 })
+        .from(q("[data-sb-stag]").slice(0, 4), { y: 16, opacity: 0, duration: .8, ease: "power3.out", stagger: .08 }, "-=.9")
+        .fromTo(q("[data-sb-hero-img]"), { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "power4.inOut" }, "-=1.1");
+      if (document.visibilityState === "hidden") tl.progress(1);
+      setTimeout(() => { if (tl.progress() < 1) tl.progress(1); }, 3000);
+
+      q("[data-sb-stag]").slice(4).forEach((el) => gsap.from(el, { y: 14, opacity: 0, duration: .8, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 90%" } }));
+
+      q("[data-sb-rev]").forEach((el) => gsap.from(el.querySelectorAll("[data-sb-rline]"), {
+        yPercent: 110, duration: 1.1, ease: "power4.out", stagger: .08, scrollTrigger: { trigger: el, start: "top 85%" },
+      }));
+
+      q("[data-sb-fadeup]").forEach((el) => gsap.from(el, { y: 30, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 88%" } }));
+
+      q("[data-sb-clip]").forEach((el) => gsap.fromTo(el, { clipPath: "inset(22% 16% 22% 16% round 14px)" }, {
+        clipPath: "inset(0% 0% 0% 0% round 14px)", duration: 1.3, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 92%", once: true },
+        onComplete: () => { el.style.clipPath = "none"; },
+      }));
+
+      q("[data-sb-par]").forEach((el) => {
+        const sp = parseFloat(el.dataset.sbPar) || .15;
+        gsap.fromTo(el, { y: () => window.innerHeight * sp }, {
+          y: () => -window.innerHeight * sp, ease: "none",
+          scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: .5, invalidateOnRefresh: true },
+        });
+      });
+
+      q("[data-sb-scale]").forEach((el) => gsap.fromTo(el, { scale: 1.14 }, {
+        scale: 1, ease: "none", scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: true },
+      }));
+
+      q("[data-sb-words]").forEach((el) => {
+        el.querySelectorAll("[data-sb-wline]").forEach((ln) => {
+          if (ln.dataset.done) return; ln.dataset.done = "1";
+          ln.innerHTML = ln.textContent.split(" ").map((w) => '<span class="sbw" style="display:inline-block">' + w + "</span>").join(" ");
+        });
+        gsap.fromTo(el.querySelectorAll(".sbw"), { opacity: .12, y: 12 }, {
+          opacity: 1, y: 0, stagger: .12, ease: "none", scrollTrigger: { trigger: el, start: "top 82%", end: "bottom 42%", scrub: true },
+        });
+      });
+
+      q("[data-sb-cta]").forEach((el) => gsap.fromTo(el, { scale: .88, opacity: .4 }, {
+        scale: 1, opacity: 1, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "top 35%", scrub: true },
+      }));
+    }, this.root);
+    setTimeout(() => window.ScrollTrigger && window.ScrollTrigger.refresh(), 700);
+  }
+
+  async initMotion(first) {
+    const ok = await this.waitFor(() => window.gsap && window.ScrollTrigger);
+    if (!ok || !this.root) return;
+    const { gsap, ScrollTrigger } = window;
+    gsap.registerPlugin(ScrollTrigger);
+    if (this._mctx) { this._mctx.revert(); this._mctx = null; }
+    (this._mclean || []).forEach((f) => f()); this._mclean = [];
+    await new Promise((r) => setTimeout(r, 40));
+    if (!this.root) return;
+    const fine = window.matchMedia("(pointer:fine)").matches;
+    const E = "power3.out";
+    const q = (s) => Array.from(this.root.querySelectorAll(s));
+    this._mctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: E } });
+      const nav = this.root.querySelector("[data-intro-nav]");
+      if (first && nav) tl.from(nav, { yPercent: -100, opacity: 0, duration: .9 }, .05);
+      const bg = this.root.querySelector("[data-hero-bg]");
+      if (bg) tl.fromTo(bg, { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.8, ease: "power2.out" }, 0);
+      const h1 = this.root.querySelector("[data-intro-h]");
+      if (h1) {
+        this.maskWords(h1);
+        tl.from(h1.querySelectorAll(".rw"), { yPercent: 115, duration: 1.05, ease: "power4.out", stagger: .045 }, .3);
+      }
+      const intro = q("[data-intro]");
+      if (intro.length) tl.from(intro, { y: 22, opacity: 0, duration: .85, stagger: .1 }, .55);
+      if (document.visibilityState === "hidden") tl.progress(1);
+      setTimeout(() => { if (tl.progress() < 1) tl.progress(1); }, 2600);
+      if (!first) { const main = this.root.querySelector("main"); if (main) { const tw = gsap.fromTo(main, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .7, ease: E }); setTimeout(() => { if (tw.progress() < 1) tw.progress(1); }, 1200); } }
+
+      const hidden = document.visibilityState === "hidden";
+      const scrubMode = this.state.page !== "sobre";
+      const skip = "[data-intro],[data-intro-h],[data-sb-rev],[data-sb-words],[data-sb-fadeup],[data-sb-line],[data-sb-stag],[data-card],[data-scrub-scale],[data-ci],[data-ci-card],footer";
+      q("[data-reveal],[data-split]").forEach((el) => {
+        if (el.closest("[data-intro-h]")) return;
+        this.maskWords(el);
+        const ws = el.querySelectorAll(".rw");
+        if (hidden) return;
+        if (scrubMode) {
+          gsap.fromTo(ws, { yPercent: 115, opacity: 0 }, { yPercent: 0, opacity: 1, ease: "none", stagger: .08,
+            scrollTrigger: { trigger: el, start: "top 96%", end: "top 58%", scrub: .9 } });
+          return;
+        }
+        gsap.set(ws, { yPercent: 115 });
+        ScrollTrigger.create({ trigger: el, start: "top 90%", once: true,
+          onEnter: () => gsap.to(ws, { yPercent: 0, duration: .95, ease: "power4.out", stagger: .022, overwrite: true }) });
+      });
+      const fades = q("main [data-fade]").filter((el) => !el.closest(skip) && !(el.parentElement && el.parentElement.closest("[data-fade]")));
+      const auto = q("main p, main h3, main h1, main form, main a[data-magnetic], main label").filter((el) => !el.closest(skip + ",[data-fade],[data-reveal],[data-split],[data-work],[data-sb-hero-img]") && !el.querySelector("[data-sb-line],[data-sb-rline],[data-sb-wline]") && !(el.parentElement && el.parentElement.closest("form")));
+      const tags = q("main span").filter((el) => /text-transform:\s*uppercase/.test(el.getAttribute("style") || "") && !el.closest(skip + ",[data-fade],[data-work],[data-reveal],[data-mtrack]"));
+      if (!hidden && scrubMode) {
+        tags.forEach((el) => gsap.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, ease: "power1.out",
+          scrollTrigger: { trigger: el, start: "top 98%", end: "top 74%", scrub: .9 } }));
+      } else if (!hidden && tags.length) {
+        gsap.set(tags, { opacity: 0, y: 12 });
+        ScrollTrigger.batch(tags, { start: "top 94%", once: true, onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: .6, ease: E, stagger: .05, overwrite: true }) });
+      }
+      const heroSkip = (el) => { const m = el.closest("main"); const s = m && m.querySelector("section"); return s && s.contains(el) && !s.id; };
+      const all = fades.concat(auto).filter((el) => !(scrubMode && heroSkip(el)));
+      if (!hidden && scrubMode) {
+        all.forEach((el) => gsap.fromTo(el, { opacity: 0, y: 70, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", ease: "power1.out",
+          scrollTrigger: { trigger: el, start: "top 100%", end: "top 66%", scrub: .9 } }));
+      } else if (!hidden && all.length) {
+        gsap.set(all, { opacity: 0, y: 26 });
+        ScrollTrigger.batch(all, { start: "top 92%", once: true,
+          onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: .85, ease: E, stagger: .07, overwrite: true }) });
+      }
+      if (!scrubMode) setTimeout(() => {
+        if (!this.root) return;
+        all.forEach((el) => { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0 && parseFloat(getComputedStyle(el).opacity) < .05) gsap.to(el, { opacity: 1, y: 0, duration: .5 }); });
+        this.root.querySelectorAll(".rw").forEach((w) => { const r = w.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0 && w._gsap && Math.abs(gsap.getProperty(w, "yPercent")) > 50 && !gsap.isTweening(w)) gsap.to(w, { yPercent: 0, duration: .5 }); });
+      }, 2600);
+
+      q("[data-bars]").forEach((b) => { const bars = b.children; if (hidden) return; gsap.set(bars, { scaleY: .08 }); ScrollTrigger.create({ trigger: b, start: "top 88%", once: true, onEnter: () => gsap.to(bars, { scaleY: 1, duration: 1.1, ease: "power4.out", stagger: .07 }) }); });
+      q("[data-auto]").forEach((box) => {
+        const checks = box.querySelectorAll("[data-auto-check]"), ticks = box.querySelectorAll("[data-auto-tick]"), cards = box.querySelectorAll("[data-auto-step]");
+        const tl2 = gsap.timeline({ repeat: -1, repeatDelay: .4, paused: true });
+        checks.forEach((c, i) => {
+          tl2.to(c, { backgroundColor: "#06e006", borderColor: "#06e006", duration: .3, ease: E }, i * .75)
+             .fromTo(ticks[i], { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, i * .75 + .05)
+             .to(cards[i], { borderColor: "rgba(6,224,6,.55)", duration: .3 }, i * .75);
+        });
+        tl2.to(checks, { backgroundColor: "#fff", borderColor: "#cfd3cc", duration: .4 }, "+=1.4").to(ticks, { opacity: 0, duration: .3 }, "<").to(cards, { borderColor: "#e0e2de", duration: .4 }, "<");
+        ScrollTrigger.create({ trigger: box, start: "top 90%", end: "bottom top", onToggle: (s) => s.isActive ? tl2.play() : tl2.pause() });
+      });
+      q("[data-sys]").forEach((c) => { const w = c.querySelectorAll("[data-win]"); const box = w[0] && w[0].parentElement;
+        const step = () => box ? Math.max(0, Math.min(70, (box.clientWidth - w[0].offsetWidth - 12) / 2)) : 0;
+        gsap.fromTo(w, { x: 0, rotate: 0 }, { x: (i) => i * step(), rotate: (i) => (i - 1) * 2.5, ease: "none", scrollTrigger: { trigger: c, start: "top 85%", end: "center 45%", scrub: .6, invalidateOnRefresh: true } }); });
+      q("[data-scrub-scale]").forEach((el) => gsap.fromTo(el, { scale: .84, y: 60 }, {
+        scale: 1, y: 0, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "top 35%", scrub: .6 },
+      }));
+
+      q("[data-work]").forEach((card) => {
+        const img = card.querySelector("[data-work-img]");
+        const ovl = card.querySelector("[data-work-ov]");
+        if (!img) return;
+        gsap.set(img, { scale: 1.02, force3D: true });
+        const on = () => { gsap.to(img, { scale: 1.07, duration: .8, ease: E, overwrite: "auto" }); if (ovl) gsap.to(ovl, { opacity: 1, duration: .45, ease: E, overwrite: "auto" }); };
+        const off = () => { gsap.to(img, { scale: 1.02, duration: .8, ease: E, overwrite: "auto" }); if (ovl) gsap.to(ovl, { opacity: 0, duration: .45, ease: E, overwrite: "auto" }); };
+        const mv = () => {};
+        card.addEventListener("mouseenter", on); card.addEventListener("mouseleave", off);
+        if (fine) card.addEventListener("mousemove", mv);
+        this._mclean.push(() => { card.removeEventListener("mouseenter", on); card.removeEventListener("mouseleave", off); card.removeEventListener("mousemove", mv); });
+      });
+
+      if (fine) q("[data-mouse-par]").forEach((el) => {
+        gsap.set(el, { scale: 1.05 });
+        const xTo = gsap.quickTo(el, "x", { duration: 1, ease: E }), yTo = gsap.quickTo(el, "y", { duration: 1, ease: E });
+        const mv = (e) => { xTo(-(e.clientX / window.innerWidth - .5) * 16); yTo(-(e.clientY / window.innerHeight - .5) * 16); };
+        window.addEventListener("mousemove", mv);
+        this._mclean.push(() => window.removeEventListener("mousemove", mv));
+      });
+
+      if (fine) q("[data-magnetic]").forEach((b) => {
+        if (b.dataset.magBound) return; b.dataset.magBound = "1";
+        const xTo = gsap.quickTo(b, "x", { duration: .5, ease: E }), yTo = gsap.quickTo(b, "y", { duration: .5, ease: E });
+        b.addEventListener("mousemove", (e) => { const r = b.getBoundingClientRect(); xTo((e.clientX - r.left - r.width / 2) * .22); yTo((e.clientY - r.top - r.height / 2) * .3); });
+        b.addEventListener("mouseleave", () => { xTo(0); yTo(0); });
+      });
+
+      q("a,button").forEach((b) => {
+        if (b.dataset.arrBound) return;
+        const s = Array.from(b.querySelectorAll("span")).find((x) => x.textContent.trim() === "→");
+        if (!s) return; b.dataset.arrBound = "1"; s.style.display = "inline-block";
+        b.addEventListener("mouseenter", () => gsap.to(s, { x: 5, duration: .35, ease: E }));
+        b.addEventListener("mouseleave", () => gsap.to(s, { x: 0, duration: .35, ease: E }));
+      });
+    }, this.root);
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+  }
+
+  maskWords(el) {
+    if (el.dataset.masked) return;
+    el.dataset.masked = "1";
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach((ch) => {
+        if (ch.nodeType === 3) {
+          const parts = ch.textContent.split(/(\s+)/);
+          if (!parts.some((p) => p.trim())) return;
+          const frag = document.createDocumentFragment();
+          parts.forEach((p) => {
+            if (!p) return;
+            if (!p.trim()) { frag.appendChild(document.createTextNode(" ")); return; }
+            const o = document.createElement("span");
+            o.style.cssText = "display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em";
+            const i = document.createElement("span");
+            i.className = "rw"; i.style.display = "inline-block"; i.textContent = p;
+            o.appendChild(i); frag.appendChild(o);
+          });
+          node.replaceChild(frag, ch);
+        } else if (ch.nodeType === 1 && ch.tagName !== "BR") walk(ch);
+      });
+    };
+    walk(el);
+  }
+
+  async initGlobalMotion() {
+    const fine = window.matchMedia("(pointer:fine)").matches;
+    const ok = await this.waitFor(() => window.gsap && window.ScrollTrigger);
+    if (!ok) return;
+    const { gsap, ScrollTrigger } = window;
+    if (fine && window.Lenis && !this.lenis) {
+      this.lenis = new window.Lenis({ duration: 1.1, smoothWheel: true, anchors: true });
+      this.lenis.on("scroll", () => ScrollTrigger.update());
+      this._lenisRaf = (t) => this.lenis && this.lenis.raf(t * 1000);
+      gsap.ticker.add(this._lenisRaf);
+      gsap.ticker.lagSmoothing(0);
+    }
+    if (false) {
+      const ring = document.createElement("div");
+      ring.style.cssText = "position:fixed;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;border:1px solid rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(0,0,0,.18);border-radius:50%;pointer-events:none;z-index:9999;opacity:0;transition:opacity .3s;will-change:transform";
+      document.body.appendChild(ring);
+      this._cur = ring;
+      const xTo = gsap.quickTo(ring, "x", { duration: .45, ease: "power3.out" }), yTo = gsap.quickTo(ring, "y", { duration: .45, ease: "power3.out" });
+      let state = "";
+      this._curMove = (e) => {
+        xTo(e.clientX); yTo(e.clientY);
+        const t = e.target;
+        const s = t.closest && (t.closest("[data-card]") ? "hide" : t.closest("[data-work],image-slot") ? "img" : t.closest("a,button,input,textarea,label") ? "link" : "");
+        ring.style.opacity = s === "hide" ? 0 : 1;
+        if (s !== state) { state = s; gsap.to(ring, { scale: s === "img" ? 2.4 : s === "link" ? 1.5 : 1, backgroundColor: s === "img" ? "rgba(255,255,255,.12)" : "rgba(255,255,255,0)", duration: .35, ease: "power3.out" }); }
+      };
+      this._curLeave = () => { ring.style.opacity = 0; };
+      window.addEventListener("mousemove", this._curMove);
+      document.addEventListener("mouseleave", this._curLeave);
+    }
+  }
+
+  componentDidMount() {
+    this._lastPage = this.state.page + ":";
+    this.initGlobalMotion();
+    this.initMotion(true);
+    this.initSobre();
+    window.addEventListener("resize", this.fitFooter);
+    window.addEventListener("scroll", this.fitFooter, { passive: true });
+    this.initAnim();
+    window.addEventListener("scroll", this.onBgScroll, { passive: true });
+    window.addEventListener("resize", this.onBgScroll);
+    [50, 400, 1200].forEach((t) => setTimeout(this.bgInit, t));
+    window.addEventListener("scroll", this.onPathScroll, { passive: true });
+    window.addEventListener("resize", this.layoutPath);
+    this.schedulePath();
+  }
+  schedulePath() {
+    requestAnimationFrame(this.layoutPath);
+    [100, 600, 1500].forEach((t) => setTimeout(this.layoutPath, t));
+  }
+  componentDidUpdate() { this.applyCar(); const pk = this.state.page + ":" + (this.state.page === "servico" ? this.state.svcPage : this.state.page === "case" ? this.state.caseIdx : ""); if (this._lastPage !== pk) { this._lastPage = pk; this.initAnim(); this.initSobre(); this.initMotion(false); [50, 400].forEach((t) => setTimeout(this.bgInit, t)); if (this.state.page === "home") this.schedulePath(); } }
+  componentWillUnmount() {
+    if (this._mctx) this._mctx.revert(); (this._mclean || []).forEach((f) => f());
+    if (this.lenis) { window.gsap && window.gsap.ticker.remove(this._lenisRaf); this.lenis.destroy(); this.lenis = null; }
+    if (this._cur) { this._cur.remove(); window.removeEventListener("mousemove", this._curMove); document.removeEventListener("mouseleave", this._curLeave); }
+    if (this._ctx) this._ctx.revert(); if (this._marquees) this._marquees.forEach((m) => m.kill()); }
+
+  renderVals() {
+    const page = this.state.page;
+    const active = "#fff", idle = "rgba(255,255,255,.55)";
+    const openSlots = [{ id: "bow-open-1", label: "" }, { id: "bow-open-2", label: "" }];
+    const strip = [
+      ["ps1", 6186636], ["ps2", 7252676], ["ps3", 7579655], ["ps4", 6549268], ["ps5", 6614772], ["ps6", 8371030],
+    ].map(([base, pid]) => ({ id: base + "a", id2: base + "b", src: "https://images.pexels.com/videos/" + pid + "/pexels-photo-" + pid + ".jpeg?auto=compress&cs=tinysrgb&w=700" }));
+    return {
+      rootRef: this.rootRef, footRef: this.footRef, pathWrapRef: this.pathWrapRef, pathRef: this.pathRef, pathBaseRef: this.pathBaseRef,
+      isHome: page === "home", isSolucoes: page === "solucoes", isCases: page === "cases", isSobre: page === "sobre",
+      cSolucoes: page === "solucoes" ? active : idle, cCases: page === "cases" ? active : idle, cSobre: page === "sobre" ? active : idle,
+      goHome: () => this.go("home"), goSolucoes: () => this.go("solucoes"), goCases: () => this.go("cases"), goSobre: () => this.go("sobre"),
+      menuOpen: this.state.menuOpen,
+      chevronRot: this.state.menuOpen ? "rotate(180deg)" : "rotate(0)",
+      menuItems: SERVICES.map((s, i) => ({ title: s.title, short: s.desc.split(".")[0] + ".", icon: ["◈","◇","▣","◎","✦"][i], go: () => this.go("servico", i) })),
+      headerEnter: () => this.setState({ headerHover: true }),
+      headerLeave: () => this.setState({ headerHover: false, menuOpen: false }),
+      menuEnter: () => this.setState({ menuOpen: true }),
+      menuLeaveKeepHeader: () => this.setState({ menuOpen: false }),
+      headerBg: this.state.headerHover ? "#f5f5f5" : "transparent",
+      headerBorder: this.state.headerHover ? "#e4e4e4" : "transparent",
+      logoWhiteOp: this.state.headerHover ? 0 : 1,
+      logoBlackOp: this.state.headerHover ? 1 : 0,
+      navColor: this.state.headerHover ? "#050505" : "#fff",
+      navBorder: this.state.headerHover ? "#ccc" : "rgba(255,255,255,.4)",
+      waOrcamento: this.wa("Olá! Quero um orçamento com a Bow."),
+      svc0: () => this.setState({ svc: 0 }), svc1: () => this.setState({ svc: 1 }), svc3: () => this.setState({ svc: 3 }), svc4: () => this.setState({ svc: 4 }),
+      svcActive: SERVICES[this.state.svc],
+      ...(() => { const T = [["Automações", "Processos repetitivos rodando sozinhos, do cadastro à entrega.", 5647320], ["Dashboards", "Indicadores do seu negócio reunidos em um só painel, em tempo real.", 33170797], ["Sistemas", "Sistemas sob medida para a sua empresa, feitos para a sua operação.", 6615058]];
+        const k = this.state.techIdx || 0;
+        return { techActive: T[k][0], techCount: String(k + 1).padStart(2, "0") + " / 03",
+          techItems: T.map(([t, d, id], i) => ({ n: String(i + 1).padStart(2, "0"), t, d, op: i === k ? 1 : .35, numColor: i === k ? "#0a8c0a" : "rgba(5,5,5,.4)", rows: i === k ? "1fr" : "0fr",
+            imgOp: i === k ? 1 : 0, imgSc: i === k ? "scale(1)" : "scale(1.08)", bg: "url(\"https://images.pexels.com/videos/" + id + "/pexels-photo-" + id + ".jpeg?auto=compress&cs=tinysrgb&w=1400\")" })) }; })(),
+      isServico: page === "servico",
+      isCase: page === "case",
+      goCase0: () => this.go("case", 0), goCase1: () => this.go("case", 1), goCase2: () => this.go("case", 2), goCase3: () => this.go("case", 3), goCase4: () => this.go("case", 4), goCase5: () => this.go("case", 5),
+      cs: (() => { const i = this.state.caseIdx || 0, c = CASES[i], nx = (i + 1) % CASES.length, U = (id) => "url(\"https://images.pexels.com/videos/" + id + "/pexels-photo-" + id + ".jpeg?auto=compress&cs=tinysrgb&w=1800\")";
+        return { ...c, n: String(i + 1).padStart(2, "0"), bgImg: U(c.imgs[0]), img1: U(c.imgs[1]), img2: U(c.imgs[2]), img3: U(c.imgs[3]),
+          deliver: c.deliver.map((t, k) => ({ n: String(k + 1).padStart(2, "0"), t })), nextName: CASES[nx].name, nextImg: U(CASES[nx].imgs[0]), goNext: () => this.go("case", nx) }; })(),
+      sv: (() => { const i = this.state.svcPage || 0, s = SVC_PAGES[i], P = (id) => "https://images.pexels.com/videos/" + id + "/pexels-photo-" + id + ".jpeg?auto=compress&cs=tinysrgb&w=1800";
+        return { ...s, n: String(i + 1).padStart(2, "0"), bgImg: "url(\"" + P(s.img) + "\")", bgImg2: "url(\"" + P(s.img2) + "\")", wa: this.wa("Olá! Quero saber mais sobre " + s.title + " com a Bow."),
+          items: s.items.map(([t, d], k) => ({ n: String(k + 1).padStart(2, "0"), t, d })), steps: s.steps.map(([t, d], k) => ({ n: String(k + 1).padStart(3, "0"), t, d })) }; })(),
+      svOthers: SVC_PAGES.map((s, i) => ({ n: String(i + 1).padStart(2, "0"), t: s.title, i, go: () => this.go("servico", i) })).filter((o) => o.i !== (this.state.svcPage || 0)),
+      goSvc0: () => this.go("servico", 0), goSvc1: () => this.go("servico", 1), goSvc2: () => this.go("servico", 2), goSvc3: () => this.go("servico", 3), goSvc4: () => this.go("servico", 4),
+      ...this.sobreVals(),
+      carRef: this.carRef, cursorRef: this.cursorRef,
+      svcCards: SERVICES.map((s, i) => ({ idx: i, title: s.title, icon: ICONS[i], grad: GRADS[i] })),
+      openSlots, hasOpenSlots: true,
+      photoStrip: strip,
+      waHref: this.wa("Olá! Vim pelo site da Bow e quero falar sobre um projeto."),
+      waTech: this.wa("Olá! Quero criar uma solução em SaaS/tecnologia com a Bow."),
+      submitLabel: this.state.sent ? "Enviado ✓" : "Enviar",
+      onSubmit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+    };
+  }
+}
+</script>
+</body>
+</html>

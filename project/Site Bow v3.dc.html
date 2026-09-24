@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/tokens/colors.css">
+<link rel="stylesheet" href="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/tokens/typography.css">
+<link rel="stylesheet" href="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/tokens/effects.css">
+<link rel="stylesheet" href="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/styles.css">
+<script src="_ds/ag-ncia-bow-design-system-6c8cb0c5-b282-4335-917b-c7bd0c644a9d/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  body { margin:0; background:#0a0a0a; color:#fff; font-family:var(--font-body); -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:#0be06b; text-decoration:none; }
+  a:hover { color:#5cf3a2; }
+  input, textarea { font-family:var(--font-body); }
+  .w { display:inline-block; will-change:transform,opacity; }
+  @keyframes bowKen { from { transform:scale(1.04) } to { transform:scale(1.14) } }
+  @keyframes bowCue { 0%{transform:translateY(0);opacity:0} 45%{opacity:1} 100%{transform:translateY(12px);opacity:0} }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="position:relative;background:#0a0a0a;overflow-x:hidden">
+
+<div style="position:relative;z-index:70;display:flex;align-items:stretch;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.07)">
+  <div style="flex:1;min-width:0;overflow:hidden;display:flex;align-items:center;padding:10px 0">
+    <div data-mtrack="1" style="display:flex;width:max-content;will-change:transform">
+      <div style="display:flex;align-items:center;gap:28px;padding-right:28px">
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Estratégia</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Criatividade</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Tecnologia</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Social Media</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Identidade Visual</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Sites</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">SaaS</span><span style="color:#0be06b;font-size:7px">●</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:28px;padding-right:28px">
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Estratégia</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Criatividade</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Tecnologia</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Social Media</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Identidade Visual</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">Sites</span><span style="color:#0be06b;font-size:7px">●</span>
+        <span style="font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap">SaaS</span><span style="color:#0be06b;font-size:7px">●</span>
+      </div>
+    </div>
+  </div>
+  <div style="flex:none;display:flex;align-items:center;gap:10px;padding:0 clamp(16px,5vw,56px) 0 18px;border-left:1px solid rgba(255,255,255,.07)">
+    <span style="position:relative;display:block;width:46px;height:2px;background:rgba(255,255,255,.14);overflow:hidden"><span ref="{{ barRef }}" style="position:absolute;inset:0;transform-origin:left center;transform:scaleX(0);background:#0be06b"></span></span>
+    <span ref="{{ progRef }}" style="font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.85);min-width:32px;text-align:right">0%</span>
+  </div>
+</div>
+
+<header style="position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px clamp(16px,5vw,56px);background:rgba(10,10,10,.72);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07)">
+  <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center">
+    <img src="assets/logo-bow-white.svg" alt="bow." style="height:22px;display:block">
+  </button>
+  <nav style="display:flex;align-items:center;gap:clamp(14px,2.2vw,30px);flex-wrap:wrap;justify-content:center">
+    <button onClick="{{ goHome }}" style="background:none;border:0;padding:6px 0;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;color:{{ cHome }};transition:color .2s" style-hover="color:#fff">Home</button>
+    <button onClick="{{ goSolucoes }}" style="background:none;border:0;padding:6px 0;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;color:{{ cSolucoes }};transition:color .2s" style-hover="color:#fff">Soluções</button>
+    <button onClick="{{ goCases }}" style="background:none;border:0;padding:6px 0;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;color:{{ cCases }};transition:color .2s" style-hover="color:#fff">Cases</button>
+    <button onClick="{{ goSobre }}" style="background:none;border:0;padding:6px 0;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:500;color:{{ cSobre }};transition:color .2s" style-hover="color:#fff">Sobre</button>
+  </nav>
+  <a href="{{ waHref }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;padding:11px 22px;border-radius:999px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;font-size:13.5px;font-weight:600;white-space:nowrap;transition:filter .2s,transform .2s" style-hover="filter:brightness(1.1)" style-active="transform:scale(.97)">Falar com a Bow</a>
+</header>
+
+<!-- ===================== HOME ===================== -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main>
+
+  <section style="position:relative;display:flex;align-items:flex-end;min-height:min(84vh,760px);padding:clamp(70px,11vh,130px) clamp(16px,5vw,56px) clamp(40px,5vw,64px);overflow:hidden">
+    <div style="position:absolute;inset:0;z-index:0;overflow:hidden">
+      <div data-parallax="1" style="position:absolute;inset:-8% 0">
+        <div style="width:100%;height:100%;animation:bowKen 26s ease-in-out infinite alternate">
+          <image-slot id="bow-hero" shape="rect" src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1800" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Hero"></image-slot>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(100deg,rgba(10,10,10,.96) 0%,rgba(10,10,10,.82) 42%,rgba(10,10,10,.42) 100%),linear-gradient(180deg,rgba(10,10,10,.55),rgba(10,10,10,0) 30%,rgba(10,10,10,.9))"></div>
+    <div style="position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(22px,3vw,34px)">
+      <div data-fade="1" style="display:flex;flex-wrap:wrap;gap:8px">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(255,255,255,.82)"><span style="width:6px;height:6px;border-radius:50%;background:#0be06b"></span>Marca</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(255,255,255,.82)"><span style="width:6px;height:6px;border-radius:50%;background:#0be06b"></span>Digital</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);font-size:12.5px;color:rgba(255,255,255,.82)"><span style="width:6px;height:6px;border-radius:50%;background:#0be06b"></span>Tecnologia</span>
+      </div>
+      <h1 data-split="1" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(2.2rem,5.2vw,4.4rem);line-height:1.02;letter-spacing:-.035em;max-width:16ch">Marca, digital e tecnologia. Tudo no mesmo lugar.</h1>
+      <p data-fade="1" style="margin:0;font-size:clamp(1rem,1.35vw,1.2rem);line-height:1.62;color:rgba(255,255,255,.7);max-width:52ch">Criamos marcas, experiências digitais e estratégias que fazem empresas serem percebidas, lembradas e escolhidas.</p>
+      <div data-fade="1" style="display:flex;flex-wrap:wrap;align-items:center;gap:18px">
+        <a href="#contato" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:999px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;font-size:14.5px;font-weight:600;transition:filter .2s,transform .2s" style-hover="filter:brightness(1.1)" style-active="transform:scale(.97)">Começar um projeto</a>
+        <span style="display:inline-flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,.45)">Role para ver<span style="display:inline-block;width:1px;height:20px;background:#0be06b;animation:bowCue 1.9s ease-in-out infinite"></span></span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(56px,7vw,110px) clamp(16px,5vw,56px);border-top:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(28px,4vw,72px);align-items:start">
+      <div data-fade="1">
+        <span style="display:inline-block;margin-bottom:18px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Posicionamento</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.1;letter-spacing:-.03em;max-width:15ch">Não é só sobre estar online.</h2>
+      </div>
+      <div data-fade="1" style="display:flex;flex-direction:column;gap:26px">
+        <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.15rem,1.9vw,1.6rem);line-height:1.38;letter-spacing:-.02em;color:rgba(255,255,255,.95)">É sobre ter uma marca que faz sentido. Uma comunicação que representa o seu negócio. Um digital que trabalha a favor dele.</p>
+        <p style="margin:0;font-size:1.02rem;line-height:1.75;color:rgba(255,255,255,.62);max-width:54ch">Na Bow, conectamos estratégia, design, conteúdo e tecnologia para transformar ideias em marcas, experiências e produtos digitais que ocupam espaço.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);background:#fff;color:#0a0a0a">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));align-items:end;gap:24px clamp(24px,4vw,72px);margin-bottom:clamp(34px,4vw,56px)">
+        <div>
+          <span data-fade="1" style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0a8c3c">O que fazemos</span>
+          <h2 data-fade="1" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.08;letter-spacing:-.03em">Tudo que sua marca precisa para crescer no digital.</h2>
+        </div>
+        <p data-fade="1" style="margin:0;font-size:1.02rem;line-height:1.7;color:#585858;max-width:42ch">Da primeira ideia ao projeto no ar, reunimos diferentes disciplinas para construir uma presença digital consistente.</p>
+      </div>
+
+      <div style="position:relative">
+        <div style="position:absolute;top:0;right:0;width:clamp(180px,22vw,320px);height:100%;z-index:0;pointer-events:none;display:flex;align-items:center">
+          <div style="position:relative;width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;opacity:{{ oSvc }};transform:{{ tSvc }};transition:opacity .4s ease,transform .55s cubic-bezier(.2,.7,.2,1)">
+            <image-slot id="bow-svc-hover" shape="rect" src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=900" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Soluções"></image-slot>
+          </div>
+        </div>
+
+        <button onMouseEnter="{{ hSvc1 }}" onMouseLeave="{{ hSvcOut }}" onClick="{{ goSolucoes }}" data-fade="1" style="position:relative;z-index:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:100%;text-align:left;padding:clamp(20px,2.4vw,30px) 0;background:none;border:0;border-top:1px solid rgba(10,10,10,.1);cursor:pointer;color:#0a0a0a;transition:padding-left .4s cubic-bezier(.2,.7,.2,1)" style-hover="padding-left:14px">
+          <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#9a9a9a">01</span>
+          <span style="min-width:0"><span style="display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.12;letter-spacing:-.03em">Social Media</span><span style="display:block;margin-top:8px;font-size:.95rem;line-height:1.65;color:#5e5e5e;max-width:44ch">Conteúdo que constrói presença. Planejamento, design, Reels e gestão.</span></span>
+          <span style="font-family:var(--font-display);font-size:1.15rem;color:#0a8c3c">→</span>
+        </button>
+        <button onMouseEnter="{{ hSvc2 }}" onMouseLeave="{{ hSvcOut }}" onClick="{{ goSolucoes }}" data-fade="1" style="position:relative;z-index:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:100%;text-align:left;padding:clamp(20px,2.4vw,30px) 0;background:none;border:0;border-top:1px solid rgba(10,10,10,.1);cursor:pointer;color:#0a0a0a;transition:padding-left .4s cubic-bezier(.2,.7,.2,1)" style-hover="padding-left:14px">
+          <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#9a9a9a">02</span>
+          <span style="min-width:0"><span style="display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.12;letter-spacing:-.03em">Identidade Visual</span><span style="display:block;margin-top:8px;font-size:.95rem;line-height:1.65;color:#5e5e5e;max-width:44ch">Marcas que têm presença antes mesmo de falar. Estratégia, logo, direção visual e aplicações.</span></span>
+          <span style="font-family:var(--font-display);font-size:1.15rem;color:#0a8c3c">→</span>
+        </button>
+        <button onMouseEnter="{{ hSvc3 }}" onMouseLeave="{{ hSvcOut }}" onClick="{{ goSolucoes }}" data-fade="1" style="position:relative;z-index:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:100%;text-align:left;padding:clamp(20px,2.4vw,30px) 0;background:none;border:0;border-top:1px solid rgba(10,10,10,.1);cursor:pointer;color:#0a0a0a;transition:padding-left .4s cubic-bezier(.2,.7,.2,1)" style-hover="padding-left:14px">
+          <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#9a9a9a">03</span>
+          <span style="min-width:0"><span style="display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.12;letter-spacing:-.03em">Sites</span><span style="display:block;margin-top:8px;font-size:.95rem;line-height:1.65;color:#5e5e5e;max-width:44ch">Seu negócio merece uma experiência à altura. UX/UI, desenvolvimento e performance.</span></span>
+          <span style="font-family:var(--font-display);font-size:1.15rem;color:#0a8c3c">→</span>
+        </button>
+        <button onMouseEnter="{{ hSvc4 }}" onMouseLeave="{{ hSvcOut }}" onClick="{{ goSolucoes }}" data-fade="1" style="position:relative;z-index:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:100%;text-align:left;padding:clamp(20px,2.4vw,30px) 0;background:none;border:0;border-top:1px solid rgba(10,10,10,.1);cursor:pointer;color:#0a0a0a;transition:padding-left .4s cubic-bezier(.2,.7,.2,1)" style-hover="padding-left:14px">
+          <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#9a9a9a">04</span>
+          <span style="min-width:0"><span style="display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.12;letter-spacing:-.03em">SaaS &amp; Tecnologia</span><span style="display:block;margin-top:8px;font-size:.95rem;line-height:1.65;color:#5e5e5e;max-width:44ch">Ideias que viram produtos. Sistemas, dashboards, automações e integrações.</span></span>
+          <span style="font-family:var(--font-display);font-size:1.15rem;color:#0a8c3c">→</span>
+        </button>
+        <button onMouseEnter="{{ hSvc5 }}" onMouseLeave="{{ hSvcOut }}" onClick="{{ goSolucoes }}" data-fade="1" style="position:relative;z-index:1;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:100%;text-align:left;padding:clamp(20px,2.4vw,30px) 0;background:none;border:0;border-top:1px solid rgba(10,10,10,.1);border-bottom:1px solid rgba(10,10,10,.1);cursor:pointer;color:#0a0a0a;transition:padding-left .4s cubic-bezier(.2,.7,.2,1)" style-hover="padding-left:14px">
+          <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#9a9a9a">05</span>
+          <span style="min-width:0"><span style="display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.12;letter-spacing:-.03em">Marketing</span><span style="display:block;margin-top:8px;font-size:.95rem;line-height:1.65;color:#5e5e5e;max-width:44ch">Estratégia para colocar sua marca em movimento. Campanhas, tráfego e performance.</span></span>
+          <span style="font-family:var(--font-display);font-size:1.15rem;color:#0a8c3c">→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;background:#0a0a0a;border-top:1px solid rgba(255,255,255,.07);padding:clamp(64px,8vw,120px) 0">
+    <div>
+      <div style="padding:0 clamp(16px,5vw,56px);max-width:1280px;margin:0 auto clamp(30px,3.4vw,50px);width:100%">
+        <span style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Ecossistema Bow</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.08;letter-spacing:-.03em">Uma marca. Várias possibilidades.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(14px,1.6vw,22px);padding:0 clamp(16px,5vw,56px);max-width:1280px;margin:0 auto">
+        <article style="padding:clamp(22px,2.6vw,32px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-height:clamp(200px,26vh,250px)">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0be06b">Social Media</span>
+          <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.15;letter-spacing:-.03em">cria presença.</p><p style="margin:0;font-size:.9rem;line-height:1.6;color:rgba(255,255,255,.5)">Planejamento, conteúdo e gestão que mantêm sua marca relevante todo dia.</p>
+        </article>
+        <article style="padding:clamp(22px,2.6vw,32px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-height:clamp(200px,26vh,250px)">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0be06b">Identidade Visual</span>
+          <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.15;letter-spacing:-.03em">cria reconhecimento.</p><p style="margin:0;font-size:.9rem;line-height:1.6;color:rgba(255,255,255,.5)">Uma marca coerente em cada ponto de contato, do logo à aplicação.</p>
+        </article>
+        <article style="padding:clamp(22px,2.6vw,32px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-height:clamp(200px,26vh,250px)">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0be06b">Sites</span>
+          <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.15;letter-spacing:-.03em">criam experiências.</p><p style="margin:0;font-size:.9rem;line-height:1.6;color:rgba(255,255,255,.5)">Sites que apresentam, convencem e transformam visita em oportunidade.</p>
+        </article>
+        <article style="padding:clamp(22px,2.6vw,32px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-height:clamp(200px,26vh,250px)">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0be06b">Marketing</span>
+          <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.15;letter-spacing:-.03em">cria movimento.</p><p style="margin:0;font-size:.9rem;line-height:1.6;color:rgba(255,255,255,.5)">Campanhas e canais conectados ao mesmo objetivo de crescimento.</p>
+        </article>
+        <article style="padding:clamp(22px,2.6vw,32px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-height:clamp(200px,26vh,250px)">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0be06b">Tecnologia</span>
+          <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.15;letter-spacing:-.03em">cria novas possibilidades.</p><p style="margin:0;font-size:.9rem;line-height:1.6;color:rgba(255,255,255,.5)">Sistemas, automações e produtos digitais feitos sob medida.</p>
+        </article>
+        <article style="padding:clamp(22px,2.6vw,32px);border-radius:24px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;min-height:clamp(200px,26vh,250px)">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase">Tudo conectado</span>
+          <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.4rem,2.6vw,2.1rem);line-height:1.1;letter-spacing:-.03em">Fazer sua marca evoluir.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);border-top:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));justify-items:start;align-items:end;gap:24px clamp(24px,4vw,72px);margin-bottom:clamp(30px,3.6vw,52px)">
+        <div>
+          <span data-fade="1" style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Projetos</span>
+          <h2 data-fade="1" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.08;letter-spacing:-.03em">O que a gente faz na prática.</h2>
+        </div>
+        <button onClick="{{ goCases }}" data-fade="1" style="padding:14px 26px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,.2);color:#fff;font-family:var(--font-body);font-size:13.5px;font-weight:600;cursor:pointer;transition:background .25s,color .25s,border-color .25s" style-hover="background:#fff;color:#0a0a0a">Ver todos os projetos</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(16px,2vw,28px)">
+        <article data-fade="1" style="display:flex;flex-direction:column;gap:16px">
+          <div style="position:relative;aspect-ratio:4/5;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+            <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-case-1" shape="rect" src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Attualize"></image-slot></div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 7px;font-family:var(--font-display);font-weight:600;font-size:1.15rem;letter-spacing:-.02em">Attualize Esquadrias</h3>
+            <p style="margin:0;font-size:.92rem;line-height:1.65;color:rgba(255,255,255,.55)">Posicionamento. Social Media. Conteúdo. Direção criativa.</p>
+          </div>
+        </article>
+        <article data-fade="1" style="display:flex;flex-direction:column;gap:16px">
+          <div style="position:relative;aspect-ratio:4/5;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+            <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-case-2" shape="rect" src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="IOA"></image-slot></div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 7px;font-family:var(--font-display);font-weight:600;font-size:1.15rem;letter-spacing:-.02em">IOA Blumenau</h3>
+            <p style="margin:0;font-size:.92rem;line-height:1.65;color:rgba(255,255,255,.55)">Estratégia. Social Media. Campanhas. Conteúdo.</p>
+          </div>
+        </article>
+        <article data-fade="1" style="display:flex;flex-direction:column;gap:16px">
+          <div style="position:relative;aspect-ratio:4/5;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+            <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-case-3" shape="rect" src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Identidade"></image-slot></div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 7px;font-family:var(--font-display);font-weight:600;font-size:1.15rem;letter-spacing:-.02em">Identidade Visual</h3>
+            <p style="margin:0;font-size:.92rem;line-height:1.65;color:rgba(255,255,255,.55)">Branding. Estratégia. Direção visual.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato" style="padding:clamp(64px,8vw,130px) clamp(16px,5vw,56px);background:#0e0e0e;border-top:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:clamp(32px,4vw,80px)">
+      <div data-fade="1">
+        <h2 style="margin:0 0 20px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.9rem,3.6vw,3.1rem);line-height:1.06;letter-spacing:-.035em;max-width:16ch">Sua marca pode ser muito mais.</h2>
+        <p style="margin:0 0 20px;font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:48ch">Talvez o que esteja faltando não seja mais uma ação. Talvez seja uma nova forma de pensar sua presença digital. Conte para a gente o que você está construindo.</p>
+        <p style="margin:0 0 26px;font-size:.98rem;line-height:1.9;color:rgba(255,255,255,.45)">Pode ser uma marca. Um projeto. Um site. Uma campanha. Um produto. Ou simplesmente uma ideia que ainda não encontrou forma.</p>
+        <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:1.2rem;color:#0be06b">A gente começa pela conversa.</p>
+      </div>
+      <form data-fade="1" onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px;padding:clamp(22px,2.8vw,38px);border-radius:26px;border:1px solid rgba(255,255,255,.09);background:#131313">
+        <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;font-weight:500;color:rgba(255,255,255,.55)">Nome</span><input type="text" style="background:#0a0a0a;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 15px;font-size:15px;outline:none"></label>
+        <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;font-weight:500;color:rgba(255,255,255,.55)">E-mail</span><input type="email" style="background:#0a0a0a;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 15px;font-size:15px;outline:none"></label>
+        <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;font-weight:500;color:rgba(255,255,255,.55)">Empresa</span><input type="text" style="background:#0a0a0a;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 15px;font-size:15px;outline:none"></label>
+        <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:12px;font-weight:500;color:rgba(255,255,255,.55)">Qual é o seu projeto?</span><textarea rows="4" style="background:#0a0a0a;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 15px;font-size:15px;outline:none;resize:vertical"></textarea></label>
+        <button type="submit" style="margin-top:4px;padding:16px 28px;border:0;border-radius:999px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;font-family:var(--font-body);font-size:14.5px;font-weight:600;cursor:pointer;transition:filter .2s,transform .2s" style-hover="filter:brightness(1.1)" style-active="transform:scale(.97)">{{ submitLabel }}</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<!-- ===================== SOLUÇÕES ===================== -->
+<sc-if value="{{ isSolucoes }}" hint-placeholder-val="{{ false }}">
+<main>
+
+  <section style="position:relative;padding:clamp(70px,11vh,140px) clamp(16px,5vw,56px) clamp(44px,5vw,72px);overflow:hidden">
+    <div data-parallax="1" style="position:absolute;inset:-10% 0;z-index:0;opacity:.34"><image-slot id="bow-sol-bg" shape="rect" src="https://images.pexels.com/videos/27980029/pexels-photo-27980029.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1600" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Topo"></image-slot></div>
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.82),rgba(10,10,10,.99))"></div>
+    <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto">
+      <span data-fade="1" style="display:inline-block;margin-bottom:18px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Soluções</span>
+      <h1 data-split="1" style="margin:0 0 22px;font-family:var(--font-display);font-weight:700;font-size:clamp(2rem,4.4vw,3.8rem);line-height:1.04;letter-spacing:-.035em;max-width:20ch">Tudo que sua marca precisa para crescer no digital.</h1>
+      <p data-fade="1" style="margin:0;font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.65;color:rgba(255,255,255,.65);max-width:54ch">Da primeira ideia ao projeto no ar, reunimos diferentes disciplinas para construir uma presença digital consistente.</p>
+    </div>
+  </section>
+
+  <section style="padding:0 clamp(16px,5vw,56px) clamp(56px,7vw,110px)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,1.8vw,22px)">
+      <article data-fade="1" style="padding:clamp(24px,2.8vw,36px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,transform .3s" style-hover="border-color:rgba(11,224,107,.4);transform:translateY(-4px)">
+        <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#0be06b">01</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.02em">Social Media</h2>
+        <p style="margin:0;font-size:.98rem;line-height:1.7;color:rgba(255,255,255,.62)">Planejamos, criamos e gerenciamos conteúdos que transformam suas redes sociais em uma extensão real da sua marca.</p>
+        <p style="margin:0;font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.4)">Planejamento. Conteúdo. Design. Reels. Gestão.</p>
+        <a href="{{ waSocial }}" target="_blank" rel="noopener" style="margin-top:6px;align-self:flex-start;font-size:13.5px;font-weight:600;color:#0be06b">Conhecer →</a>
+      </article>
+      <article data-fade="1" style="padding:clamp(24px,2.8vw,36px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,transform .3s" style-hover="border-color:rgba(11,224,107,.4);transform:translateY(-4px)">
+        <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#0be06b">02</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.02em">Identidade Visual</h2>
+        <p style="margin:0;font-size:.98rem;line-height:1.7;color:rgba(255,255,255,.62)">Criamos identidades visuais que traduzem posicionamento, personalidade e valor em cada ponto de contato.</p>
+        <p style="margin:0;font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.4)">Estratégia. Logo. Identidade. Direção visual. Aplicações.</p>
+        <a href="{{ waIdentidade }}" target="_blank" rel="noopener" style="margin-top:6px;align-self:flex-start;font-size:13.5px;font-weight:600;color:#0be06b">Conhecer →</a>
+      </article>
+      <article data-fade="1" style="padding:clamp(24px,2.8vw,36px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,transform .3s" style-hover="border-color:rgba(11,224,107,.4);transform:translateY(-4px)">
+        <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#0be06b">03</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.02em">Sites</h2>
+        <p style="margin:0;font-size:.98rem;line-height:1.7;color:rgba(255,255,255,.62)">Criamos sites que combinam estratégia, design e tecnologia para apresentar sua empresa, fortalecer sua marca e transformar visitas em oportunidades.</p>
+        <p style="margin:0;font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.4)">UX/UI. Design. Desenvolvimento. Landing Pages. Performance.</p>
+        <a href="{{ waSites }}" target="_blank" rel="noopener" style="margin-top:6px;align-self:flex-start;font-size:13.5px;font-weight:600;color:#0be06b">Conhecer →</a>
+      </article>
+      <article data-fade="1" style="padding:clamp(24px,2.8vw,36px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,transform .3s" style-hover="border-color:rgba(11,224,107,.4);transform:translateY(-4px)">
+        <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#0be06b">04</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.02em">SaaS &amp; Tecnologia</h2>
+        <p style="margin:0;font-size:.98rem;line-height:1.7;color:rgba(255,255,255,.62)">Transformamos processos, problemas e oportunidades em ferramentas digitais feitas para simplificar operações e criar novas possibilidades.</p>
+        <p style="margin:0;font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.4)">SaaS. Sistemas. Dashboards. Automações. Integrações.</p>
+        <a href="{{ waTech }}" target="_blank" rel="noopener" style="margin-top:6px;align-self:flex-start;font-size:13.5px;font-weight:600;color:#0be06b">Conhecer →</a>
+      </article>
+      <article data-fade="1" style="padding:clamp(24px,2.8vw,36px);border-radius:24px;border:1px solid rgba(255,255,255,.09);background:#111;display:flex;flex-direction:column;gap:14px;transition:border-color .3s,transform .3s" style-hover="border-color:rgba(11,224,107,.4);transform:translateY(-4px)">
+        <span style="font-family:var(--font-display);font-size:12px;font-weight:600;color:#0be06b">05</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.02em">Marketing</h2>
+        <p style="margin:0;font-size:.98rem;line-height:1.7;color:rgba(255,255,255,.62)">Conectamos diferentes canais, ideias e ações para construir presença, gerar demanda e aproximar sua marca das pessoas certas.</p>
+        <p style="margin:0;font-size:.88rem;line-height:1.8;color:rgba(255,255,255,.4)">Estratégia. Campanhas. Tráfego. Conteúdo. Performance.</p>
+        <a href="{{ waMarketing }}" target="_blank" rel="noopener" style="margin-top:6px;align-self:flex-start;font-size:13.5px;font-weight:600;color:#0be06b">Conhecer →</a>
+      </article>
+      <article data-fade="1" style="padding:clamp(24px,2.8vw,36px);border-radius:24px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;display:flex;flex-direction:column;justify-content:space-between;gap:22px">
+        <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.4rem;line-height:1.2;letter-spacing:-.02em">Não sabe por onde começar?</p>
+        <p style="margin:0;font-size:.95rem;line-height:1.65;opacity:.8">A gente começa pela conversa e aponta o caminho.</p>
+        <a href="{{ waHref }}" target="_blank" rel="noopener" style="align-self:flex-start;padding:13px 24px;border-radius:999px;background:#04240f;color:#0be06b;font-size:13.5px;font-weight:600">Falar com a Bow</a>
+      </article>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);background:#fff;color:#0a0a0a">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="max-width:24ch;margin-bottom:clamp(32px,4vw,56px)">
+        <span data-fade="1" style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0a8c3c">Nosso método</span>
+        <h2 data-fade="1" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.08;letter-spacing:-.03em">Como a Bow transforma ideias em projetos.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(14px,1.8vw,24px)">
+        <div data-fade="1" style="padding:clamp(22px,2.6vw,32px);border-radius:22px;background:#f4f4f4;display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.1em;color:#0a8c3c">001</span>
+          <h3 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em">Entender</h3>
+          <p style="margin:0;font-size:.93rem;line-height:1.7;color:#5e5e5e">Conhecemos sua empresa, seu mercado, seu público, seus desafios e seus objetivos. Uma boa solução começa fazendo as perguntas certas.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(22px,2.6vw,32px);border-radius:22px;background:#f4f4f4;display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.1em;color:#0a8c3c">002</span>
+          <h3 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em">Estrategizar</h3>
+          <p style="margin:0;font-size:.93rem;line-height:1.7;color:#5e5e5e">Definimos posicionamento, linguagem, prioridades e caminhos para transformar objetivos em ações. Menos achismo, mais intenção.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(22px,2.6vw,32px);border-radius:22px;background:#f4f4f4;display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.1em;color:#0a8c3c">003</span>
+          <h3 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em">Criar</h3>
+          <p style="margin:0;font-size:.93rem;line-height:1.7;color:#5e5e5e">Transformamos estratégia em algo que pode ser visto, usado e lembrado. Marcas, conteúdos, sites, campanhas e produtos digitais.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(22px,2.6vw,32px);border-radius:22px;background:#f4f4f4;display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.1em;color:#0a8c3c">004</span>
+          <h3 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em">Colocar no ar</h3>
+          <p style="margin:0;font-size:.93rem;line-height:1.7;color:#5e5e5e">Ideia parada não gera impacto. Conteúdo publicado, site no ar, campanha rodando, produto funcionando.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(22px,2.6vw,32px);border-radius:22px;background:#0a0a0a;color:#fff;display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:.8rem;letter-spacing:.1em;color:#0be06b">005</span>
+          <h3 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:1.2rem;letter-spacing:-.02em">Evoluir</h3>
+          <p style="margin:0;font-size:.93rem;line-height:1.7;color:rgba(255,255,255,.62)">O projeto não termina quando vai para o ar. Analisamos, aprendemos e ajustamos. Marcas crescem, mercados mudam.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;padding:clamp(64px,8vw,130px) clamp(16px,5vw,56px);overflow:hidden">
+    <div data-parallax="1" style="position:absolute;inset:-10% 0;z-index:0;opacity:.28"><image-slot id="bow-saas-bg" shape="rect" src="https://images.pexels.com/videos/5647320/pexels-photo-5647320.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1600" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Tecnologia"></image-slot></div>
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.92),rgba(10,10,10,.99))"></div>
+    <div style="position:relative;z-index:2;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(30px,4vw,72px)">
+      <div data-fade="1">
+        <span style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">SaaS &amp; Tecnologia</span>
+        <h2 style="margin:0 0 20px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,3.4vw,3rem);line-height:1.06;letter-spacing:-.035em">Não criamos apenas para a internet. Criamos para dentro dela também.</h2>
+        <p style="margin:0;font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:48ch">Quando uma ideia precisa virar produto, sistema ou operação, a Bow entra no desenvolvimento.</p>
+      </div>
+      <div data-fade="1" style="display:flex;flex-direction:column;gap:22px">
+        <p style="margin:0;font-size:.95rem;color:rgba(255,255,255,.5)">Criamos soluções digitais para empresas que querem:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px">
+          <span style="padding:16px 18px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,.08);font-size:.92rem">Automatizar processos.</span>
+          <span style="padding:16px 18px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,.08);font-size:.92rem">Organizar operações.</span>
+          <span style="padding:16px 18px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,.08);font-size:.92rem">Centralizar informações.</span>
+          <span style="padding:16px 18px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,.08);font-size:.92rem">Simplificar tarefas.</span>
+          <span style="padding:16px 18px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,.08);font-size:.92rem">Criar novos produtos.</span>
+          <span style="padding:16px 18px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,.08);font-size:.92rem">Ganhar eficiência.</span>
+        </div>
+        <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:1.1rem;line-height:1.6;color:rgba(255,255,255,.9)">Do conceito à interface. Da interface ao produto. Da ideia ao funcionamento.</p>
+        <a href="{{ waTech }}" target="_blank" rel="noopener" style="align-self:flex-start;display:inline-flex;padding:16px 30px;border-radius:999px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;font-size:14.5px;font-weight:600;transition:filter .2s" style-hover="filter:brightness(1.1)">Criar uma solução</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<!-- ===================== CASES ===================== -->
+<sc-if value="{{ isCases }}" hint-placeholder-val="{{ false }}">
+<main>
+
+  <section style="padding:clamp(70px,11vh,140px) clamp(16px,5vw,56px) clamp(36px,4vw,60px)">
+    <div style="max-width:1280px;margin:0 auto">
+      <span data-fade="1" style="display:inline-block;margin-bottom:18px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Projetos</span>
+      <h1 data-split="1" style="margin:0 0 22px;font-family:var(--font-display);font-weight:700;font-size:clamp(2rem,4.4vw,3.8rem);line-height:1.04;letter-spacing:-.035em;max-width:18ch">O que a gente faz na prática.</h1>
+      <p data-fade="1" style="margin:0;font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.65;color:rgba(255,255,255,.65);max-width:54ch">Projetos que nasceram de desafios reais e ganharam forma através de estratégia, criatividade e tecnologia.</p>
+    </div>
+  </section>
+
+  <section style="padding:0 clamp(16px,5vw,56px) clamp(56px,7vw,110px)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:clamp(20px,2.4vw,40px)">
+      <article data-fade="1" style="display:flex;flex-direction:column;gap:18px">
+        <div style="position:relative;aspect-ratio:16/11;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+          <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-p1" shape="rect" src="https://images.pexels.com/videos/6615058/pexels-photo-6615058.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Attualize"></image-slot></div>
+        </div>
+        <div>
+          <h2 style="margin:0 0 8px;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.025em">Attualize Esquadrias</h2>
+          <p style="margin:0;font-size:.95rem;line-height:1.75;color:rgba(255,255,255,.55)">Posicionamento. Social Media. Conteúdo. Direção criativa.</p>
+        </div>
+      </article>
+      <article data-fade="1" style="display:flex;flex-direction:column;gap:18px">
+        <div style="position:relative;aspect-ratio:16/11;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+          <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-p2" shape="rect" src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="IOA"></image-slot></div>
+        </div>
+        <div>
+          <h2 style="margin:0 0 8px;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.025em">IOA Blumenau</h2>
+          <p style="margin:0;font-size:.95rem;line-height:1.75;color:rgba(255,255,255,.55)">Estratégia. Social Media. Campanhas. Conteúdo.</p>
+        </div>
+      </article>
+      <article data-fade="1" style="display:flex;flex-direction:column;gap:18px">
+        <div style="position:relative;aspect-ratio:16/11;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+          <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-p3" shape="rect" src="https://images.pexels.com/videos/5717294/pexels-photo-5717294.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Identidade"></image-slot></div>
+        </div>
+        <div>
+          <h2 style="margin:0 0 8px;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.025em">Identidade Visual</h2>
+          <p style="margin:0;font-size:.95rem;line-height:1.75;color:rgba(255,255,255,.55)">Branding. Estratégia. Direção visual.</p>
+        </div>
+      </article>
+      <article data-fade="1" style="display:flex;flex-direction:column;gap:18px">
+        <div style="position:relative;aspect-ratio:16/11;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+          <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-p4" shape="rect" src="https://images.pexels.com/videos/33170797/pexels-photo-33170797.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1400" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Experiência Digital"></image-slot></div>
+        </div>
+        <div>
+          <h2 style="margin:0 0 8px;font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.025em">Experiência Digital</h2>
+          <p style="margin:0;font-size:.95rem;line-height:1.75;color:rgba(255,255,255,.55)">UX/UI. Website. Desenvolvimento.</p>
+        </div>
+      </article>
+    </div>
+
+    <sc-if value="{{ hasOpenSlots }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1280px;margin:clamp(28px,3.4vw,52px) auto 0">
+      <p data-fade="1" style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35)">Espaços para novos projetos</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(14px,1.8vw,24px)">
+        <sc-for list="{{ openSlots }}" as="slot" hint-placeholder-count="3">
+          <div data-fade="1" style="display:flex;flex-direction:column;gap:12px">
+            <div style="position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:1px dashed rgba(255,255,255,.18)">
+              <image-slot id="{{ slot.id }}" shape="rect" placeholder="Novo projeto"></image-slot>
+            </div>
+            <p style="margin:0;font-size:.88rem;color:rgba(255,255,255,.35)">{{ slot.label }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+  </section>
+
+  <section style="padding:clamp(56px,7vw,110px) clamp(16px,5vw,56px);background:#0e0e0e;border-top:1px solid rgba(255,255,255,.07)">
+    <div data-fade="1" style="max-width:820px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px">
+      <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,3.4vw,2.9rem);line-height:1.08;letter-spacing:-.035em">Sua marca pode ser muito mais.</h2>
+      <p style="margin:0;font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.6);max-width:50ch">Talvez o que esteja faltando não seja mais uma ação. Talvez seja uma nova forma de pensar sua presença digital.</p>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="display:inline-flex;padding:16px 30px;border-radius:999px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;font-size:14.5px;font-weight:600;transition:filter .2s" style-hover="filter:brightness(1.1)">Começar um projeto</a>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<!-- ===================== SOBRE ===================== -->
+<sc-if value="{{ isSobre }}" hint-placeholder-val="{{ false }}">
+<main>
+
+  <section style="padding:clamp(70px,11vh,140px) clamp(16px,5vw,56px) clamp(44px,5vw,72px)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(30px,4vw,72px);align-items:center">
+      <div>
+        <span data-fade="1" style="display:inline-block;margin-bottom:18px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Sobre</span>
+        <h1 data-split="1" style="margin:0 0 22px;font-family:var(--font-display);font-weight:700;font-size:clamp(2.2rem,4.6vw,4rem);line-height:1.02;letter-spacing:-.04em">Somos a Bow.</h1>
+        <p data-fade="1" style="margin:0 0 16px;font-size:clamp(1rem,1.3vw,1.15rem);line-height:1.65;color:rgba(255,255,255,.7);max-width:48ch">Uma agência para quem acredita que comunicação não precisa ser igual a todo mundo.</p>
+        <p data-fade="1" style="margin:0;font-size:1rem;line-height:1.7;color:rgba(255,255,255,.55);max-width:48ch">Somos estrategistas, designers, criativos e desenvolvedores trabalhando juntos para transformar negócios através do digital.</p>
+      </div>
+      <div data-fade="1" style="position:relative;aspect-ratio:4/5;border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.09)">
+        <div data-parallax-soft="1" style="position:absolute;inset:-6% 0"><image-slot id="bow-sobre" shape="rect" src="https://images.pexels.com/videos/6803583/pexels-photo-6803583.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1200" credit="Pexels" credit-href="https://www.pexels.com/" placeholder="Time Bow"></image-slot></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(50px,6vw,100px) clamp(16px,5vw,56px);border-top:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,4vw,72px)">
+      <div data-fade="1">
+        <p style="margin:0 0 18px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,2.8vw,2.2rem);line-height:1.12;letter-spacing:-.03em">Não seguimos fórmulas prontas.</p>
+        <p style="margin:0;font-size:1.05rem;line-height:2;color:rgba(255,255,255,.55)">Observamos. Pensamos. Criamos. Testamos. Construímos.</p>
+      </div>
+      <div data-fade="1" style="display:flex;flex-direction:column;justify-content:center;gap:14px;padding-left:clamp(0px,2vw,28px);border-left:1px solid rgba(255,255,255,.08)">
+        <p style="margin:0;font-size:1.05rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:44ch">Porque cada negócio tem uma história diferente.</p>
+        <p style="margin:0;font-size:1.05rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:44ch">E cada marca merece uma forma própria de contá-la.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);background:#fff;color:#0a0a0a">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="max-width:24ch;margin-bottom:clamp(30px,3.6vw,52px)">
+        <span data-fade="1" style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0a8c3c">Manifesto</span>
+        <h2 data-fade="1" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.08;letter-spacing:-.03em">Ideia boa precisa de direção.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(12px,1.6vw,20px);margin-bottom:clamp(30px,3.6vw,52px)">
+        <p data-fade="1" style="margin:0;padding:clamp(20px,2.4vw,28px);border-radius:20px;background:#f4f4f4;font-family:var(--font-display);font-weight:600;font-size:1rem;line-height:1.5">Antes do post, existe uma <span style="color:#0a8c3c">estratégia</span>.</p>
+        <p data-fade="1" style="margin:0;padding:clamp(20px,2.4vw,28px);border-radius:20px;background:#f4f4f4;font-family:var(--font-display);font-weight:600;font-size:1rem;line-height:1.5">Antes do site, existe uma <span style="color:#0a8c3c">experiência</span>.</p>
+        <p data-fade="1" style="margin:0;padding:clamp(20px,2.4vw,28px);border-radius:20px;background:#f4f4f4;font-family:var(--font-display);font-weight:600;font-size:1rem;line-height:1.5">Antes da campanha, existe um <span style="color:#0a8c3c">objetivo</span>.</p>
+        <p data-fade="1" style="margin:0;padding:clamp(20px,2.4vw,28px);border-radius:20px;background:#f4f4f4;font-family:var(--font-display);font-weight:600;font-size:1rem;line-height:1.5">Antes da tecnologia, existe um <span style="color:#0a8c3c">problema para resolver</span>.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(24px,3.4vw,64px);align-items:end">
+        <p data-fade="1" style="margin:0;font-size:1.02rem;line-height:1.7;color:#585858">Não acreditamos em criar por criar. Na Bow, transformamos estratégia em criação e criação em algo que realmente funciona.</p>
+        <p data-fade="1" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.2rem,2.2vw,1.8rem);line-height:1.22;letter-spacing:-.03em">Porque estética chama atenção. Mas é a estratégia que dá sentido.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px)">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="max-width:52ch;margin-bottom:clamp(30px,3.6vw,52px)">
+        <span data-fade="1" style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Diferencial</span>
+        <h2 data-fade="1" style="margin:0 0 18px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.2vw,2.8rem);line-height:1.08;letter-spacing:-.03em">Não somos uma fábrica de posts. Somos uma agência que pensa no todo.</h2>
+        <p data-fade="1" style="margin:0;font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.62)">Enquanto algumas empresas procuram alguém para cuidar apenas do Instagram, nós olhamos para a marca, a comunicação, a experiência e a tecnologia como partes do mesmo negócio.</p>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div data-fade="1" style="padding:clamp(18px,2.4vw,28px) 0;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px clamp(20px,3.4vw,56px);align-items:baseline">
+          <p style="margin:0;font-size:1rem;line-height:1.5;color:rgba(255,255,255,.35)">Você não precisa de mais uma postagem.</p>
+          <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.38;letter-spacing:-.02em">Precisa de uma comunicação que tenha propósito.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(18px,2.4vw,28px) 0;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px clamp(20px,3.4vw,56px);align-items:baseline">
+          <p style="margin:0;font-size:1rem;line-height:1.5;color:rgba(255,255,255,.35)">Você não precisa apenas de um site bonito.</p>
+          <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.38;letter-spacing:-.02em">Precisa de uma experiência que represente sua empresa.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(18px,2.4vw,28px) 0;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px clamp(20px,3.4vw,56px);align-items:baseline">
+          <p style="margin:0;font-size:1rem;line-height:1.5;color:rgba(255,255,255,.35)">Você não precisa de uma identidade visual qualquer.</p>
+          <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.38;letter-spacing:-.02em">Precisa de uma marca que tenha personalidade.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(18px,2.4vw,28px) 0;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px clamp(20px,3.4vw,56px);align-items:baseline">
+          <p style="margin:0;font-size:1rem;line-height:1.5;color:rgba(255,255,255,.35)">Você não precisa estar em todos os lugares.</p>
+          <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.38;letter-spacing:-.02em">Precisa estar nos lugares certos.</p>
+        </div>
+        <div data-fade="1" style="padding:clamp(18px,2.4vw,28px) 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px clamp(20px,3.4vw,56px);align-items:baseline">
+          <p style="margin:0;font-size:1rem;line-height:1.5;color:rgba(255,255,255,.35)">Você não precisa de mais uma ferramenta.</p>
+          <p style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.38;letter-spacing:-.02em">Precisa de tecnologia que resolva problemas reais.</p>
+        </div>
+      </div>
+      <p data-fade="1" style="margin:clamp(26px,3vw,40px) 0 0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,2.4vw,2rem);letter-spacing:-.03em;color:#0be06b">É aí que a Bow entra.</p>
+    </div>
+  </section>
+
+  <section style="padding:clamp(64px,8vw,120px) clamp(16px,5vw,56px);background:#0e0e0e;border-top:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,4vw,72px)">
+      <div data-fade="1">
+        <span style="display:inline-block;margin-bottom:16px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#0be06b">Filosofia</span>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,3.4vw,3rem);line-height:1.04;letter-spacing:-.04em">Menos fórmula. Mais intenção.</h2>
+      </div>
+      <div data-fade="1" style="display:flex;flex-direction:column;gap:18px">
+        <p style="margin:0;font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:48ch">Não queremos criar mais uma marca parecida com todas as outras. Não queremos preencher calendário por preencher. Não queremos desenvolver tecnologia só porque podemos.</p>
+        <p style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.15rem,2vw,1.6rem);line-height:1.32;letter-spacing:-.03em">Queremos entender o problema. Encontrar a ideia. Construir a solução.</p>
+        <p style="margin:0;font-size:1.02rem;line-height:1.7;color:rgba(255,255,255,.62);max-width:48ch">E fazer tudo isso com estética, estratégia e propósito.</p>
+        <a href="{{ waHref }}" target="_blank" rel="noopener" style="align-self:flex-start;margin-top:6px;display:inline-flex;padding:16px 30px;border-radius:999px;background:linear-gradient(135deg,#0be06b,#06a84e);color:#04240f;font-size:14.5px;font-weight:600;transition:filter .2s" style-hover="filter:brightness(1.1)">Falar com a Bow</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<footer style="padding:clamp(50px,6vw,90px) clamp(16px,5vw,56px) 28px;border-top:1px solid rgba(255,255,255,.07);background:#0a0a0a">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:clamp(28px,3.4vw,64px)">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <img src="assets/logo-bow-white.svg" alt="bow." style="height:26px;width:auto;align-self:flex-start">
+      <p style="margin:0;font-size:.95rem;line-height:1.75;color:rgba(255,255,255,.55);max-width:30ch">Estratégia, criatividade e tecnologia para marcas que querem ir além do óbvio.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35)">Soluções</p>
+      <button onClick="{{ goSolucoes }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">Social Media</button>
+      <button onClick="{{ goSolucoes }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">Identidade Visual</button>
+      <button onClick="{{ goSolucoes }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">Sites</button>
+      <button onClick="{{ goSolucoes }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">SaaS &amp; Tecnologia</button>
+      <button onClick="{{ goSolucoes }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">Marketing</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35)">Bow</p>
+      <button onClick="{{ goCases }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">Cases</button>
+      <button onClick="{{ goSobre }}" style="align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;font-family:var(--font-body);font-size:.93rem;color:rgba(255,255,255,.65);transition:color .2s" style-hover="color:#0be06b">Sobre</button>
+      <a href="#contato" style="font-size:.93rem;color:rgba(255,255,255,.65)" style-hover="color:#0be06b">Contato</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35)">Fale conosco</p>
+      <a href="https://instagram.com/agencia.bow" target="_blank" rel="noopener" style="font-size:.93rem;color:rgba(255,255,255,.65)" style-hover="color:#0be06b">@agencia.bow</a>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="font-size:.93rem;color:rgba(255,255,255,.65)" style-hover="color:#0be06b">51 98937-3400</a>
+      <a href="mailto:bowagencydesign@gmail.com" style="font-size:.93rem;color:rgba(255,255,255,.65)" style-hover="color:#0be06b">bowagencydesign@gmail.com</a>
+    </div>
+  </div>
+  <div style="max-width:1280px;margin:clamp(32px,4vw,56px) auto 0;padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px">
+    <p style="margin:0;font-size:.82rem;color:rgba(255,255,255,.35)">© 2026 Bow Agência. Todos os direitos reservados.</p>
+    <a href="#privacidade" style="font-size:.82rem;color:rgba(255,255,255,.35)" style-hover="color:#0be06b">Política de Privacidade</a>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;animations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Movimento&quot;},&quot;casesEmptySlots&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:0,&quot;max&quot;:4,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Cases&quot;}}">
+class Component extends DCLogic {
+  state = { page: "home", sent: false, svc: 0 };
+
+  rootRef = (el) => { this.root = el; };
+  progRef = (el) => { this.prog = el; };
+  barRef = (el) => { this.bar = el; };
+
+  go = (page) => {
+    this.setState({ page, svc: 0 }, () => window.scrollTo({ top: 0, behavior: "auto" }));
+  };
+
+  wa(msg) { return "https://wa.me/5551989373400?text=" + encodeURIComponent(msg); }
+
+  onScroll = () => {
+    if (this._raf) return;
+    this._raf = requestAnimationFrame(() => {
+      this._raf = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const r = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (this.prog) this.prog.textContent = Math.round(r * 100) + "%";
+      if (this.bar) this.bar.style.transform = "scaleX(" + r.toFixed(4) + ")";
+    });
+  };
+
+  splitWords(el) {
+    if (el.dataset.splitDone) return;
+    el.dataset.splitDone = "1";
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach((child) => {
+        if (child.nodeType === 3) {
+          const words = child.textContent.split(/(\s+)/).filter((w) => w.length);
+          if (!words.length) return;
+          const frag = document.createDocumentFragment();
+          const cs = getComputedStyle(node);
+          const grad = cs.webkitBackgroundClip === "text" || cs.backgroundClip === "text";
+          words.forEach((w) => {
+            if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(" ")); return; }
+            const s = document.createElement("span");
+            s.className = "w";
+            s.textContent = w;
+            if (grad) {
+              s.style.backgroundImage = cs.backgroundImage;
+              s.style.webkitBackgroundClip = "text";
+              s.style.backgroundClip = "text";
+              s.style.color = "transparent";
+            }
+            frag.appendChild(s);
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1 && child.tagName !== "BR") {
+          walk(child);
+        }
+      });
+    };
+    walk(el);
+  }
+
+  async waitFor(test, tries) {
+    for (let i = 0; i < (tries || 100); i++) {
+      if (test()) return true;
+      await new Promise((r) => setTimeout(r, 70));
+    }
+    return false;
+  }
+
+  async initAnim() {
+    const ok = await this.waitFor(() => window.gsap && window.ScrollTrigger);
+    if (!ok || !this.root) return;
+    const { gsap, ScrollTrigger } = window;
+    gsap.registerPlugin(ScrollTrigger);
+    const on = this.props.animations !== false;
+
+    if (this._ctx) this._ctx.revert();
+    if (this._marquee) { this._marquee.kill(); this._marquee = null; }
+
+    this._ctx = gsap.context(() => {
+      const q = (sel) => Array.from(this.root.querySelectorAll(sel));
+      const inView = (el) => el.getBoundingClientRect().top < window.innerHeight * 0.94;
+
+      q("[data-split]").forEach((el) => {
+        this.splitWords(el);
+        const words = el.querySelectorAll(".w");
+        if (!on) { gsap.set(words, { opacity: 1, yPercent: 0 }); return; }
+        const vars = { yPercent: 105, opacity: 0, duration: 1.05, ease: "power4.out", stagger: 0.035 };
+        if (inView(el)) gsap.from(words, { ...vars, delay: 0.1 });
+        else gsap.from(words, { ...vars, scrollTrigger: { trigger: el, start: "top 92%", once: true } });
+      });
+
+      q("[data-fade]").forEach((el) => {
+        if (!on) return;
+        const vars = { y: 26, opacity: 0, duration: 1, ease: "power3.out" };
+        if (inView(el)) gsap.from(el, { ...vars, delay: 0.18 });
+        else gsap.from(el, { ...vars, scrollTrigger: { trigger: el, start: "top 94%", once: true } });
+      });
+
+      q("[data-parallax]").forEach((el) => {
+        if (!on) return;
+        gsap.fromTo(el, { yPercent: -4 }, {
+          yPercent: 4, ease: "none",
+          scrollTrigger: { trigger: el.parentElement, start: "top bottom", end: "bottom top", scrub: 1 },
+        });
+      });
+
+      q("[data-parallax-soft]").forEach((el) => {
+        if (!on) return;
+        gsap.fromTo(el, { yPercent: -3 }, {
+          yPercent: 3, ease: "none",
+          scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 1 },
+        });
+      });
+
+      const mtrack = this.root.querySelector("[data-mtrack]");
+      if (mtrack && on) {
+        const half = mtrack.scrollWidth / 2;
+        gsap.set(mtrack, { x: 0 });
+        this._marquee = gsap.to(mtrack, {
+          x: -half, duration: 36, ease: "none", repeat: -1,
+          modifiers: { x: (v) => (parseFloat(v) % half) + "px" },
+        });
+      }
+    }, this.root);
+
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+    clearTimeout(this._safety);
+    this._safety = setTimeout(() => {
+      if (!this.root) return;
+      ScrollTrigger.refresh();
+      this.root.querySelectorAll(".w, [data-fade]").forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && parseFloat(getComputedStyle(el).opacity) < 0.05) {
+          gsap.set(el, { opacity: 1, y: 0, yPercent: 0 });
+        }
+      });
+    }, 1800);
+  }
+
+  componentDidMount() {
+    this.initAnim();
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    window.addEventListener("resize", this.onScroll);
+    this.onScroll();
+  }
+  componentDidUpdate(prev) {
+    if (prev.page !== this.state.page || prev.animations !== this.props.animations) this.initAnim();
+  }
+  componentWillUnmount() {
+    if (this._ctx) this._ctx.revert();
+    if (this._marquee) this._marquee.kill();
+    clearTimeout(this._safety);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("resize", this.onScroll);
+  }
+
+  renderVals() {
+    const page = this.state.page;
+    const active = "#fff";
+    const idle = "rgba(255,255,255,.5)";
+    const n = Math.max(0, Math.min(4, this.props.casesEmptySlots ?? 3));
+    const openSlots = Array.from({ length: n }, (_, i) => ({
+      id: "bow-open-" + (i + 1), label: "Projeto " + String(i + 5).padStart(2, "0"),
+    }));
+    const svc = this.state.svc;
+    const setSvc = (i) => () => this.setState({ svc: i });
+    return {
+      rootRef: this.rootRef, progRef: this.progRef, barRef: this.barRef,
+      isHome: page === "home", isSolucoes: page === "solucoes", isCases: page === "cases", isSobre: page === "sobre",
+      cHome: page === "home" ? active : idle,
+      cSolucoes: page === "solucoes" ? active : idle,
+      cCases: page === "cases" ? active : idle,
+      cSobre: page === "sobre" ? active : idle,
+      goHome: () => this.go("home"), goSolucoes: () => this.go("solucoes"),
+      goCases: () => this.go("cases"), goSobre: () => this.go("sobre"),
+      oSvc: svc ? 1 : 0,
+      tSvc: svc ? "scale(1) translateY(0)" : "scale(.95) translateY(14px)",
+      hSvc1: setSvc(1), hSvc2: setSvc(2), hSvc3: setSvc(3), hSvc4: setSvc(4), hSvc5: setSvc(5),
+      hSvcOut: setSvc(0),
+      waHref: this.wa("Olá! Vim pelo site da Bow e quero falar sobre um projeto."),
+      waSocial: this.wa("Olá! Quero saber mais sobre Social Media com a Bow."),
+      waIdentidade: this.wa("Olá! Quero saber mais sobre Identidade Visual com a Bow."),
+      waSites: this.wa("Olá! Quero saber mais sobre criação de sites com a Bow."),
+      waTech: this.wa("Olá! Quero criar uma solução em SaaS/tecnologia com a Bow."),
+      waMarketing: this.wa("Olá! Quero saber mais sobre Marketing com a Bow."),
+      openSlots, hasOpenSlots: openSlots.length > 0,
+      submitLabel: this.state.sent ? "Projeto enviado ✓" : "Enviar projeto",
+      onSubmit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+    };
+  }
+}
+</script>
+</body>
+</html>
