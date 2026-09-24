@@ -7,9 +7,9 @@
 <title>Painel — Bow</title>
 <link rel="icon" type="image/png" href="../assets/mark-bow.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="painel.css?v=2026092401">
-<script src="../js/data.js?v=2026092401" defer></script>
-<script src="painel.js?v=2026092401" defer></script>
+<link rel="stylesheet" href="painel.css?v=2026092402">
+<script src="../js/data.js?v=2026092402" defer></script>
+<script src="painel.js?v=2026092402" defer></script>
 </head>
 <body>
 
@@ -48,10 +48,12 @@
       <div class="sec-head">
         <div><h2>Contatos</h2><p class="muted">Quem preencheu o formulário do site. Cada contato novo também gera um aviso por e-mail.</p></div>
         <div class="row">
+          <select class="sel" id="lead-period" aria-label="Período"><option value="all">Todos os períodos</option></select>
           <div class="seg" role="group" aria-label="Filtro"><button class="seg-btn is-on" data-filter="open">Não respondidos</button><button class="seg-btn" data-filter="all">Todos</button></div>
-          <a class="btn btn-ghost sm" href="api.php?action=leads_csv">Baixar planilha</a>
+          <a class="btn btn-ghost sm" id="lead-csv" href="api.php?action=leads_csv">Baixar planilha</a>
         </div>
       </div>
+      <p class="lead-summary" id="lead-summary"></p>
       <ul class="lead-list" id="lead-list"></ul>
     </section>
 

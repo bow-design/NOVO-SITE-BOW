@@ -115,3 +115,6 @@ h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.02em; }
 .lead-when { font-size: 12px; }
 .lead-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .empty { padding: 36px 20px; text-align: center; border: 1px dashed var(--line); border-radius: 16px; }
+.sel { padding: 7px 30px 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: #121212 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23aaa' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center; color: var(--text); font: inherit; font-size: 13px; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.sel:focus { outline: none; border-color: var(--green); }
+.lead-summary { margin: -8px 0 16px; font-size: 14px; color: var(--muted); }

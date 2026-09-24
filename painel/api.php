@@ -17,11 +17,16 @@ if ($method === 'GET' && $action === 'status') {
 if ($method === 'GET' && $action === 'leads_csv') {
     require_login();
     header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Disposition: attachment; filename="contatos-bow-' . date('Y-m-d') . '.csv"');
+    // Filtros da tela: período (AAAA ou AAAA-MM) e só os não respondidos.
+    $period = preg_match('/^\d{4}(-\d{2})?$/', (string)($_GET['period'] ?? '')) ? $_GET['period'] : '';
+    $onlyOpen = ($_GET['status'] ?? '') === 'open';
+    header('Content-Disposition: attachment; filename="contatos-bow-' . ($period ?: 'todos') . ($onlyOpen ? '-nao-respondidos' : '') . '.csv"');
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF"); // acentos certos no Excel
     fputcsv($out, ['Data', 'Nome', 'Empresa', 'E-mail', 'WhatsApp', 'Página', 'Respondido'], ';');
     foreach (load_leads() as $l) {
+        if ($period !== '' && !str_starts_with((string)$l['date'], $period)) continue;
+        if ($onlyOpen && !empty($l['done'])) continue;
         // Evita que o Excel interprete um campo como fórmula.
         $row = array_map(fn($v) => preg_match('/^[=+\-@]/', (string)$v) ? "'" . $v : $v,
             [date('d/m/Y H:i', strtotime($l['date'])), $l['name'], $l['company'], $l['email'], $l['phone'], $l['page'], empty($l['done']) ? 'Não' : 'Sim']);

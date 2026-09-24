@@ -144,7 +144,27 @@ $$(".tab").forEach((t) => t.addEventListener("click", () => {
 function render() { renderCases(); renderSlots(); }
 
 /* ---------- Contatos ---------- */
-let leads = [], leadFilter = "open";
+let leads = [], leadFilter = "open", leadPeriod = "all";
+
+const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+/* A data do contato é gravada no horário de Brasília ("2026-09-24T13:42:15-03:00"),
+   então os 7 primeiros caracteres já dão ano e mês. */
+const leadMonth = (l) => String(l.date).slice(0, 7);
+const periodLabel = (p) => p === "all" ? "todos os períodos" : p.length === 4 ? p : MONTHS[+p.slice(5, 7) - 1] + " de " + p.slice(0, 4);
+const inPeriod = (l) => leadPeriod === "all" || leadMonth(l).startsWith(leadPeriod);
+
+/* Opções do período: cada ano (inteiro) e os meses que têm contatos, do mais recente ao mais antigo. */
+function renderPeriods() {
+  const months = [...new Set(leads.map(leadMonth))].sort().reverse();
+  const years = [...new Set(months.map((m) => m.slice(0, 4)))];
+  if (leadPeriod !== "all" && !months.some((m) => m.startsWith(leadPeriod))) leadPeriod = "all";
+  const opt = (v, t) => '<option value="' + v + '"' + (v === leadPeriod ? " selected" : "") + ">" + t + "</option>";
+  $("#lead-period").innerHTML = opt("all", "Todos os períodos") + years.map((y) =>
+    '<optgroup label="' + y + '">' + opt(y, y + " inteiro") +
+    months.filter((m) => m.startsWith(y)).map((m) => opt(m, MONTHS[+m.slice(5, 7) - 1] + " de " + y)).join("") + "</optgroup>").join("");
+}
+
+$("#lead-period").addEventListener("change", (e) => { leadPeriod = e.target.value; renderLeads(); });
 
 async function loadLeads() {
   try { leads = (await api("leads", {})).leads || []; } catch (e) { toast(e.message, true); }
@@ -162,7 +182,12 @@ function renderLeads() {
   const open = leads.filter((l) => !l.done).length;
   const badge = $("#lead-count");
   badge.hidden = !open; badge.textContent = open;
-  const list = leadFilter === "open" ? leads.filter((l) => !l.done) : leads;
+  renderPeriods();
+  const inP = leads.filter(inPeriod), openInP = inP.filter((l) => !l.done).length;
+  const list = leadFilter === "open" ? inP.filter((l) => !l.done) : inP;
+  $("#lead-summary").textContent = inP.length + (inP.length === 1 ? " contato" : " contatos") +
+    (leadPeriod === "all" ? " no total" : " em " + periodLabel(leadPeriod)) + " · " + openInP + (openInP === 1 ? " não respondido" : " não respondidos");
+  $("#lead-csv").href = "api.php?action=leads_csv&period=" + leadPeriod + "&status=" + leadFilter;
   $("#lead-list").innerHTML = list.length ? list.map((l) =>
     '<li class="lead' + (l.done ? " is-done" : "") + '">' +
       '<div class="lead-main"><div class="lead-top"><strong>' + h(l.name) + "</strong>" + (l.company ? '<span class="muted">' + h(l.company) + "</span>" : "") + "</div>" +
@@ -174,7 +199,9 @@ function renderLeads() {
         '<button class="btn btn-ghost sm" data-done="' + h(l.id) + '">' + (l.done ? "Reabrir" : "Marcar respondido") + "</button>" +
         '<button class="icon-btn" data-ldel="' + h(l.id) + '" title="Apagar">×</button>' +
       "</div></li>").join("")
-    : '<li class="empty muted">' + (leads.length ? "Nenhum contato esperando resposta." : "Nenhum contato ainda. Eles aparecem aqui assim que alguém enviar o formulário do site.") + "</li>";
+    : '<li class="empty muted">' + (!leads.length ? "Nenhum contato ainda. Eles aparecem aqui assim que alguém enviar o formulário do site."
+      : leadFilter === "open" && inP.length ? "Nenhum contato esperando resposta" + (leadPeriod === "all" ? "." : " em " + periodLabel(leadPeriod) + ".")
+      : "Nenhum contato em " + periodLabel(leadPeriod) + ".") + "</li>";
 }
 
 $$(".seg-btn").forEach((b) => b.addEventListener("click", () => {
