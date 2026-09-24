@@ -10,6 +10,18 @@ const grain = (id, opts) => {
   return '<svg class="grain"' + (o.svgOpacity != null ? ' style="opacity:' + o.svgOpacity + '"' : "") + '><filter id="' + id + '"><feTurbulence type="fractalNoise" baseFrequency="' + (o.freq || ".85") + '" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#' + id + ')"' + (o.rectOpacity != null ? ' opacity="' + o.rectOpacity + '"' : "") + "></rect></svg>";
 };
 
+/* Mídia de fundo do topo: vídeo (com a foto como imagem de espera) ou só a foto.
+   Com "economia de dados" ligada no celular, fica só a foto. */
+const saveData = () => !!(navigator.connection && navigator.connection.saveData);
+function heroMedia(img, video, w) {
+  const poster = img != null ? esc(px(img, w)) : "";
+  if (video && !saveData()) {
+    return '<video class="cover" src="' + esc(video) + '"' + (poster ? ' poster="' + poster + '"' : "") +
+      ' autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>';
+  }
+  return poster ? '<img class="cover" src="' + poster + '" alt="" decoding="async">' : "";
+}
+
 const ARROW_UR = (size, stroke) => '<svg viewBox="0 0 24 24" width="' + size + '" height="' + size + '" fill="none" stroke="#111" stroke-width="' + (stroke || 2) + '" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"></path></svg>';
 
 /* ---------- Partes compartilhadas ---------- */
@@ -29,8 +41,8 @@ function workCard(c, i, prefix) {
     '<p class="work-desc">' + esc(c.card) + "</p></a>";
 }
 
-function workGrid(prefix, limit) {
-  return '<div class="work-grid">' + CASES.slice(0, limit || CASES.length).map((c, i) => workCard(c, i, prefix)).join("") + "</div>";
+function workGrid(prefix, limit, cls) {
+  return '<div class="work-grid' + (cls ? " " + cls : "") + '">' + CASES.slice(0, limit || CASES.length).map((c, i) => workCard(c, i, prefix)).join("") + "</div>";
 }
 
 function contactSection(lowercase) {
@@ -74,7 +86,7 @@ function pageHome() {
   return '<main>' +
   '<section class="home-hero">' +
     '<div class="abs-fill" style="z-index:0;overflow:hidden"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="ken">' +
-      '<img class="cover" src="' + esc(px(slot("home.hero"))) + '" alt="" decoding="async"></div></div></div></div>' +
+      heroMedia(slot("home.hero"), slot("home.heroVideo")) + '</div></div></div></div>' +
     '<div class="shade"></div>' +
     '<div class="home-hero-content">' +
       '<span class="hero-tag" data-intro>Bow / Digital Studio</span>' +
@@ -121,7 +133,7 @@ function pageHome() {
     '<div class="works-head"><div><span class="pill pill--light" data-fade data-tag>Trabalhos</span>' +
       '<h2 data-reveal class="lc">Trabalhos que falam<span class="dot">.</span></h2></div>' +
       '<a class="btn-ghost-dark" href="#/cases" data-fade>Ver todos</a></div>' +
-    workGrid("bowwg", 6) +
+    workGrid("bowwg", 6, "work-grid--swipe") +
   "</div></section>" +
 
   contactSection(true) +
@@ -159,6 +171,7 @@ function pageCases() {
   return '<main>' +
   '<section class="cases-hero"><div class="cases-hero-bg">' +
     '<div class="cases-bow">bow.</div><div class="blob blob-a"></div><div class="blob blob-b"></div>' +
+    heroMedia(null, slot("cases.heroVideo")) +
     grain("bowchgrain", { freq: ".8", svgOpacity: ".55" }) + '<div class="cases-vignette"></div></div>' +
     '<div class="cases-hero-content">' +
       "<h1 data-split>Marcas que transformam presença em resultado.</h1>" +
@@ -182,7 +195,7 @@ function pageCase(i) {
 
   return '<main>' +
   '<section class="detail-hero case-hero">' +
-    '<div class="hero-media"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="bg-cover" style="' + bgUrl(c.imgs[0]) + '"></div></div></div></div>' +
+    '<div class="hero-media"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="bg-cover">' + heroMedia(c.imgs[0], c.video) + '</div></div></div></div>' +
     '<div class="case-hero-shade"></div>' +
     '<div class="detail-hero-content">' +
       '<div class="crumbs" data-intro><a class="crumb-back" href="#/cases">← Cases</a><span class="crumb-count">' + pad(i + 1) + " / " + pad(CASES.length) + "</span></div>" +
@@ -222,7 +235,7 @@ function pageServico(i) {
 
   return '<main>' +
   '<section class="detail-hero svc-hero">' +
-    '<div class="hero-media"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="bg-cover" style="' + bgUrl(slot("sol." + s.slug + ".hero")) + '"></div></div></div></div>' +
+    '<div class="hero-media"><div class="abs-fill" data-mouse-par><div class="abs-fill" data-hero-bg><div class="bg-cover">' + heroMedia(slot("sol." + s.slug + ".hero"), slot("sol." + s.slug + ".heroVideo")) + '</div></div></div></div>' +
     '<div class="svc-hero-shade"></div>' +
     '<div class="detail-hero-content">' +
       '<div class="crumbs" data-intro><span class="kicker">Soluções</span><span class="crumb-count">' + pad(i + 1) + " / " + pad(SVC_PAGES.length) + "</span></div>" +
@@ -254,7 +267,7 @@ function pageServico(i) {
 /* ---------- Sobre ---------- */
 
 function pageSobre() {
-  const lines = (arr, attr) => arr.map((l) => '<span class="mline"><span ' + attr + ">" + l + "</span></span>").join("");
+  const lines = (arr, attr) => arr.map((l) => '<span class="mline"><span ' + attr + ">" + l + "</span></span>").join(" ");
   const uni = UNIVERSE.map(([, label, sp, clip, pos, ratio], i) =>
     '<div class="uni" data-sb-par="' + sp + '" style="' + pos + '"><div class="uni-img"' + (clip ? " data-sb-clip" : "") + ' style="aspect-ratio:' + ratio + '">' +
     '<img class="cover" src="' + esc(px(slot("sobre.uni." + i), 1200)) + '" alt="' + label + '" decoding="async"></div><span class="uni-label" data-tag>' + label + "</span></div>").join("");
@@ -266,7 +279,7 @@ function pageSobre() {
   '<section class="sb-hero"><div class="cols"></div>' +
     '<div class="sb-row sb-top"><span class="kicker kicker--45" data-sb-stag>Sobre a Bow</span><span class="label-up" data-sb-stag>Design · Estratégia · Tecnologia</span></div>' +
     '<div class="sb-row sb-mid"><h1>' + lines(["Não somos só", "uma agência. Somos", "parte do que faz sua", 'marca <span class="dot">acontecer.</span>'], "data-sb-line") + "</h1>" +
-      '<div class="sb-hero-img" data-sb-hero-img><div class="abs-fill"><img class="cover" src="' + esc(px(slot("sobre.hero"), 1200)) + '" alt="Time Bow" decoding="async"></div></div></div>' +
+      '<div class="sb-hero-img" data-sb-hero-img><div class="abs-fill">' + heroMedia(slot("sobre.hero"), slot("sobre.heroVideo"), 1200) + '</div></div></div>' +
     '<div class="sb-row sb-bottom"><p data-sb-stag>Uma agência para quem acredita que comunicação não precisa ser igual a todo mundo.</p><span data-sb-stag>Role para conhecer ↓</span></div>' +
   "</section>" +
 

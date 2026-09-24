@@ -5,7 +5,7 @@ Options -Indexes
   Header set X-Frame-Options "DENY"
   Header set Referrer-Policy "same-origin"
 </IfModule>
-<Files "lib.php">
+<FilesMatch "^(lib\.php|\.user\.ini)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
@@ -13,4 +13,4 @@ Options -Indexes
     Order allow,deny
     Deny from all
   </IfModule>
-</Files>
+</FilesMatch>

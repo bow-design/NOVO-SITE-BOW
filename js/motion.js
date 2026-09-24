@@ -91,7 +91,8 @@ function initPageMotion(first) {
     /* Entrada: menu, fundo do topo, título e elementos [data-intro] */
     const tl = gsap.timeline({ defaults: { ease: EASE } });
     const nav = $("[data-intro-nav]");
-    if (first && nav) tl.from(nav, { yPercent: -100, opacity: 0, duration: .9 }, .05);
+    // clearProps: um transform residual no header prenderia o menu do celular (position: fixed) dentro dele.
+    if (first && nav) tl.from(nav, { yPercent: -100, opacity: 0, duration: .9, clearProps: "transform,opacity" }, .05);
     const bg = $("[data-hero-bg]", main);
     if (bg) tl.fromTo(bg, { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.8, ease: "power2.out" }, 0);
     const h1 = $("[data-intro-h]", main);
@@ -220,6 +221,9 @@ function initPageMotion(first) {
     }));
   });
 
+  // Vídeos de fundo: garante o play no celular (precisa estar sem som).
+  $$("video[autoplay]", main).forEach((v) => { v.muted = true; const p = v.play(); if (p) p.catch(() => {}); });
+
   initCarousel(main);
   initPath(main);
   initBg(main);
@@ -232,17 +236,21 @@ function initPageMotion(first) {
 /* ---------- Sobre ---------- */
 function sobreMotion(main, hidden) {
   const q = (s) => $$(s, main);
+  // No celular as linhas dos títulos fluem soltas (display: inline), então o título entra inteiro.
+  const narrow = window.matchMedia("(max-width: 720px)").matches;
   const tl = gsap.timeline({ delay: .1 });
-  tl.from(q("[data-sb-line]"), { yPercent: 110, duration: 1.15, ease: "power4.out", stagger: .09 })
+  if (narrow) tl.from(q(".sb-mid h1"), { y: 40, opacity: 0, duration: 1.1, ease: "power4.out" });
+  else tl.from(q("[data-sb-line]"), { yPercent: 110, duration: 1.15, ease: "power4.out", stagger: .09 });
+  tl
     .from(q("[data-sb-stag]").slice(0, 4), { y: 16, opacity: 0, duration: .8, ease: EASE, stagger: .08 }, "-=.9")
     .fromTo(q("[data-sb-hero-img]"), { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "power4.inOut" }, "-=1.1");
   if (hidden) tl.progress(1);
   setTimeout(() => { if (tl.progress() < 1) tl.progress(1); }, 3000);
 
   q("[data-sb-stag]").slice(4).forEach((el) => gsap.from(el, { y: 14, opacity: 0, duration: .8, ease: EASE, scrollTrigger: { trigger: el, start: "top 90%" } }));
-  q("[data-sb-rev]").forEach((el) => gsap.from($$("[data-sb-rline]", el), {
-    yPercent: 110, duration: 1.1, ease: "power4.out", stagger: .08, scrollTrigger: { trigger: el, start: "top 85%" },
-  }));
+  q("[data-sb-rev]").forEach((el) => narrow
+    ? gsap.from(el, { y: 40, opacity: 0, duration: 1.1, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 88%" } })
+    : gsap.from($$("[data-sb-rline]", el), { yPercent: 110, duration: 1.1, ease: "power4.out", stagger: .08, scrollTrigger: { trigger: el, start: "top 85%" } }));
   q("[data-sb-fadeup]").forEach((el) => gsap.from(el, { y: 30, opacity: 0, duration: 1, ease: EASE, scrollTrigger: { trigger: el, start: "top 88%" } }));
   q("[data-sb-clip]").forEach((el) => gsap.fromTo(el, { clipPath: "inset(22% 16% 22% 16% round 14px)" }, {
     clipPath: "inset(0% 0% 0% 0% round 14px)", duration: 1.3, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 92%", once: true },

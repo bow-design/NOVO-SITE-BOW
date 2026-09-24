@@ -160,19 +160,25 @@ const UNIVERSE = [
   [5717294, "Social", 0.34, false, "left:46%;top:86%;width:clamp(100px,11vw,190px)", "3/4"],
 ];
 
-/* ---------- Imagens editáveis pelo painel ---------- */
-/* [chave, grupo, nome, foto padrão] */
+/* ---------- Imagens e vídeos editáveis pelo painel ---------- */
+/* [chave, grupo, nome, padrão, tipo]. Vídeo é opcional: quando existe, toca no
+   lugar da foto do topo, e a foto vira a imagem de espera enquanto ele carrega. */
+const VIDEO_LABEL = "Vídeo do topo (opcional)";
 const IMAGE_SLOTS = [
-  ["home.hero", "Home", "Fundo do topo", 6615058],
+  ["home.hero", "Home", "Fundo do topo", 6615058, "image"],
+  ["home.heroVideo", "Home", VIDEO_LABEL, null, "video"],
+  ["cases.heroVideo", "Página Cases", VIDEO_LABEL, null, "video"],
   ...SVC_PAGES.flatMap((s) => [
-    ["sol." + s.slug + ".hero", "Solução: " + s.title, "Fundo do topo", s.img],
-    ["sol." + s.slug + ".statement", "Solução: " + s.title, "Foto da frase de impacto", s.img2],
+    ["sol." + s.slug + ".hero", "Solução: " + s.title, "Fundo do topo", s.img, "image"],
+    ["sol." + s.slug + ".heroVideo", "Solução: " + s.title, VIDEO_LABEL, null, "video"],
+    ["sol." + s.slug + ".statement", "Solução: " + s.title, "Foto da frase de impacto", s.img2, "image"],
   ]),
-  ["sobre.hero", "Sobre", "Foto do topo", 6803583],
-  ["sobre.who", "Sobre", "Quem é a Bow (grande)", 6615058],
-  ["sobre.whoSmall", "Sobre", "Quem é a Bow (pequena)", 5717294],
-  ...UNIVERSE.map(([id, label], i) => ["sobre.uni." + i, "Sobre: Nosso universo", label, id]),
-  ...PRINCIPLES.map(([, t, , id], i) => ["sobre.prin." + i, "Sobre: No que acreditamos", t, id]),
+  ["sobre.hero", "Sobre", "Foto do topo", 6803583, "image"],
+  ["sobre.heroVideo", "Sobre", "Vídeo no lugar da foto do topo (opcional)", null, "video"],
+  ["sobre.who", "Sobre", "Quem é a Bow (grande)", 6615058, "image"],
+  ["sobre.whoSmall", "Sobre", "Quem é a Bow (pequena)", 5717294, "image"],
+  ...UNIVERSE.map(([id, label], i) => ["sobre.uni." + i, "Sobre: Nosso universo", label, id, "image"]),
+  ...PRINCIPLES.map(([, t, , id], i) => ["sobre.prin." + i, "Sobre: No que acreditamos", t, id, "image"]),
 ];
 const SLOT_DEFAULTS = Object.fromEntries(IMAGE_SLOTS.map(([k, , , d]) => [k, d]));
 let IMAGES = {};

@@ -3,7 +3,7 @@
    Tudo é guardado em arquivos (sem banco de dados):
      data/config.php    usuário e hash da senha (criado no primeiro acesso)
      data/content.json  cases e imagens do site
-     uploads/           imagens enviadas */
+     uploads/           imagens e vídeos enviados */
 
 declare(strict_types=1);
 
@@ -15,6 +15,7 @@ const CONTENT_FILE = DATA_DIR . '/content.json';
 const ATTEMPTS_FILE = DATA_DIR . '/login-attempts.json';
 
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 80 * 1024 * 1024;
 const MAX_IMAGE_WIDTH = 2400;
 const LOGIN_MAX_FAILS = 5;
 const LOGIN_LOCK_SECONDS = 15 * 60;
@@ -116,6 +117,11 @@ function valid_ref($r) {
     return null;
 }
 
+/* Vídeo enviado (MP4 ou WebM) em uploads/. */
+function valid_video($r): ?string {
+    return is_string($r) && preg_match('#^uploads/[a-f0-9]{24}\.(mp4|webm)$#', $r) ? $r : null;
+}
+
 function clean_str($v, int $max): string {
     $s = is_string($v) ? trim(preg_replace('/\s+/u', ' ', $v)) : '';
     return mb_substr($s, 0, $max);
@@ -150,6 +156,7 @@ function validate_content($in): array {
             $d = clean_str($d, 120);
             if ($d !== '') $deliver[] = $d;
         }
+        $video = valid_video($c['video'] ?? null);
         $cases[] = [
             'slug' => $slug, 'name' => $name,
             'segment' => clean_str($c['segment'] ?? '', 80), 'services' => clean_str($c['services'] ?? '', 120), 'year' => clean_str($c['year'] ?? '', 10),
@@ -157,13 +164,14 @@ function validate_content($in): array {
             'challengeH' => clean_str($c['challengeH'] ?? '', 160), 'challenge' => clean_str($c['challenge'] ?? '', 800),
             'solutionH' => clean_str($c['solutionH'] ?? '', 160), 'solution' => clean_str($c['solution'] ?? '', 800),
             'resultH' => clean_str($c['resultH'] ?? '', 160), 'deliver' => $deliver, 'imgs' => $imgs,
-        ];
+        ] + ($video ? ['video' => $video] : []);
     }
     if (!$cases) fail('Deixe pelo menos um case no site.');
     $images = [];
     foreach (is_array($in['images'] ?? null) ? $in['images'] : [] as $k => $v) {
         if (!is_string($k) || !preg_match('/^[a-z]+(\.[a-zA-Z0-9-]+){1,3}$/', $k)) continue;
-        $r = valid_ref($v);
+        // Chaves terminadas em "Video" só aceitam vídeo; as demais, só imagem.
+        $r = str_ends_with($k, 'Video') ? valid_video($v) : valid_ref($v);
         if ($r !== null) $images[$k] = $r;
     }
     return ['version' => 1, 'updated' => date('c'), 'cases' => $cases, 'images' => (object)$images];
@@ -175,7 +183,7 @@ function cleanup_uploads(array $content): void {
     $used = [];
     array_walk_recursive($content, function ($v) use (&$used) { if (is_string($v) && str_starts_with($v, 'uploads/')) $used[basename($v)] = true; });
     foreach (glob(UPLOAD_DIR . '/*') ?: [] as $f) {
-        if (!preg_match('/^[a-f0-9]{24}\.(jpg|png|webp)$/', basename($f))) continue;
+        if (!preg_match('/^[a-f0-9]{24}\.(jpg|png|webp|mp4|webm)$/', basename($f))) continue;
         if (!isset($used[basename($f)]) && time() - filemtime($f) > 3600) @unlink($f);
     }
 }
@@ -184,14 +192,26 @@ function cleanup_uploads(array $content): void {
 
 function handle_upload(): string {
     $f = $_FILES['file'] ?? null;
+    if (!$f && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        fail('Arquivo maior que o limite do servidor (' . ini_get('post_max_size') . '). Veja o README para aumentar o limite na Hostinger.');
+    }
     if (!$f || !is_array($f) || ($f['error'] ?? 1) !== UPLOAD_ERR_OK) {
         $code = is_array($f) ? ($f['error'] ?? 0) : 0;
-        fail(in_array($code, [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true) ? 'Imagem grande demais.' : 'Falha no envio da imagem.');
+        fail(in_array($code, [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)
+            ? 'Arquivo maior que o limite do servidor (' . ini_get('upload_max_filesize') . ').' : 'Falha no envio do arquivo.');
     }
-    if ($f['size'] > MAX_UPLOAD_BYTES) fail('Imagem grande demais (máximo 15 MB).');
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']);
+    $video = ['video/mp4' => 'mp4', 'video/webm' => 'webm'][$mime] ?? null;
+    if ($video) {
+        if ($f['size'] > MAX_VIDEO_BYTES) fail('Vídeo grande demais (máximo 80 MB). Exporte em 1080p, com 10 a 20 segundos.');
+        $name = bin2hex(random_bytes(12)) . '.' . $video;
+        if (!move_uploaded_file($f['tmp_name'], UPLOAD_DIR . '/' . $name)) fail('Não foi possível salvar o vídeo no servidor.', 500);
+        return 'uploads/' . $name;
+    }
+    if (str_starts_with((string)$mime, 'video/')) fail('Use vídeos MP4 ou WebM. Arquivos .MOV do iPhone precisam ser exportados como MP4.');
+    if ($f['size'] > MAX_UPLOAD_BYTES) fail('Imagem grande demais (máximo 15 MB).');
     $ext = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'][$mime] ?? null;
-    if (!$ext) fail('Use imagens JPG, PNG ou WebP.');
+    if (!$ext) fail('Use imagens JPG, PNG ou WebP, ou vídeos MP4.');
     if (!@getimagesize($f['tmp_name'])) fail('Arquivo de imagem inválido.');
     $name = bin2hex(random_bytes(12)) . '.' . $ext;
     $dest = UPLOAD_DIR . '/' . $name;

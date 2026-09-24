@@ -66,14 +66,36 @@ function go(route) {
 
 /* ---------- Header: transparente; branco no hover; "Soluções" abre o menu ---------- */
 const shell = () => document.querySelector("[data-intro-nav]");
-function closeMenu() { shell().classList.remove("menu-open"); }
+function closeMenu() { shell().classList.remove("menu-open"); setMobileMenu(false); }
+
+/* Menu do celular (☰): tela cheia, trava o scroll da página enquanto aberto. */
+function setMobileMenu(open) {
+  const el = shell(), btn = el.querySelector("[data-burger]");
+  el.classList.toggle("mnav-open", open);
+  document.documentElement.classList.toggle("no-scroll", open);
+  btn.setAttribute("aria-expanded", String(open));
+  btn.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+  if (lenis) open ? lenis.stop() : lenis.start();
+}
 
 function initHeader() {
   const el = shell();
-  el.addEventListener("mouseenter", () => el.classList.add("is-hover"));
-  el.addEventListener("mouseleave", () => el.classList.remove("is-hover", "menu-open"));
-  el.querySelector("[data-menu-trigger]").addEventListener("mouseenter", () => el.classList.add("menu-open"));
-  el.querySelectorAll("[data-menu-close]").forEach((b) => b.addEventListener("mouseenter", closeMenu));
+  // Hover (header branco + menu Soluções) só onde existe mouse.
+  if (window.matchMedia("(hover: hover)").matches) {
+    el.addEventListener("mouseenter", () => el.classList.add("is-hover"));
+    el.addEventListener("mouseleave", () => el.classList.remove("is-hover", "menu-open"));
+    el.querySelector("[data-menu-trigger]").addEventListener("mouseenter", () => el.classList.add("menu-open"));
+    el.querySelectorAll("[data-menu-close]").forEach((b) => b.addEventListener("mouseenter", () => el.classList.remove("menu-open")));
+  }
+  el.querySelector("[data-burger]").addEventListener("click", () => setMobileMenu(!el.classList.contains("mnav-open")));
+  el.querySelector("[data-mnav-svc]").innerHTML = SVC_PAGES.map((s, i) =>
+    '<a href="#/solucoes/' + s.slug + '"><span>' + pad(i + 1) + "</span>" + esc(s.title) + "</a>").join("");
+  el.querySelectorAll(".mnav a").forEach((a) => a.addEventListener("click", () => setMobileMenu(false)));
+  el.querySelectorAll("[data-wa]").forEach((a) => { a.href = CONTACT[a.dataset.wa]; });
+  // No celular o header ganha fundo escuro depois que a página rola.
+  const solid = () => el.classList.toggle("is-solid", window.scrollY > 24);
+  window.addEventListener("scroll", solid, { passive: true });
+  solid();
 
   el.querySelector("[data-mega]").innerHTML = SVC_PAGES.map((s, i) =>
     '<a class="mega-item" href="#/solucoes/' + s.slug + '"><span class="mega-icon">' + MENU_ICONS[i] + "</span>" +

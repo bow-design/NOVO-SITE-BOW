@@ -16,6 +16,8 @@ const content = { cases: [], images: {} };
 
 /* Imagem para pré-visualização: número = foto de banco; texto = arquivo enviado. */
 const preview = (ref) => ref == null ? "" : typeof ref === "string" ? "../" + ref : px(ref, 600);
+const videoTag = (ref) => '<video src="' + h(preview(ref)) + '" muted loop playsinline autoplay></video>';
+const MAX_VIDEO_MB = 80;
 
 /* ---------- API ---------- */
 async function api(action, data, form) {
@@ -23,8 +25,9 @@ async function api(action, data, form) {
   if (form) opts.body = form;
   else if (data !== undefined) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(data); }
   let res, j;
-  try { res = await fetch("api.php?action=" + action, opts); j = await res.json(); }
-  catch (e) { throw new Error("Sem resposta do servidor. O painel precisa de PHP (hospedagem Hostinger)."); }
+  try { res = await fetch("api.php?action=" + action, opts); } catch (e) { throw new Error("Sem conexão com o servidor."); }
+  try { j = await res.json(); }
+  catch (e) { throw new Error(res.status === 413 ? "Arquivo maior que o limite do servidor." : "Resposta inválida do servidor. O painel precisa de PHP (hospedagem Hostinger)."); }
   if (res.status === 401 && action !== "login") { showAuth(); }
   if (!res.ok || j.error) throw new Error(j.error || "Erro " + res.status);
   if (j.csrf) csrf = j.csrf;
@@ -38,21 +41,45 @@ function toast(msg, bad) {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), bad ? 5000 : 2200);
 }
 
-/* Escolhe um arquivo, envia e devolve o caminho salvo (ou null). */
-function pickAndUpload(btn) {
+/* Envia com barra de progresso (vídeos podem ser grandes). */
+function uploadFile(file, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "api.php?action=upload");
+    xhr.setRequestHeader("X-CSRF-Token", csrf);
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable) onProgress(Math.round(e.loaded / e.total * 100)); };
+    xhr.onerror = () => reject(new Error("A conexão caiu durante o envio."));
+    xhr.onload = () => {
+      let j = null;
+      try { j = JSON.parse(xhr.responseText); } catch (e) {}
+      if (xhr.status === 401) showAuth();
+      if (xhr.status >= 200 && xhr.status < 300 && j && j.path) resolve(j.path);
+      else reject(new Error((j && j.error) || (xhr.status === 413 ? "Arquivo maior que o limite do servidor." : "Falha no envio (erro " + xhr.status + ").")));
+    };
+    const fd = new FormData(); fd.append("file", file);
+    xhr.send(fd);
+  });
+}
+
+/* Escolhe um arquivo (imagem ou vídeo), envia e devolve o caminho salvo (ou null). */
+function pickAndUpload(btn, kind) {
   return new Promise((resolve) => {
     const input = $("#file");
+    input.accept = kind === "video" ? "video/mp4,video/webm" : "image/jpeg,image/png,image/webp";
     input.value = "";
     input.onchange = async () => {
       const f = input.files[0];
       if (!f) return resolve(null);
+      if (kind === "video" && f.size > MAX_VIDEO_MB * 1024 * 1024) { toast("Vídeo grande demais (máximo " + MAX_VIDEO_MB + " MB). Exporte em 1080p, com 10 a 20 segundos.", true); return resolve(null); }
       const label = btn.textContent;
       btn.disabled = true; btn.textContent = "Enviando…";
       try {
-        const fd = new FormData(); fd.append("file", f);
-        const j = await api("upload", undefined, fd);
-        resolve(j.path);
-      } catch (e) { toast(e.message, true); resolve(null); }
+        const path = await uploadFile(f, (pc) => { btn.textContent = "Enviando " + pc + "%"; });
+        const isVideo = /\.(mp4|webm)$/.test(path);
+        if (isVideo !== (kind === "video")) throw new Error(kind === "video" ? "Aqui vai um vídeo (MP4 ou WebM)." : "Aqui vai uma imagem (JPG, PNG ou WebP).");
+        resolve(path);
+      }
+      catch (e) { toast(e.message, true); resolve(null); }
       finally { btn.disabled = false; btn.textContent = label; }
     };
     input.click();
@@ -148,7 +175,7 @@ $("#case-list").addEventListener("click", async (e) => {
   }
 });
 
-let editing = -1, draftImgs = [];
+let editing = -1, draftImgs = [], draftVideo = null;
 const FIELDS = ["name", "segment", "services", "year", "card", "lead", "challengeH", "challenge", "solutionH", "solution", "resultH"];
 
 function openEditor(i) {
@@ -158,6 +185,7 @@ function openEditor(i) {
   FIELDS.forEach((k) => { f[k].value = c[k] || ""; });
   f.deliver.value = (c.deliver || []).join("\n");
   draftImgs = (c.imgs || []).slice(0, 4);
+  draftVideo = c.video || null;
   $("#editor-title").textContent = i >= 0 ? "Editar case" : "Novo case";
   $("#editor-err").textContent = "";
   renderDraftImgs();
@@ -167,16 +195,25 @@ function openEditor(i) {
 
 function renderDraftImgs() {
   $("#case-imgs").innerHTML = CASE_IMGS.map((label, k) =>
-    '<div class="img-slot"><div class="img-prev' + (k === 0 ? " wide" : "") + '">' +
+    '<div class="img-slot"><div class="img-prev">' +
       (draftImgs[k] != null ? '<img src="' + h(preview(draftImgs[k])) + '" alt="">' : '<span class="muted">Sem imagem</span>') +
-    '</div><span class="img-label">' + label + '</span><button type="button" class="btn btn-ghost sm" data-img="' + k + '">' + (draftImgs[k] != null ? "Trocar" : "Enviar imagem") + "</button></div>").join("");
+    '</div><span class="img-label">' + label + '</span><button type="button" class="btn btn-ghost sm" data-img="' + k + '">' + (draftImgs[k] != null ? "Trocar" : "Enviar imagem") + "</button></div>").join("") +
+    '<div class="img-slot is-video"><div class="img-prev">' + (draftVideo ? videoTag(draftVideo) : '<span class="muted">Sem vídeo</span>') + "</div>" +
+    '<span class="img-label">Vídeo do topo (opcional)</span><span class="hint">Toca no lugar da capa, no topo da página do case. MP4, até 80 MB.</span>' +
+    '<div class="row"><button type="button" class="btn btn-ghost sm" data-video>' + (draftVideo ? "Trocar vídeo" : "Enviar vídeo") + "</button>" +
+    (draftVideo ? '<button type="button" class="btn btn-link sm" data-video-del>Remover</button>' : "") + "</div></div>";
 }
 
 $("#case-imgs").addEventListener("click", async (e) => {
-  const b = e.target.closest("[data-img]");
+  const b = e.target.closest("button");
   if (!b) return;
-  const path = await pickAndUpload(b);
-  if (path) { draftImgs[+b.dataset.img] = path; renderDraftImgs(); }
+  if (b.dataset.img) {
+    const path = await pickAndUpload(b, "image");
+    if (path) { draftImgs[+b.dataset.img] = path; renderDraftImgs(); }
+  } else if (b.hasAttribute("data-video")) {
+    const path = await pickAndUpload(b, "video");
+    if (path) { draftVideo = path; renderDraftImgs(); }
+  } else if (b.hasAttribute("data-video-del")) { draftVideo = null; renderDraftImgs(); }
 });
 
 $("#btn-new").addEventListener("click", () => openEditor(-1));
@@ -190,6 +227,7 @@ $("#case-form").addEventListener("submit", async (e) => {
   FIELDS.forEach((k) => { c[k] = f[k].value.trim(); });
   c.deliver = f.deliver.value.split("\n").map((s) => s.trim()).filter(Boolean);
   c.imgs = draftImgs.slice();
+  if (draftVideo) c.video = draftVideo; else delete c.video;
   if (!c.name) { err.textContent = "Coloque o nome do cliente."; f.name.focus(); return; }
   if (c.imgs.filter((x) => x != null).length < 4) { err.textContent = "Envie as 4 imagens do case."; return; }
   if (editing < 0) c.slug = "";
@@ -204,17 +242,23 @@ $("#case-form").addEventListener("submit", async (e) => {
 /* ---------- Imagens do site ---------- */
 function renderSlots() {
   const groups = [];
-  IMAGE_SLOTS.forEach(([key, group, label, def]) => {
+  IMAGE_SLOTS.forEach(([key, group, label, def, type]) => {
     let g = groups.find((x) => x.name === group);
     if (!g) groups.push(g = { name: group, items: [] });
-    g.items.push({ key, label, def });
+    g.items.push({ key, label, def, type });
   });
   $("#slot-groups").innerHTML = groups.map((g) =>
-    '<div class="slot-group"><h3>' + h(g.name) + '</h3><div class="slot-grid">' + g.items.map(({ key, label, def }) => {
-      const custom = content.images[key] != null;
-      return '<div class="img-slot"><div class="img-prev"><img src="' + h(preview(custom ? content.images[key] : def)) + '" alt="" loading="lazy">' +
+    '<div class="slot-group"><h3>' + h(g.name) + '</h3><div class="slot-grid">' + g.items.map(({ key, label, def, type }) => {
+      const custom = content.images[key] != null, ref = custom ? content.images[key] : def;
+      if (type === "video") {
+        return '<div class="img-slot is-video"><div class="img-prev">' + (custom ? videoTag(ref) : '<span class="muted">Sem vídeo</span>') + "</div>" +
+          '<span class="img-label">' + h(label) + '</span><span class="hint">Toca no lugar da foto. MP4, até 80 MB.</span>' +
+          '<div class="row"><button class="btn btn-ghost sm" data-slot="' + h(key) + '" data-kind="video">' + (custom ? "Trocar vídeo" : "Enviar vídeo") + "</button>" +
+          (custom ? '<button class="btn btn-link sm" data-reset="' + h(key) + '">Remover</button>' : "") + "</div></div>";
+      }
+      return '<div class="img-slot"><div class="img-prev"><img src="' + h(preview(ref)) + '" alt="" loading="lazy">' +
         (custom ? '<span class="badge on-img">Sua imagem</span>' : "") + '</div><span class="img-label">' + h(label) + "</span>" +
-        '<div class="row"><button class="btn btn-ghost sm" data-slot="' + h(key) + '">Trocar</button>' +
+        '<div class="row"><button class="btn btn-ghost sm" data-slot="' + h(key) + '" data-kind="image">Trocar</button>' +
         (custom ? '<button class="btn btn-link sm" data-reset="' + h(key) + '">Voltar à original</button>' : "") + "</div></div>";
     }).join("") + "</div></div>").join("");
 }
@@ -222,12 +266,13 @@ function renderSlots() {
 $("#slot-groups").addEventListener("click", async (e) => {
   const b = e.target.closest("button");
   if (!b) return;
+  const video = b.dataset.kind === "video" || /Video$/.test(b.dataset.reset || "");
   if (b.dataset.slot) {
-    const path = await pickAndUpload(b);
-    if (path) { content.images[b.dataset.slot] = path; await saveAll("Imagem trocada."); }
+    const path = await pickAndUpload(b, b.dataset.kind);
+    if (path) { content.images[b.dataset.slot] = path; await saveAll(video ? "Vídeo no ar." : "Imagem trocada."); }
   } else if (b.dataset.reset) {
     delete content.images[b.dataset.reset];
-    await saveAll("Imagem original restaurada.");
+    await saveAll(video ? "Vídeo removido." : "Imagem original restaurada.");
   }
 });
 

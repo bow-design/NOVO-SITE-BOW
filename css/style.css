@@ -422,10 +422,76 @@ main { position: relative; z-index: 1; display: block; background: var(--black);
 .footer-legal a { font-size: .8rem; color: rgba(255, 255, 255, .55); }
 .footer-legal a:hover { color: var(--green); }
 
-/* ============ Mobile ============ */
+/* ============ Menu do celular ============ */
+.burger { display: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .25); background: rgba(5, 5, 5, .35); cursor: pointer; position: relative; flex: none; }
+.burger span { position: absolute; left: 13px; right: 13px; height: 1.5px; background: #fff; border-radius: 2px; transition: transform .35s var(--ease), top .35s var(--ease); }
+.burger span:first-child { top: 17px; }
+.burger span:last-child { top: 25px; }
+.nav-shell.mnav-open .burger span:first-child { top: 21px; transform: rotate(45deg); }
+.nav-shell.mnav-open .burger span:last-child { top: 21px; transform: rotate(-45deg); }
+.mnav { position: fixed; inset: 0; z-index: -1; background: var(--black); opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility 0s linear .35s; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.nav-shell.mnav-open .mnav { opacity: 1; visibility: visible; transition: opacity .35s ease; }
+.mnav-inner { min-height: 100%; padding: 100px var(--pad-x) 40px; display: flex; flex-direction: column; }
+.mnav-label { margin: 0 0 10px; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 255, 255, .45); }
+.mnav-svc { display: flex; flex-direction: column; margin-bottom: 18px; border-top: 1px solid rgba(255, 255, 255, .1); }
+.mnav-svc a { display: flex; align-items: baseline; gap: 14px; padding: 13px 0; border-bottom: 1px solid rgba(255, 255, 255, .1); color: #fff; font-size: 1.15rem; font-weight: 500; }
+.mnav-svc a span { font-size: 11px; font-weight: 600; color: var(--green); }
+.mnav-big { padding: 10px 0; color: #fff; font-size: 2.1rem; font-weight: 500; letter-spacing: -.035em; }
+.mnav-big:hover, .mnav-svc a:hover { color: var(--green); }
+.mnav-ctas { margin-top: auto; padding-top: 32px; display: flex; flex-direction: column; gap: 10px; }
+.mnav-btn { justify-content: center; padding: 16px; border-radius: 999px; font-size: 15px; font-weight: 600; }
+.mnav-btn--ghost { display: flex; border: 1px solid rgba(255, 255, 255, .25); color: #fff; }
+.mnav-contact { margin: 18px 0 0; font-size: 13px; color: rgba(255, 255, 255, .45); text-align: center; }
+html.no-scroll, html.no-scroll body { overflow: hidden; }
+
+/* ============ Tablet e celular ============ */
+@media (max-width: 900px) {
+  .main-nav, .btn-outline-nav, .mega { display: none !important; }
+  .burger { display: block; }
+  .site-header { padding-top: 12px; padding-bottom: 12px; transition: background .3s, border-color .3s; }
+  .nav-shell.is-solid .site-header { background: rgba(5, 5, 5, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: rgba(255, 255, 255, .06); }
+  .nav-shell.mnav-open .site-header { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .btn-nav-cta { padding: 10px 16px; font-size: 13px; }
+  .detail-hero, .sb-hero, .cases-hero { min-height: 100svh; }
+}
+
 @media (max-width: 720px) {
-  .site-header { flex-wrap: wrap; row-gap: 10px; }
-  .btn-outline-nav { display: none; }
-  .main-nav { order: 3; width: 100%; justify-content: flex-start; }
+  .home-hero { min-height: min(92svh, 780px); padding-top: 110px; }
+  .path-row { min-height: 280px; }
+  .car { height: 400px; }
+  .tech-head { margin-bottom: 28px; }
+  .tblock { border-radius: 22px; }
+  .wins { flex-basis: 100%; height: 170px; }
+
+  /* Cases da Home: fileira que desliza para o lado */
+  .work-grid--swipe { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(-1 * var(--pad-x)); padding: 0 var(--pad-x) 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .work-grid--swipe::-webkit-scrollbar { display: none; }
+  .work-grid--swipe .work { flex: 0 0 82%; aspect-ratio: 4/5; scroll-snap-align: center; }
+  .work { border-radius: 20px; }
+
+  /* Caixas com proporção larga: no celular ganham altura própria */
+  .g-wide { aspect-ratio: 4/3; min-height: 0; border-radius: 18px; }
+  .g-tall { border-radius: 18px; }
+  .statement { aspect-ratio: 4/5; min-height: 0; border-radius: 22px; }
+  .next-case { aspect-ratio: auto; min-height: 0; height: 300px; border-radius: 22px; }
+  .next-case .next-go { width: 48px; height: 48px; }
+
   .sol-row { grid-template-columns: 1fr; gap: 12px; }
+  .sol-num { font-size: 1.8rem; }
+  .inc-row, .deliver-row { grid-template-columns: 36px minmax(0, 1fr); }
+
+  /* Sobre */
+  .sb-mid h1 { font-size: 10.4vw; }
+  .sb-hero-img { flex-basis: 100%; aspect-ratio: 4/3; }
+  .mline, .mline > span { display: inline; }
+  .sb-who-media { min-width: 0; flex-basis: 100%; margin-left: 12%; }
+  .sb-who-small { left: -14%; }
+  .sb-universe { height: 1250px; }
+  .sb-believe-media { display: none; }
+  .prin { grid-template-columns: 40px minmax(0, 1fr); }
+  .prin h3 { font-size: 1.9rem; }
+
+  .contact-form { border-radius: 22px; }
+  .footer-cols { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+  .footer-cols .fcol:nth-child(n+3) { grid-column: 1 / -1; }
 }

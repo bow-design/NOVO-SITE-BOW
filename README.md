@@ -21,8 +21,9 @@ assets/           logos e gota da Bow
 
 O endereço `/painel/` abre uma página com login onde dá para:
 
-- adicionar, editar, remover e reordenar cases, cada um com 4 fotos;
+- adicionar, editar, remover e reordenar cases, cada um com 4 fotos e um vídeo opcional no topo;
 - trocar qualquer foto do site ou voltar à original;
+- colocar vídeo no topo da Home, da página Cases, de cada solução e da Sobre (a foto fica como imagem de espera enquanto o vídeo carrega);
 - trocar a senha.
 
 As mudanças entram no site na hora. O painel precisa de PHP 8, que a hospedagem Hostinger já tem; no GitHub Pages ele não funciona, e o site mostra o conteúdo padrão de `js/data.js`.
@@ -31,7 +32,7 @@ As mudanças entram no site na hora. O painel precisa de PHP 8, que a hospedagem
 painel/           página do painel (index.html, painel.js, painel.css) e api.php
 api/content.php   entrega ao site os cases e imagens salvos
 data/             config.php (usuário e senha) e content.json. Pasta bloqueada ao navegador
-uploads/          imagens enviadas (reduzidas para no máximo 2400 px)
+uploads/          imagens (reduzidas para no máximo 2400 px) e vídeos enviados
 ```
 
 `data/` e `uploads/` ficam só no servidor (estão no `.gitignore`). Ao enviar uma nova versão do site, não apague essas duas pastas, ou os cases e imagens voltam ao padrão.
@@ -41,6 +42,8 @@ uploads/          imagens enviadas (reduzidas para no máximo 2400 px)
 1. No hPanel, abra o **Gerenciador de Arquivos** e entre em `public_html`.
 2. Envie todos os arquivos deste repositório, exceto as pastas `project/` e `chats/`, que são só referência do design.
 3. Abra **`seudominio.com.br/painel/`** logo em seguida. No primeiro acesso, o painel pede para criar o usuário e a senha (mínimo 10 caracteres). Faça isso antes de divulgar o endereço: até lá, quem abrir a página primeiro cria o acesso.
+
+**Vídeos:** MP4 ou WebM, até 80 MB (o ideal: 1080p, 10 a 20 segundos, sem som, até ~15 MB, para carregar rápido no celular). Vídeos .MOV do iPhone precisam ser exportados como MP4. Se o envio falhar dizendo que passou do limite do servidor, aumente no hPanel em **Avançado → Configuração do PHP**: `upload_max_filesize` = 100M e `post_max_size` = 110M. O arquivo `painel/.user.ini` já tenta fazer isso sozinho.
 
 Se esquecer a senha, apague `data/config.php` pelo Gerenciador de Arquivos e abra o painel de novo para criar outra. Os cases e imagens não são perdidos.
 
