@@ -94,8 +94,9 @@ function pageHome() {
     '<div class="shade"></div>' +
     '<div class="home-hero-content">' +
       '<span class="hero-tag" data-intro>Bow / Digital Studio</span>' +
-      '<h1 data-intro-h class="lc">Marca, <span class="dot">digital</span> e <span class="dot">tecnologia</span>. Tudo no mesmo lugar<span class="dot">.</span></h1>' +
-      '<p class="hero-sub" data-intro>Criamos marcas, experiências digitais e estratégias que fazem empresas serem percebidas, lembradas e escolhidas.</p>' +
+      // A palavra verde troca sozinha (motion.js → initRotator): vista → lembrada → desejada → escolhida.
+      '<h1 data-intro-h class="lc">Sua empresa merece ser <span class="rotator" data-rotator data-words="vista,lembrada,desejada,escolhida"><span class="rw dot">vista</span></span><span class="dot">.</span></h1>' +
+      '<p class="hero-sub" data-intro>Somos o time de marketing, design e tecnologia da sua empresa. Da estratégia ao site no ar, do primeiro post ao cliente fechado.</p>' +
       '<a class="hero-link" data-intro href="#contato" data-scroll-to="contato">Começar um projeto <span class="dot arrow">→</span></a>' +
     "</div></section>" +
 

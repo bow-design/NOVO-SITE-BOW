@@ -31,7 +31,7 @@ function maskWords(el) {
           o.appendChild(i); frag.appendChild(o);
         });
         node.replaceChild(frag, ch);
-      } else if (ch.nodeType === 1 && ch.tagName !== "BR") walk(ch);
+      } else if (ch.nodeType === 1 && ch.tagName !== "BR" && !ch.hasAttribute("data-rotator")) walk(ch);
     });
   };
   walk(el);
@@ -224,6 +224,7 @@ function initPageMotion(first) {
   // Vídeos de fundo: garante o play no celular (precisa estar sem som).
   $$("video[autoplay]", main).forEach((v) => { v.muted = true; const p = v.play(); if (p) p.catch(() => {}); });
 
+  initRotator(main);
   initCarousel(main);
   initPath(main);
   initBg(main);
@@ -231,6 +232,34 @@ function initPageMotion(first) {
   fitFooter();
   requestAnimationFrame(() => ScrollTrigger.refresh());
   setTimeout(() => ScrollTrigger.refresh(), 700);
+}
+
+/* ---------- Palavra que troca no título da Home ---------- */
+function initRotator(main) {
+  const r = $("[data-rotator]", main);
+  if (!r || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const words = r.dataset.words.split(","), last = words.length - 1;
+  let i = 0, timer = 0;
+  const step = () => {
+    // Aba em segundo plano: espera voltar, sem acumular trocas.
+    if (document.hidden) { timer = setTimeout(step, 1000); return; }
+    i = (i + 1) % words.length;
+    const cur = $(".rw", r), next = document.createElement("span");
+    next.className = "rw dot"; next.textContent = words[i];
+    next.style.cssText = "display:inline-block;position:absolute;left:0;top:0";
+    r.appendChild(next);
+    const w0 = r.offsetWidth, w1 = next.offsetWidth;
+    gsap.set(r, { width: w0 });
+    gsap.to(cur, { yPercent: -110, opacity: 0, duration: .55, ease: "power3.in" });
+    gsap.fromTo(next, { yPercent: 110 }, { yPercent: 0, duration: .75, ease: "power4.out", delay: .15 });
+    gsap.to(r, { width: w1, duration: .7, ease: "power3.inOut", onComplete: () => {
+      cur.remove(); next.style.position = ""; gsap.set(r, { clearProps: "width" });
+    } });
+    // Segura mais tempo na última palavra ("escolhida").
+    timer = setTimeout(step, i === last ? 3400 : 1900);
+  };
+  timer = setTimeout(step, 3000);
+  pageCleanup.push(() => clearTimeout(timer));
 }
 
 /* ---------- Sobre ---------- */

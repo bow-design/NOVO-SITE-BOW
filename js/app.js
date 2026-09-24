@@ -2,7 +2,7 @@
 
 const state = { route: { page: "home" }, svc: 2 };
 
-const TITLES = { home: "Bow — Marca, digital e tecnologia", solucoes: "Soluções — Bow", cases: "Cases — Bow", sobre: "Sobre — Bow" };
+const TITLES = { home: "Bow — Sua empresa merece ser escolhida", solucoes: "Soluções — Bow", cases: "Cases — Bow", sobre: "Sobre — Bow" };
 
 /* #/  #/solucoes  #/solucoes/:slug  #/cases  #/cases/:slug  #/sobre */
 function parseRoute(hash) {
