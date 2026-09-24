@@ -3,9 +3,12 @@
    Tudo é guardado em arquivos (sem banco de dados):
      data/config.php    usuário e hash da senha (criado no primeiro acesso)
      data/content.json  cases e imagens do site
+     data/leads.json    contatos recebidos pelo formulário
      uploads/           imagens e vídeos enviados */
 
 declare(strict_types=1);
+
+date_default_timezone_set('America/Sao_Paulo');
 
 const ROOT = __DIR__ . '/..';
 const DATA_DIR = ROOT . '/data';
@@ -13,6 +16,12 @@ const UPLOAD_DIR = ROOT . '/uploads';
 const CONFIG_FILE = DATA_DIR . '/config.php';
 const CONTENT_FILE = DATA_DIR . '/content.json';
 const ATTEMPTS_FILE = DATA_DIR . '/login-attempts.json';
+const LEADS_FILE = DATA_DIR . '/leads.json';
+const LEADS_RATE_FILE = DATA_DIR . '/contact-rate.json';
+
+/* Para onde vão os avisos de contato novo do formulário do site. */
+const NOTIFY_EMAIL = 'bowagencydesign@gmail.com';
+const CONTACT_MAX_PER_HOUR = 5;
 
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 const MAX_VIDEO_BYTES = 80 * 1024 * 1024;
@@ -240,4 +249,74 @@ function reencode(string $src, string $dest, string $ext): bool {
     };
     imagedestroy($im);
     return (bool)$ok;
+}
+
+/* ---------- Contatos do formulário ---------- */
+
+/* Lê, altera e grava leads.json com o arquivo travado (dois envios ao mesmo tempo não se perdem). */
+function with_leads(callable $fn) {
+    ensure_dirs();
+    $h = @fopen(LEADS_FILE, 'c+');
+    if (!$h) fail('Não foi possível salvar o contato no servidor.', 500);
+    flock($h, LOCK_EX);
+    $leads = json_decode((string)stream_get_contents($h), true);
+    if (!is_array($leads)) $leads = [];
+    $result = $fn($leads);
+    ftruncate($h, 0); rewind($h);
+    fwrite($h, json_encode($leads, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    fflush($h); flock($h, LOCK_UN); fclose($h);
+    return $result;
+}
+
+function load_leads(): array {
+    $l = is_file(LEADS_FILE) ? json_decode((string)file_get_contents(LEADS_FILE), true) : [];
+    return is_array($l) ? $l : [];
+}
+
+/* Limite de envios por IP, para barrar robôs que insistem. */
+function contact_rate_ok(): bool {
+    $f = LEADS_RATE_FILE;
+    $all = is_file($f) ? json_decode((string)@file_get_contents($f), true) : [];
+    if (!is_array($all)) $all = [];
+    $now = time(); $ip = client_ip();
+    foreach ($all as $k => $ts) { $all[$k] = array_values(array_filter((array)$ts, fn($t) => $now - $t < 3600)); if (!$all[$k]) unset($all[$k]); }
+    $ok = count($all[$ip] ?? []) < CONTACT_MAX_PER_HOUR;
+    if ($ok) $all[$ip][] = $now;
+    @file_put_contents($f, json_encode($all), LOCK_EX);
+    return $ok;
+}
+
+function no_newlines(string $s): string { return trim(str_replace(["\r", "\n"], ' ', $s)); }
+
+/* Aviso por e-mail. Sai pelo servidor do site; se falhar, o contato continua salvo no painel. */
+function notify_lead(array $lead): bool {
+    if (!function_exists('mail')) return false;
+    $host = preg_replace('/^www\./', '', strtolower(explode(':', $_SERVER['HTTP_HOST'] ?? 'localhost')[0]));
+    if (!preg_match('/^[a-z0-9.-]+$/', $host)) $host = 'localhost';
+    $subject = '=?UTF-8?B?' . base64_encode('Novo contato pelo site: ' . no_newlines($lead['name'])) . '?=';
+    $lines = [
+        'Novo contato pelo formulário do site da Bow.', '',
+        'Nome: ' . $lead['name'],
+        'Empresa: ' . ($lead['company'] ?: '-'),
+        'E-mail: ' . ($lead['email'] ?: '-'),
+        'WhatsApp: ' . ($lead['phone'] ?: '-'),
+        'Página: ' . ($lead['page'] ?: '-'),
+        'Data: ' . date('d/m/Y H:i', strtotime($lead['date'])), '',
+        'Veja todos os contatos no painel do site, aba Contatos.',
+    ];
+    if ($lead['phone']) $lines[] = 'Responder no WhatsApp: https://wa.me/' . wa_digits($lead['phone']);
+    $headers = [
+        'From: Site Bow <no-reply@' . $host . '>',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: 8bit',
+        'X-Mailer: Site Bow',
+    ];
+    if ($lead['email']) $headers[] = 'Reply-To: ' . no_newlines($lead['email']);
+    return @mail(NOTIFY_EMAIL, $subject, implode("\r\n", $lines), implode("\r\n", $headers), '-f no-reply@' . $host);
+}
+
+/* Número para link do WhatsApp: só dígitos, com 55 na frente quando for número brasileiro sem DDI. */
+function wa_digits(string $phone): string {
+    $d = preg_replace('/\D+/', '', $phone);
+    return strlen($d) <= 11 ? '55' . $d : $d;
 }

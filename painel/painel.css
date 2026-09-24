@@ -97,3 +97,21 @@ h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.02em; }
   .top { justify-content: center; }
   .case-thumb { width: 64px; height: 64px; }
 }
+
+/* Contatos */
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tab-count { display: inline-flex; min-width: 20px; height: 20px; padding: 0 6px; margin-left: 4px; border-radius: 999px; background: var(--green); color: #031a03; font-size: 11px; font-weight: 700; align-items: center; justify-content: center; }
+.seg { display: flex; padding: 3px; border-radius: 999px; border: 1px solid var(--line); }
+.seg-btn { padding: 6px 12px; border-radius: 999px; border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; }
+.seg-btn.is-on { background: #222; color: var(--text); }
+.lead-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.lead { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--green); }
+.lead.is-done { border-left-color: var(--line); opacity: .6; }
+.lead-main { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1 1 280px; }
+.lead-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.lead-top strong { font-size: 1.05rem; }
+.lead-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; }
+.lead-meta a { color: var(--text); }
+.lead-when { font-size: 12px; }
+.lead-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.empty { padding: 36px 20px; text-align: center; border: 1px dashed var(--line); border-radius: 16px; }

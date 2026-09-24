@@ -14,6 +14,22 @@ if ($method === 'GET' && $action === 'status') {
     json_out(['setup' => config() === null, 'logged' => is_logged(), 'user' => $_SESSION['user'] ?? null, 'csrf' => $_SESSION['csrf']]);
 }
 
+if ($method === 'GET' && $action === 'leads_csv') {
+    require_login();
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="contatos-bow-' . date('Y-m-d') . '.csv"');
+    $out = fopen('php://output', 'w');
+    fwrite($out, "\xEF\xBB\xBF"); // acentos certos no Excel
+    fputcsv($out, ['Data', 'Nome', 'Empresa', 'E-mail', 'WhatsApp', 'Página', 'Respondido'], ';');
+    foreach (load_leads() as $l) {
+        // Evita que o Excel interprete um campo como fórmula.
+        $row = array_map(fn($v) => preg_match('/^[=+\-@]/', (string)$v) ? "'" . $v : $v,
+            [date('d/m/Y H:i', strtotime($l['date'])), $l['name'], $l['company'], $l['email'], $l['phone'], $l['page'], empty($l['done']) ? 'Não' : 'Sim']);
+        fputcsv($out, $row, ';');
+    }
+    exit;
+}
+
 if ($method !== 'POST') fail('Método inválido.', 405);
 require_csrf();
 
@@ -71,6 +87,23 @@ switch ($action) {
         write_atomic(CONTENT_FILE, json_encode($content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
         cleanup_uploads($content);
         json_out(['ok' => true, 'content' => $content]);
+    }
+    case 'leads': {
+        require_login();
+        json_out(['leads' => load_leads()]);
+    }
+    case 'lead_update': {
+        require_login();
+        $id = (string)($body['id'] ?? '');
+        $done = !empty($body['done']);
+        with_leads(function (&$leads) use ($id, $done) { foreach ($leads as &$l) if ($l['id'] === $id) $l['done'] = $done; });
+        json_out(['ok' => true]);
+    }
+    case 'lead_delete': {
+        require_login();
+        $id = (string)($body['id'] ?? '');
+        with_leads(function (&$leads) use ($id) { $leads = array_values(array_filter($leads, fn($l) => $l['id'] !== $id)); });
+        json_out(['ok' => true]);
     }
     case 'upload': {
         require_login();

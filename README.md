@@ -21,6 +21,7 @@ assets/           logos e gota da Bow
 
 O endereço `/painel/` abre uma página com login onde dá para:
 
+- ver os contatos do formulário do site (aba **Contatos**): responder pelo WhatsApp ou e-mail com um clique, marcar como respondido, apagar e baixar em planilha;
 - adicionar, editar, remover e reordenar cases, cada um com 4 fotos e um vídeo opcional no topo;
 - trocar qualquer foto do site ou voltar à original;
 - colocar vídeo no topo da Home, da página Cases, de cada solução e da Sobre (a foto fica como imagem de espera enquanto o vídeo carrega);
@@ -31,6 +32,7 @@ As mudanças entram no site na hora. O painel precisa de PHP 8, que a hospedagem
 ```
 painel/           página do painel (index.html, painel.js, painel.css) e api.php
 api/content.php   entrega ao site os cases e imagens salvos
+api/contact.php   recebe o formulário de contato do site
 data/             config.php (usuário e senha) e content.json. Pasta bloqueada ao navegador
 uploads/          imagens (reduzidas para no máximo 2400 px) e vídeos enviados
 ```
@@ -43,6 +45,8 @@ uploads/          imagens (reduzidas para no máximo 2400 px) e vídeos enviados
 2. Envie todos os arquivos deste repositório, exceto as pastas `project/` e `chats/`, que são só referência do design.
 3. Abra **`seudominio.com.br/painel/`** logo em seguida. No primeiro acesso, o painel pede para criar o usuário e a senha (mínimo 10 caracteres). Faça isso antes de divulgar o endereço: até lá, quem abrir a página primeiro cria o acesso.
 
+**Formulário de contato:** cada envio fica salvo na aba Contatos e gera um aviso por e-mail para `bowagencydesign@gmail.com` (para trocar, edite `NOTIFY_EMAIL` em `painel/lib.php`). O aviso sai pelo próprio servidor da Hostinger, sem e-mail do domínio, então os primeiros podem cair no spam do Gmail: abra a pasta Spam, marque "Não é spam" e, se quiser, crie um filtro no Gmail para "Novo contato pelo site" nunca ir para o spam. Mesmo que um aviso não chegue, o contato continua no painel. Proteções: campo invisível contra robôs, envio rápido demais descartado e no máximo 5 envios por hora do mesmo aparelho.
+
 **Vídeos:** MP4 ou WebM, até 80 MB (o ideal: 1080p, 10 a 20 segundos, sem som, até ~15 MB, para carregar rápido no celular). Vídeos .MOV do iPhone precisam ser exportados como MP4. Se o envio falhar dizendo que passou do limite do servidor, aumente no hPanel em **Avançado → Configuração do PHP**: `upload_max_filesize` = 100M e `post_max_size` = 110M. O arquivo `painel/.user.ini` já tenta fazer isso sozinho.
 
 Se esquecer a senha, apague `data/config.php` pelo Gerenciador de Arquivos e abra o painel de novo para criar outra. Os cases e imagens não são perdidos.
@@ -51,7 +55,7 @@ Segurança: senha guardada só como hash, bloqueio de 15 min após 5 tentativas 
 
 ## Pendências
 
-Clientes 03–06, textos dos cases e fotos (Pexels) são provisórios e agora podem ser trocados pelo painel. O formulário de contato só mostra "Enviado ✓" e ainda não envia para lugar nenhum. Os links de Política de privacidade e Termos não têm página.
+Clientes 03–06, textos dos cases e fotos (Pexels) são provisórios e agora podem ser trocados pelo painel. Os links de Política de privacidade e Termos não têm página.
 
 ---
 

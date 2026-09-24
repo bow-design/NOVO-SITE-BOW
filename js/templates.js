@@ -49,14 +49,18 @@ function contactSection(lowercase) {
   const title = lowercase
     ? '<h2 data-reveal class="lc">Tem um projeto em mente? Vamos conversar<span class="dot">.</span></h2>'
     : "<h2 data-reveal>Tem um projeto em mente? Vamos conversar.</h2>";
-  const field = (label, type, name) => '<label class="field" data-ci><span>' + label + '</span><input type="' + type + '" name="' + name + '"></label>';
+  const field = (label, type, name, extra) => '<label class="field" data-ci><span>' + label + '</span><input type="' + type + '" name="' + name + '"' + (extra || "") + "></label>";
   return '<section id="contato" class="contact">' + grain("bowcgrain", { freq: ".8", rectOpacity: ".6" }) +
     '<div class="contact-grid"><div class="contact-copy">' + title +
     '<p data-ci>Conte para a gente o que você está construindo. A gente começa pela conversa e aponta o melhor caminho para o seu projeto.</p></div>' +
     '<form class="contact-form" data-ci-card data-contact-form>' +
     '<div data-ci><h3>Fale com a Bow</h3><p class="form-sub">Preencha e retornamos em até um dia útil.</p></div>' +
-    '<div class="fields">' + field("Nome", "text", "nome") + field("Empresa", "text", "empresa") + field("E-mail", "email", "email") + field("WhatsApp", "tel", "whatsapp") + "</div>" +
-    '<button type="submit" class="btn-submit" data-ci data-magnetic>' + (state.sent ? "Enviado ✓" : "Enviar") + "</button>" +
+    '<div class="fields">' + field("Nome", "text", "name", ' autocomplete="name" maxlength="80" required') + field("Empresa", "text", "company", ' autocomplete="organization" maxlength="120"') +
+      field("E-mail", "email", "email", ' autocomplete="email" maxlength="120"') + field("WhatsApp", "tel", "phone", ' autocomplete="tel" inputmode="tel" maxlength="30" placeholder="(51) 99999-9999"') + "</div>" +
+    // Campo invisível: só robôs preenchem.
+    '<label class="hp" aria-hidden="true">Site<input type="text" name="website" tabindex="-1" autocomplete="off"></label>' +
+    '<button type="submit" class="btn-submit" data-ci data-magnetic>Enviar</button>' +
+    '<p class="form-status" role="status" aria-live="polite"></p>' +
     "</form></div></section>";
 }
 

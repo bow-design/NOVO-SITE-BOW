@@ -32,7 +32,8 @@
   <header class="top">
     <div class="top-l"><img src="../assets/logo-bow-white.svg" alt="bow." class="top-logo"><span class="top-tag">Painel</span></div>
     <nav class="tabs" role="tablist">
-      <button class="tab is-on" data-tab="cases" role="tab">Cases</button>
+      <button class="tab is-on" data-tab="leads" role="tab">Contatos <span class="tab-count" id="lead-count" hidden></span></button>
+      <button class="tab" data-tab="cases" role="tab">Cases</button>
       <button class="tab" data-tab="images" role="tab">Imagens do site</button>
     </nav>
     <div class="top-r">
@@ -43,7 +44,18 @@
   </header>
 
   <main class="wrap">
-    <section data-panel="cases">
+    <section data-panel="leads">
+      <div class="sec-head">
+        <div><h2>Contatos</h2><p class="muted">Quem preencheu o formulário do site. Cada contato novo também gera um aviso por e-mail.</p></div>
+        <div class="row">
+          <div class="seg" role="group" aria-label="Filtro"><button class="seg-btn is-on" data-filter="open">Não respondidos</button><button class="seg-btn" data-filter="all">Todos</button></div>
+          <a class="btn btn-ghost sm" href="api.php?action=leads_csv">Baixar planilha</a>
+        </div>
+      </div>
+      <ul class="lead-list" id="lead-list"></ul>
+    </section>
+
+    <section data-panel="cases" hidden>
       <div class="sec-head">
         <div><h2>Cases</h2><p class="muted">A ordem desta lista é a ordem no site. A Home mostra os 6 primeiros; a página Cases mostra todos.</p></div>
         <button class="btn btn-green" id="btn-new">+ Novo case</button>

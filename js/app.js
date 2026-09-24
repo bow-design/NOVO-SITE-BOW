@@ -1,6 +1,6 @@
 /* Estado, rotas (#/...), header e formulário. */
 
-const state = { route: { page: "home" }, svc: 2, sent: false };
+const state = { route: { page: "home" }, svc: 2 };
 
 const TITLES = { home: "Bow — Marca, digital e tecnologia", solucoes: "Soluções — Bow", cases: "Cases — Bow", sobre: "Sobre — Bow" };
 
@@ -47,9 +47,23 @@ function mount(route, first) {
   old.insertAdjacentHTML("beforebegin", renderPage(route));
   old.remove();
   document.title = pageTitle(route);
+  // O botão flutuante do WhatsApp sai de cena enquanto o formulário de contato está na tela.
+  watchContactForFloat();
+  // Hora em que o formulário apareceu: envios em menos de 2,5 s são tratados como robô.
+  document.querySelectorAll("[data-contact-form]").forEach((f) => { f.dataset.t = Date.now(); });
   closeMenu();
   scrollToTop();
   initPageMotion(first);
+}
+
+let floatIO = null;
+function watchContactForFloat() {
+  const btn = document.querySelector(".wa-float"), sec = document.getElementById("contato");
+  if (floatIO) floatIO.disconnect();
+  btn.classList.remove("is-away");
+  if (!sec || !window.IntersectionObserver) return;
+  floatIO = new IntersectionObserver(([e]) => btn.classList.toggle("is-away", e.isIntersecting), { rootMargin: "0px 0px -15% 0px" });
+  floatIO.observe(sec);
 }
 
 let navigating = false;
@@ -108,6 +122,7 @@ function initFooter() {
     '<a class="flink" href="#/solucoes/' + s.slug + '">' + esc(s.title) + "</a>" +
     (s.slug === "saas-tecnologia" ? '<a class="flink" href="#/solucoes/saas-tecnologia">Sistemas</a>' : "")).join("");
   f.querySelectorAll("[data-wa]").forEach((a) => { a.href = CONTACT[a.dataset.wa]; });
+  document.querySelectorAll(".wa-float[data-wa]").forEach((a) => { a.href = CONTACT[a.dataset.wa]; });
   f.querySelector("[data-year]").textContent = "© " + new Date().getFullYear() + " Bow Agência. Todos os direitos reservados.";
 }
 
@@ -126,14 +141,34 @@ function initLinks() {
     e.preventDefault();
     scrollToEl(document.getElementById(href.slice(1)));
   });
-  document.addEventListener("submit", (e) => {
+  // Formulário de contato: salva no painel (aba Contatos) e avisa por e-mail.
+  document.addEventListener("submit", async (e) => {
     const form = e.target.closest("[data-contact-form]");
     if (!form) return;
     e.preventDefault();
-    // TODO: ligar a um serviço de envio (Formspree, Web3Forms…). Por ora só confirma na tela, como no protótipo.
-    state.sent = true;
-    const btn = form.querySelector(".btn-submit");
-    if (btn) btn.textContent = "Enviado ✓";
+    const btn = form.querySelector(".btn-submit"), status = form.querySelector(".form-status");
+    const v = (n) => form.elements[n].value.trim();
+    const data = { name: v("name"), company: v("company"), email: v("email"), phone: v("phone"), website: v("website"),
+      page: document.title, elapsed: Date.now() - (+form.dataset.t || 0) };
+    const say = (msg, bad) => { status.innerHTML = msg; status.classList.toggle("is-error", !!bad); };
+    if (!data.email && !data.phone) { say("Deixe um e-mail ou WhatsApp para a gente responder.", true); return; }
+    btn.disabled = true; btn.textContent = "Enviando…"; say("");
+    try {
+      const res = await fetch("api/contact.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      const j = await res.json().catch(() => null);
+      if (!res.ok || !j || !j.ok) throw new Error((j && j.error) || "");
+      form.reset();
+      btn.textContent = "Enviado ✓";
+      say("Recebemos seu contato. Retornamos em até um dia útil.");
+      setTimeout(() => { btn.disabled = false; btn.textContent = "Enviar"; }, 6000);
+    } catch (err) {
+      btn.disabled = false; btn.textContent = "Enviar";
+      // Sem servidor (ou erro inesperado): oferece o WhatsApp com os dados já escritos.
+      const msg = "Olá! Vim pelo site da Bow.\nNome: " + data.name + (data.company ? "\nEmpresa: " + data.company : "") +
+        (data.email ? "\nE-mail: " + data.email : "") + (data.phone ? "\nWhatsApp: " + data.phone : "");
+      say((err.message ? esc(err.message) + " " : "Não conseguimos enviar agora. ") +
+        '<a href="' + esc(wa(msg)) + '" target="_blank" rel="noopener">Enviar pelo WhatsApp →</a>', true);
+    }
   });
 }
 

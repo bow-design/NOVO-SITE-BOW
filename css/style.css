@@ -210,6 +210,22 @@ main { position: relative; z-index: 1; display: block; background: var(--black);
 .btn-submit { margin-top: 8px; padding: 17px 28px; border: 0; border-radius: 12px; background: linear-gradient(90deg, #06e006, #049604); color: var(--green-ink); font-size: 15px; font-weight: 600; cursor: pointer; transition: filter .2s; }
 .btn-submit:hover { filter: brightness(1.08); }
 
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.btn-submit:disabled { opacity: .7; cursor: default; }
+.form-status { margin: -8px 0 0; min-height: 1.2em; font-size: .92rem; line-height: 1.5; color: #0a8c0a; }
+.form-status.is-error { color: #c62828; }
+.form-status a { color: #0a8c0a; font-weight: 600; text-decoration: underline; }
+
+/* ============ Botão flutuante do WhatsApp ============ */
+@keyframes waIn { from { opacity: 0; transform: translateY(16px) scale(.8); } to { opacity: 1; transform: none; } }
+.wa-float { position: fixed; right: clamp(16px, 2.4vw, 28px); bottom: clamp(16px, 2.4vw, 28px); z-index: 55; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--grad-green); color: var(--green-ink); box-shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .08); opacity: 0; animation: waIn .6s var(--ease) 1.2s forwards; transition: transform .3s var(--ease), filter .3s; }
+.wa-float:hover { color: var(--green-ink); transform: translateY(-3px) scale(1.04); filter: brightness(1.08); }
+.wa-tip { position: absolute; right: calc(100% + 12px); top: 50%; transform: translate(8px, -50%); padding: 8px 14px; border-radius: 999px; background: #fff; color: var(--black); font-size: 13px; font-weight: 600; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); box-shadow: 0 6px 20px rgba(0, 0, 0, .2); }
+@media (hover: hover) { .wa-float:hover .wa-tip { opacity: 1; transform: translate(0, -50%); } }
+.nav-shell.mnav-open ~ .wa-float { opacity: 0 !important; pointer-events: none; }
+.wa-float.is-away { opacity: 0 !important; transform: translateY(16px) scale(.8); pointer-events: none; }
+@media (max-width: 720px) { .wa-float { width: 54px; height: 54px; } }
+
 /* ============ Soluções ============ */
 .sol-hero { padding: clamp(70px, 10vh, 130px) var(--pad-x) clamp(40px, 5vw, 64px); }
 .sol-hero .pill { margin-bottom: 18px; }

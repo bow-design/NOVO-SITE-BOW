@@ -130,6 +130,7 @@ async function openApp() {
   content.images = asObj(j.content && j.content.images);
   $("#auth").hidden = true; $("#app").hidden = false;
   render();
+  await loadLeads();
 }
 
 $("#btn-logout").addEventListener("click", async () => { try { await api("logout", {}); } catch (e) {} location.reload(); });
@@ -141,6 +142,64 @@ $$(".tab").forEach((t) => t.addEventListener("click", () => {
 }));
 
 function render() { renderCases(); renderSlots(); }
+
+/* ---------- Contatos ---------- */
+let leads = [], leadFilter = "open";
+
+async function loadLeads() {
+  try { leads = (await api("leads", {})).leads || []; } catch (e) { toast(e.message, true); }
+  renderLeads();
+}
+
+const fmtDate = (iso) => { const d = new Date(iso); return d.toLocaleDateString("pt-BR") + " às " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); };
+const waLink = (lead) => {
+  let d = String(lead.phone || "").replace(/\D+/g, "");
+  if (d.length <= 11) d = "55" + d;
+  return "https://wa.me/" + d + "?text=" + encodeURIComponent("Olá, " + lead.name.split(" ")[0] + "! Aqui é da Bow, recebemos seu contato pelo site.");
+};
+
+function renderLeads() {
+  const open = leads.filter((l) => !l.done).length;
+  const badge = $("#lead-count");
+  badge.hidden = !open; badge.textContent = open;
+  const list = leadFilter === "open" ? leads.filter((l) => !l.done) : leads;
+  $("#lead-list").innerHTML = list.length ? list.map((l) =>
+    '<li class="lead' + (l.done ? " is-done" : "") + '">' +
+      '<div class="lead-main"><div class="lead-top"><strong>' + h(l.name) + "</strong>" + (l.company ? '<span class="muted">' + h(l.company) + "</span>" : "") + "</div>" +
+      '<div class="lead-meta">' + (l.email ? '<a href="mailto:' + h(l.email) + '">' + h(l.email) + "</a>" : "") + (l.phone ? "<span>" + h(l.phone) + "</span>" : "") + "</div>" +
+      '<div class="lead-when muted">' + h(fmtDate(l.date)) + (l.page ? " · " + h(l.page) : "") + "</div></div>" +
+      '<div class="lead-actions">' +
+        (l.phone ? '<a class="btn btn-green sm" href="' + h(waLink(l)) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
+        (l.email ? '<a class="btn btn-ghost sm" href="mailto:' + h(l.email) + '">E-mail</a>' : "") +
+        '<button class="btn btn-ghost sm" data-done="' + h(l.id) + '">' + (l.done ? "Reabrir" : "Marcar respondido") + "</button>" +
+        '<button class="icon-btn" data-ldel="' + h(l.id) + '" title="Apagar">×</button>' +
+      "</div></li>").join("")
+    : '<li class="empty muted">' + (leads.length ? "Nenhum contato esperando resposta." : "Nenhum contato ainda. Eles aparecem aqui assim que alguém enviar o formulário do site.") + "</li>";
+}
+
+$$(".seg-btn").forEach((b) => b.addEventListener("click", () => {
+  leadFilter = b.dataset.filter;
+  $$(".seg-btn").forEach((x) => x.classList.toggle("is-on", x === b));
+  renderLeads();
+}));
+
+$("#lead-list").addEventListener("click", async (e) => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  const id = b.dataset.done || b.dataset.ldel, lead = leads.find((l) => l.id === id);
+  if (!lead) return;
+  try {
+    if (b.dataset.done) {
+      await api("lead_update", { id, done: !lead.done });
+      lead.done = !lead.done; toast(lead.done ? "Marcado como respondido." : "Contato reaberto.");
+    } else {
+      if (!confirm('Apagar o contato de "' + lead.name + '"?')) return;
+      await api("lead_delete", { id });
+      leads = leads.filter((l) => l.id !== id); toast("Contato apagado.");
+    }
+    renderLeads();
+  } catch (ex) { toast(ex.message, true); }
+});
 
 /* ---------- Cases ---------- */
 function renderCases() {
