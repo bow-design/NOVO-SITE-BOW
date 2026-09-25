@@ -6,4 +6,4 @@ $file = __DIR__ . '/../data/content.json';
 if (!is_file($file)) { echo '{}'; exit; }
 $c = json_decode((string)file_get_contents($file), true);
 if (!is_array($c)) { echo '{}'; exit; }
-echo json_encode(['cases' => $c['cases'] ?? [], 'images' => (object)($c['images'] ?? []), 'clients' => $c['clients'] ?? null], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+echo json_encode(['cases' => $c['cases'] ?? [], 'images' => (object)($c['images'] ?? []), 'clients' => $c['clients'] ?? null, 'tracking' => (object)($c['tracking'] ?? [])], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

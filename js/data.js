@@ -184,6 +184,8 @@ const IMAGE_SLOTS = [
 ];
 const SLOT_DEFAULTS = Object.fromEntries(IMAGE_SLOTS.map(([k, , , d]) => [k, d]));
 let IMAGES = {};
+/* Códigos de rastreamento (Clarity, GA4, Pixel da Meta), definidos no painel. */
+let TRACKING = {};
 const slot = (key) => (IMAGES[key] != null ? IMAGES[key] : SLOT_DEFAULTS[key]);
 
 /* Aplica o conteúdo salvo pelo painel (api/content.php) por cima dos padrões. */
@@ -192,4 +194,5 @@ function applyContent(c) {
   if (Array.isArray(c.cases) && c.cases.length) CASES = c.cases;
   if (c.images && typeof c.images === "object" && !Array.isArray(c.images)) IMAGES = c.images;
   if (Array.isArray(c.clients)) CLIENTS = c.clients; // lista vazia = faixa some do site
+  if (c.tracking && typeof c.tracking === "object" && !Array.isArray(c.tracking)) TRACKING = c.tracking;
 }

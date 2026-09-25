@@ -127,3 +127,15 @@ h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.02em; }
 .client-name { flex: 1 1 180px; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid transparent; background: transparent; color: var(--text); font: inherit; font-size: 1rem; font-weight: 600; }
 .client-name:hover { border-color: var(--line); }
 .client-name:focus { outline: none; border-color: var(--green); background: #161616; }
+
+/* Rastreamento */
+.track-form { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
+.track-card { padding: 20px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
+.track-card > p.muted { margin: 6px 0 14px; font-size: 14px; line-height: 1.5; }
+.track-card .fld { margin-bottom: 0; }
+.track-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.track-head h3 { font-size: 1.05rem; }
+.badge.off { background: rgba(255, 255, 255, .08); color: var(--muted); }
+.track-foot { display: flex; justify-content: flex-end; }
+.track-help ul { margin: 12px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.track-help strong { color: var(--text); font-weight: 600; }

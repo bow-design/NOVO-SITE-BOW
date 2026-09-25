@@ -9,6 +9,7 @@ js/data.js        conteúdo: cases, soluções, textos, fotos, contatos  ← edi
 js/templates.js   HTML de cada página
 js/motion.js      animações (GSAP + ScrollTrigger + Lenis)
 js/app.js         rotas, header, formulário
+js/tracking.js    aviso de cookies e rastreamento (Clarity, GA4, Pixel da Meta)
 vendor/           GSAP 3.12.5, ScrollTrigger, Lenis 1.1.13 (cópias locais)
 assets/           logos e gota da Bow
 ```
@@ -24,6 +25,7 @@ O endereço `/painel/` abre uma página com login onde dá para:
 - ver os contatos do formulário do site (aba **Contatos**): responder pelo WhatsApp ou e-mail com um clique, marcar como respondido, apagar e baixar em planilha;
 - adicionar, editar, remover e reordenar cases, cada um com 4 fotos e um vídeo opcional no topo;
 - editar a faixa de logos de clientes (aba **Clientes**): adicionar, renomear, reordenar e remover, com logo em PNG transparente (aparece em branco no site) ou só o nome;
+- ligar o rastreamento (aba **Rastreamento**): Microsoft Clarity (mapas de calor e gravações), Google Analytics 4 e Pixel da Meta, colando só o ID de cada um. Tudo só carrega para quem aceita o aviso de cookies (LGPD). Eventos já medidos: páginas vistas, `whatsapp_click`, `generate_lead`, `view_case` e `view_solution`;
 - trocar qualquer foto do site ou voltar à original;
 - colocar vídeo no topo da Home, da página Cases, de cada solução e da Sobre (a foto fica como imagem de espera enquanto o vídeo carrega);
 - trocar a senha.

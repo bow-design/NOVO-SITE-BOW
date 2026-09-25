@@ -54,6 +54,13 @@ function mount(route, first) {
   closeMenu();
   scrollToTop();
   initPageMotion(first);
+  if (!first) { Tracking.pageView(); routeEvents(route); }
+}
+
+/* Eventos por página: qual case e qual solução as pessoas abrem. */
+function routeEvents(route) {
+  if (route.page === "case") Tracking.event("view_case", { case: CASES[route.i].name });
+  if (route.page === "servico") Tracking.event("view_solution", { solucao: SVC_PAGES[route.i].title });
 }
 
 let floatIO = null;
@@ -157,6 +164,7 @@ function initLinks() {
       const res = await fetch("api/contact.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       const j = await res.json().catch(() => null);
       if (!res.ok || !j || !j.ok) throw new Error((j && j.error) || "");
+      Tracking.event("generate_lead", { pagina: document.title });
       form.reset();
       btn.textContent = "Enviado ✓";
       say("Recebemos seu contato. Retornamos em até um dia útil.");
@@ -192,6 +200,10 @@ async function boot() {
   initGlobalMotion();
   const route = location.hash.startsWith("#/") ? parseRoute(location.hash) : { page: "home" };
   mount(route, true);
+  Tracking.init(TRACKING);
+  routeEvents(state.route);
+  const prefs = document.querySelector("[data-cookie-prefs]");
+  if (prefs) prefs.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); Tracking.openPrefs(); });
   window.addEventListener("hashchange", () => {
     if (!location.hash.startsWith("#/") && location.hash !== "") return;
     go(parseRoute(location.hash));

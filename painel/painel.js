@@ -12,7 +12,7 @@ const asObj = (v) => (v && typeof v === "object" && !Array.isArray(v) ? v : {});
 
 let csrf = "";
 let setupMode = false;
-const content = { cases: [], images: {}, clients: [] };
+const content = { cases: [], images: {}, clients: [], tracking: {} };
 const DEFAULT_CLIENTS = JSON.parse(JSON.stringify(CLIENTS));
 
 /* Imagem para pré-visualização: número = foto de banco; texto = arquivo enviado. */
@@ -90,7 +90,7 @@ function pickAndUpload(btn, kind) {
 async function saveAll(msg) {
   try {
     const j = await api("save", { content });
-    content.cases = j.content.cases; content.images = asObj(j.content.images); content.clients = j.content.clients || [];
+    content.cases = j.content.cases; content.images = asObj(j.content.images); content.clients = j.content.clients || []; content.tracking = asObj(j.content.tracking);
     render();
     toast(msg || "Salvo. Já está no site.");
     return true;
@@ -129,6 +129,7 @@ async function openApp() {
   const j = await api("get", {});
   content.cases = j.content && j.content.cases ? j.content.cases : JSON.parse(JSON.stringify(DEFAULT_CASES));
   content.images = asObj(j.content && j.content.images);
+  content.tracking = asObj(j.content && j.content.tracking);
   content.clients = j.content && Array.isArray(j.content.clients) ? j.content.clients : JSON.parse(JSON.stringify(DEFAULT_CLIENTS));
   $("#auth").hidden = true; $("#app").hidden = false;
   render();
@@ -143,7 +144,26 @@ $$(".tab").forEach((t) => t.addEventListener("click", () => {
   $$("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== t.dataset.tab; });
 }));
 
-function render() { renderCases(); renderSlots(); renderClients(); }
+function render() { renderCases(); renderSlots(); renderClients(); renderTracking(); }
+
+/* ---------- Rastreamento ---------- */
+function renderTracking() {
+  const f = $("#track-form");
+  ["clarity", "ga4", "metaPixel"].forEach((k) => {
+    if (document.activeElement !== f[k]) f[k].value = content.tracking[k] || "";
+    const b = $('[data-track-status="' + k + '"]');
+    b.textContent = content.tracking[k] ? "Ativo" : "Desligado";
+    b.classList.toggle("off", !content.tracking[k]);
+  });
+}
+
+$("#track-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.target, before = Object.assign({}, content.tracking);
+  content.tracking = {};
+  ["clarity", "ga4", "metaPixel"].forEach((k) => { const v = f[k].value.trim(); if (v) content.tracking[k] = v; });
+  if (!(await saveAll("Rastreamento salvo. Já vale para quem aceitar os cookies."))) content.tracking = before;
+});
 
 /* ---------- Clientes (faixa de logos) ---------- */
 function renderClients() {

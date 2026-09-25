@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/style.css?v=2026092408">
+<link rel="stylesheet" href="css/style.css?v=2026092409">
 <!-- Botão flutuante do WhatsApp: estilo aqui no HTML para ele ficar sempre no canto,
      mesmo se o navegador ainda estiver com uma versão antiga do style.css. -->
 <style>
@@ -20,16 +20,18 @@
 .wa-tip { position: absolute; right: calc(100% + 12px); top: 50%; transform: translate(8px, -50%); padding: 8px 14px; border-radius: 999px; background: #fff; color: #050505; font-size: 13px; font-weight: 600; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s cubic-bezier(.2,.7,.2,1); box-shadow: 0 6px 20px rgba(0, 0, 0, .2); }
 @media (hover: hover) { .wa-float:hover .wa-tip { opacity: 1; transform: translate(0, -50%); } }
 .nav-shell.mnav-open ~ .wa-float { opacity: 0 !important; pointer-events: none; }
+.consent-open .wa-float { opacity: 0 !important; pointer-events: none; }
 .wa-float.is-away { opacity: 0 !important; transform: translateY(16px) scale(.8); pointer-events: none; }
 @media (max-width: 720px) { .wa-float { width: 54px; height: 54px; } }
 </style>
-<script src="vendor/gsap.min.js?v=2026092408" defer></script>
-<script src="vendor/ScrollTrigger.min.js?v=2026092408" defer></script>
-<script src="vendor/lenis.min.js?v=2026092408" defer></script>
-<script src="js/data.js?v=2026092408" defer></script>
-<script src="js/templates.js?v=2026092408" defer></script>
-<script src="js/motion.js?v=2026092408" defer></script>
-<script src="js/app.js?v=2026092408" defer></script>
+<script src="vendor/gsap.min.js?v=2026092409" defer></script>
+<script src="vendor/ScrollTrigger.min.js?v=2026092409" defer></script>
+<script src="vendor/lenis.min.js?v=2026092409" defer></script>
+<script src="js/data.js?v=2026092409" defer></script>
+<script src="js/templates.js?v=2026092409" defer></script>
+<script src="js/motion.js?v=2026092409" defer></script>
+<script src="js/tracking.js?v=2026092409" defer></script>
+<script src="js/app.js?v=2026092409" defer></script>
 </head>
 <body>
 <div id="root">
@@ -115,6 +117,7 @@
         <p data-year>© 2026 Bow Agência. Todos os direitos reservados.</p>
         <a href="#privacidade">Política de privacidade</a>
         <a href="#termos">Termos</a>
+        <a href="#" data-cookie-prefs hidden>Preferências de cookies</a>
       </div>
     </div>
   </footer>

@@ -192,7 +192,19 @@ function validate_content($in): array {
         $logo = valid_ref($c['logo'] ?? null);
         $clients[] = ['name' => $cname] + (is_string($logo) ? ['logo' => $logo] : []);
     }
-    return ['version' => 1, 'updated' => date('c'), 'cases' => $cases, 'images' => (object)$images, 'clients' => $clients];
+    // Códigos de rastreamento: só o formato de cada ferramenta é aceito (eles vão para o HTML público).
+    $tr = is_array($in['tracking'] ?? null) ? $in['tracking'] : [];
+    $tracking = [];
+    $rules = ['clarity' => '/^[a-z0-9]{6,20}$/i', 'ga4' => '/^G-[A-Z0-9]{4,20}$/', 'metaPixel' => '/^\d{8,20}$/'];
+    $labels = ['clarity' => 'ID do Clarity', 'ga4' => 'ID do Google Analytics (G-...)', 'metaPixel' => 'ID do Pixel da Meta (só números)'];
+    foreach ($rules as $k => $re) {
+        $v = trim((string)($tr[$k] ?? ''));
+        if ($k === 'ga4') $v = strtoupper($v);
+        if ($v === '') continue;
+        if (!preg_match($re, $v)) fail('Confira o ' . $labels[$k] . '.');
+        $tracking[$k] = $v;
+    }
+    return ['version' => 1, 'updated' => date('c'), 'cases' => $cases, 'images' => (object)$images, 'clients' => $clients, 'tracking' => (object)$tracking];
 }
 
 /* Apaga imagens enviadas que não são mais usadas (ignora as da última hora,

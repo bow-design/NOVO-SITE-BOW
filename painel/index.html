@@ -7,9 +7,9 @@
 <title>Painel — Bow</title>
 <link rel="icon" type="image/png" href="../assets/mark-bow.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="painel.css?v=2026092408">
-<script src="../js/data.js?v=2026092408" defer></script>
-<script src="painel.js?v=2026092408" defer></script>
+<link rel="stylesheet" href="painel.css?v=2026092409">
+<script src="../js/data.js?v=2026092409" defer></script>
+<script src="painel.js?v=2026092409" defer></script>
 </head>
 <body>
 
@@ -36,6 +36,7 @@
       <button class="tab" data-tab="cases" role="tab">Cases</button>
       <button class="tab" data-tab="clients" role="tab">Clientes</button>
       <button class="tab" data-tab="images" role="tab">Imagens do site</button>
+      <button class="tab" data-tab="tracking" role="tab">Rastreamento</button>
     </nav>
     <div class="top-r">
       <a class="btn btn-ghost" href="../" target="_blank" rel="noopener">Ver site ↗</a>
@@ -79,6 +80,38 @@
         <div><h2>Imagens do site</h2><p class="muted">Troque qualquer foto do site ou coloque vídeo nos topos das páginas. As fotos e o vídeo de cada case ficam dentro do case, na aba Cases.</p></div>
       </div>
       <div id="slot-groups"></div>
+    </section>
+    <section data-panel="tracking" hidden>
+      <div class="sec-head">
+        <div><h2>Rastreamento</h2><p class="muted">Cole aqui o código de cada ferramenta. Elas só ligam para quem aceitar os cookies no aviso do site. Deixe em branco para desligar.</p></div>
+      </div>
+      <form class="track-form" id="track-form">
+        <div class="track-card">
+          <div class="track-head"><h3>Microsoft Clarity</h3><span class="badge" data-track-status="clarity"></span></div>
+          <p class="muted">Mapas de calor e gravações: onde as pessoas clicam, até onde rolam e o caminho de cada visita.</p>
+          <label class="fld"><span>ID do projeto <em>em clarity.microsoft.com → Configurações → Visão geral. Ex.: abc12def34</em></span><input name="clarity" maxlength="20" autocomplete="off" spellcheck="false"></label>
+        </div>
+        <div class="track-card">
+          <div class="track-head"><h3>Google Analytics 4</h3><span class="badge" data-track-status="ga4"></span></div>
+          <p class="muted">Visitas, de onde vieram, páginas e cases mais vistos, cliques no WhatsApp e formulários enviados.</p>
+          <label class="fld"><span>ID de medição <em>em analytics.google.com → Administrador → Fluxos de dados. Ex.: G-ABC123XYZ</em></span><input name="ga4" maxlength="24" autocomplete="off" spellcheck="false" placeholder="G-"></label>
+        </div>
+        <div class="track-card">
+          <div class="track-head"><h3>Pixel da Meta <em class="muted">(opcional)</em></h3><span class="badge" data-track-status="metaPixel"></span></div>
+          <p class="muted">Só se for anunciar no Instagram/Facebook: mede quais anúncios geram contatos e permite remarketing.</p>
+          <label class="fld"><span>ID do Pixel <em>no Gerenciador de Eventos da Meta. Só números</em></span><input name="metaPixel" maxlength="20" inputmode="numeric" autocomplete="off" spellcheck="false"></label>
+        </div>
+        <div class="track-foot"><button type="submit" class="btn btn-green">Salvar rastreamento</button></div>
+        <div class="track-card track-help">
+          <h3>O que já é medido automaticamente</h3>
+          <ul>
+            <li><strong>Páginas vistas</strong>: cada página conta separado (Home, Sobre, cada case, cada solução).</li>
+            <li><strong>whatsapp_click</strong>: clique em qualquer botão de WhatsApp, com o local (botão flutuante, menu, rodapé ou página).</li>
+            <li><strong>generate_lead</strong>: formulário de contato enviado. No Pixel da Meta vira o evento "Lead".</li>
+            <li><strong>view_case</strong> e <strong>view_solution</strong>: qual case e qual solução foram abertos.</li>
+          </ul>
+        </div>
+      </form>
     </section>
   </main>
 </div>
