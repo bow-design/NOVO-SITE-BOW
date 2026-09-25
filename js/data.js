@@ -139,7 +139,9 @@ const METHOD = [
   ["005", "Evoluir", "O projeto não termina quando vai para o ar. Analisamos, aprendemos e ajustamos, porque marcas crescem e o digital nunca fica parado."],
 ];
 
-const HOME_CLIENTS = ["CLIENTE 01", "CLIENTE 02", "CLIENTE 03", "CLIENTE 04", "CLIENTE 05", "CLIENTE 06"];
+/* Faixa de clientes (Home e página Cases). Editável no painel, aba Clientes:
+   cada um tem nome e, se quiser, uma logo (caminho em uploads/). Sem logo, aparece o nome. */
+let CLIENTS = ["Attualize", "IOA Blumenau", "Cliente 03", "Cliente 04", "Cliente 05", "Cliente 06"].map((name) => ({ name }));
 
 const PRINCIPLES = [
   ["01", "Resultado", "Criatividade precisa gerar impacto.", 5647320],
@@ -189,4 +191,5 @@ function applyContent(c) {
   if (!c || typeof c !== "object") return;
   if (Array.isArray(c.cases) && c.cases.length) CASES = c.cases;
   if (c.images && typeof c.images === "object" && !Array.isArray(c.images)) IMAGES = c.images;
+  if (Array.isArray(c.clients)) CLIENTS = c.clients; // lista vazia = faixa some do site
 }

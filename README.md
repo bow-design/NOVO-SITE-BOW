@@ -23,6 +23,7 @@ O endereço `/painel/` abre uma página com login onde dá para:
 
 - ver os contatos do formulário do site (aba **Contatos**): responder pelo WhatsApp ou e-mail com um clique, marcar como respondido, apagar e baixar em planilha;
 - adicionar, editar, remover e reordenar cases, cada um com 4 fotos e um vídeo opcional no topo;
+- editar a faixa de logos de clientes (aba **Clientes**): adicionar, renomear, reordenar e remover, com logo em PNG transparente (aparece em branco no site) ou só o nome;
 - trocar qualquer foto do site ou voltar à original;
 - colocar vídeo no topo da Home, da página Cases, de cada solução e da Sobre (a foto fica como imagem de espera enquanto o vídeo carrega);
 - trocar a senha.

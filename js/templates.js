@@ -26,8 +26,11 @@ const ARROW_UR = (size, stroke) => '<svg viewBox="0 0 24 24" width="' + size + '
 
 /* ---------- Partes compartilhadas ---------- */
 
-function marquee(names, cls) {
-  const group = '<div class="mgroup">' + names.map((n) => "<span>" + esc(n) + "</span>").join("") + "</div>";
+function marquee(clients, cls) {
+  if (!clients.length) return "";
+  const group = '<div class="mgroup">' + clients.map((c) => c.logo
+    ? '<img class="mlogo" src="' + esc(px(c.logo)) + '" alt="' + esc(c.name) + '" decoding="async">'
+    : "<span>" + esc(c.name.toUpperCase()) + "</span>").join("") + "</div>";
   return '<div class="' + cls + '"><div class="mtrack" data-mtrack>' + group + group + "</div></div>";
 }
 
@@ -100,7 +103,7 @@ function pageHome() {
       '<a class="hero-link" data-intro href="#contato" data-scroll-to="contato">Começar um projeto <span class="dot arrow">→</span></a>' +
     "</div></section>" +
 
-  marquee(HOME_CLIENTS, "marquee") +
+  marquee(CLIENTS, "marquee") +
 
   '<section class="method" data-bg-a>' +
     '<div class="method-head"><span class="pill pill--dark" data-fade data-tag>Nosso método</span>' +
@@ -183,7 +186,7 @@ function pageCases() {
       "<p data-fade>Projetos que nasceram de desafios reais e ganharam forma através de estratégia, criatividade e tecnologia.</p>" +
       '<a class="btn-green btn-lg" data-fade href="' + CONTACT.waHref + '" target="_blank" rel="noopener" data-magnetic>Começar um projeto</a>' +
     "</div>" +
-    marquee(CASES.map((c) => c.name.toUpperCase()), "cases-marquee") +
+    marquee(CLIENTS, "cases-marquee") +
   "</section>" +
   '<section class="cases-grid-sec"><div class="wrap">' + workGrid("bowcwg") + "</div></section>" +
   contactSection(false) +

@@ -210,14 +210,18 @@ function initPageMotion(first) {
     if (page === "sobre") sobreMotion(main, hidden);
   }, root);
 
-  /* Faixas de clientes: esperam as fontes para medir a largura certa */
+  /* Faixas de clientes: esperam fontes e logos carregarem para medir a largura certa.
+     Com poucos clientes, o grupo é repetido até cobrir a tela e a faixa não abrir buraco. */
   const token = pageCtx;
-  document.fonts.ready.then(() => {
+  const logos = q("[data-mtrack] img").map((im) => (im.decode ? im.decode().catch(() => {}) : null));
+  Promise.all([document.fonts.ready, ...logos]).then(() => {
     if (pageCtx !== token) return;
     pageCtx.add(() => q("[data-mtrack]").forEach((track) => {
-      const half = track.scrollWidth / 2;
+      const first = track.firstElementChild, groupW = first.offsetWidth;
+      if (!groupW) return;
+      while (track.scrollWidth < innerWidth + groupW * 2) track.appendChild(first.cloneNode(true));
       gsap.set(track, { x: 0 });
-      gsap.to(track, { x: -half, duration: 38, ease: "none", repeat: -1, modifiers: { x: (v) => (parseFloat(v) % half) + "px" } });
+      gsap.to(track, { x: -groupW, duration: 38 * groupW / 1200, ease: "none", repeat: -1, modifiers: { x: (v) => (parseFloat(v) % groupW) + "px" } });
     }));
   });
 

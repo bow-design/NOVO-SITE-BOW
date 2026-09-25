@@ -183,7 +183,16 @@ function validate_content($in): array {
         $r = str_ends_with($k, 'Video') ? valid_video($v) : valid_ref($v);
         if ($r !== null) $images[$k] = $r;
     }
-    return ['version' => 1, 'updated' => date('c'), 'cases' => $cases, 'images' => (object)$images];
+    // Faixa de clientes: nome (obrigatório) e logo opcional enviada pelo painel.
+    $clients = [];
+    foreach (array_slice(is_array($in['clients'] ?? null) ? $in['clients'] : [], 0, 60) as $c) {
+        if (!is_array($c)) continue;
+        $cname = clean_str($c['name'] ?? '', 60);
+        if ($cname === '') fail('Todo cliente da faixa precisa de um nome.');
+        $logo = valid_ref($c['logo'] ?? null);
+        $clients[] = ['name' => $cname] + (is_string($logo) ? ['logo' => $logo] : []);
+    }
+    return ['version' => 1, 'updated' => date('c'), 'cases' => $cases, 'images' => (object)$images, 'clients' => $clients];
 }
 
 /* Apaga imagens enviadas que não são mais usadas (ignora as da última hora,
@@ -234,6 +243,9 @@ function reencode(string $src, string $dest, string $ext): bool {
     if (!function_exists('imagecreatefromstring')) return false;
     $im = @imagecreatefromstring((string)file_get_contents($src));
     if (!$im) return false;
+    // Mantém o fundo transparente de PNG/WebP (logos) ao regravar.
+    imagealphablending($im, false);
+    imagesavealpha($im, true);
     $w = imagesx($im); $h = imagesy($im);
     if ($w > MAX_IMAGE_WIDTH) {
         $nh = (int)round($h * MAX_IMAGE_WIDTH / $w);

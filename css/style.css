@@ -256,6 +256,9 @@ main { position: relative; z-index: 1; display: block; background: var(--black);
 .cases-hero-content > p { margin: 0; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.6; color: rgba(255, 255, 255, .75); max-width: 44ch; }
 .cases-hero-content .btn-lg { margin-top: 6px; padding: 15px 30px; }
 .cases-marquee { position: relative; z-index: 1; width: 100vw; overflow: hidden; margin-top: clamp(60px, 9vh, 110px); padding: 0 0 clamp(40px, 6vh, 70px); }
+/* Logos dos clientes: todas em branco, para ficarem uniformes sobre o fundo escuro. */
+.mlogo { display: block; height: 30px; width: auto; max-width: 150px; object-fit: contain; filter: brightness(0) invert(1); opacity: .45; }
+.cases-marquee .mlogo { height: 34px; opacity: .6; }
 .cases-marquee .mgroup { gap: 72px; padding-right: 72px; }
 .cases-marquee .mgroup span { font-size: 1.25rem; color: rgba(255, 255, 255, .55); }
 .cases-grid-sec { padding: clamp(56px, 7vw, 100px) var(--pad-x); background: var(--white); }

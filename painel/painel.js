@@ -12,7 +12,8 @@ const asObj = (v) => (v && typeof v === "object" && !Array.isArray(v) ? v : {});
 
 let csrf = "";
 let setupMode = false;
-const content = { cases: [], images: {} };
+const content = { cases: [], images: {}, clients: [] };
+const DEFAULT_CLIENTS = JSON.parse(JSON.stringify(CLIENTS));
 
 /* Imagem para pré-visualização: número = foto de banco; texto = arquivo enviado. */
 const preview = (ref) => ref == null ? "" : typeof ref === "string" ? "../" + ref : px(ref, 600);
@@ -89,7 +90,7 @@ function pickAndUpload(btn, kind) {
 async function saveAll(msg) {
   try {
     const j = await api("save", { content });
-    content.cases = j.content.cases; content.images = asObj(j.content.images);
+    content.cases = j.content.cases; content.images = asObj(j.content.images); content.clients = j.content.clients || [];
     render();
     toast(msg || "Salvo. Já está no site.");
     return true;
@@ -128,6 +129,7 @@ async function openApp() {
   const j = await api("get", {});
   content.cases = j.content && j.content.cases ? j.content.cases : JSON.parse(JSON.stringify(DEFAULT_CASES));
   content.images = asObj(j.content && j.content.images);
+  content.clients = j.content && Array.isArray(j.content.clients) ? j.content.clients : JSON.parse(JSON.stringify(DEFAULT_CLIENTS));
   $("#auth").hidden = true; $("#app").hidden = false;
   render();
   await loadLeads();
@@ -141,7 +143,57 @@ $$(".tab").forEach((t) => t.addEventListener("click", () => {
   $$("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== t.dataset.tab; });
 }));
 
-function render() { renderCases(); renderSlots(); }
+function render() { renderCases(); renderSlots(); renderClients(); }
+
+/* ---------- Clientes (faixa de logos) ---------- */
+function renderClients() {
+  const L = content.clients, n = L.length;
+  $("#client-list").innerHTML = n ? L.map((c, i) =>
+    '<li class="client-row">' +
+      '<div class="client-logo">' + (c.logo ? '<img src="' + h(preview(c.logo)) + '" alt="">' : '<span class="muted">Sem logo</span>') + "</div>" +
+      '<input class="client-name" data-cname="' + i + '" value="' + h(c.name) + '" maxlength="60" aria-label="Nome do cliente">' +
+      '<div class="case-actions">' +
+        '<button class="icon-btn" data-cup="' + i + '"' + (i === 0 ? " disabled" : "") + ' title="Subir">↑</button>' +
+        '<button class="icon-btn" data-cdown="' + i + '"' + (i === n - 1 ? " disabled" : "") + ' title="Descer">↓</button>' +
+        '<button class="btn btn-ghost sm" data-clogo="' + i + '">' + (c.logo ? "Trocar logo" : "Enviar logo") + "</button>" +
+        (c.logo ? '<button class="btn btn-link sm" data-cnologo="' + i + '">Tirar logo</button>' : "") +
+        '<button class="btn btn-danger sm" data-cdel="' + i + '">Remover</button>' +
+      "</div></li>").join("")
+    : '<li class="empty muted">Nenhum cliente na faixa. Sem clientes, a faixa some do site.</li>';
+}
+
+$("#btn-new-client").addEventListener("click", async () => {
+  const name = (prompt("Nome do cliente:") || "").trim();
+  if (!name) return;
+  content.clients.push({ name: name.slice(0, 60) });
+  await saveAll("Cliente adicionado. Envie a logo dele.");
+});
+
+$("#client-list").addEventListener("click", async (e) => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  const L = content.clients, d = b.dataset;
+  if (d.cup) { const i = +d.cup; [L[i - 1], L[i]] = [L[i], L[i - 1]]; await saveAll("Ordem salva."); }
+  else if (d.cdown) { const i = +d.cdown; [L[i + 1], L[i]] = [L[i], L[i + 1]]; await saveAll("Ordem salva."); }
+  else if (d.clogo) { const path = await pickAndUpload(b, "image"); if (path) { L[+d.clogo].logo = path; await saveAll("Logo salva."); } }
+  else if (d.cnologo) { delete L[+d.cnologo].logo; await saveAll("Logo retirada. Agora aparece o nome."); }
+  else if (d.cdel) {
+    const i = +d.cdel;
+    if (!confirm('Tirar "' + L[i].name + '" da faixa de clientes?')) return;
+    const removed = L.splice(i, 1);
+    if (!(await saveAll("Cliente removido."))) L.splice(i, 0, removed[0]);
+  }
+});
+
+// Nome editado direto na lista: salva ao sair do campo.
+$("#client-list").addEventListener("change", async (e) => {
+  const inp = e.target.closest("[data-cname]");
+  if (!inp) return;
+  const v = inp.value.trim();
+  if (!v) { toast("O nome não pode ficar vazio.", true); renderClients(); return; }
+  content.clients[+inp.dataset.cname].name = v;
+  await saveAll("Nome salvo.");
+});
 
 /* ---------- Contatos ---------- */
 let leads = [], leadFilter = "open", leadPeriod = "all";

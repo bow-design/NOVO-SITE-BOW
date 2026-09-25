@@ -7,9 +7,9 @@
 <title>Painel — Bow</title>
 <link rel="icon" type="image/png" href="../assets/mark-bow.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="painel.css?v=2026092405">
-<script src="../js/data.js?v=2026092405" defer></script>
-<script src="painel.js?v=2026092405" defer></script>
+<link rel="stylesheet" href="painel.css?v=2026092406">
+<script src="../js/data.js?v=2026092406" defer></script>
+<script src="painel.js?v=2026092406" defer></script>
 </head>
 <body>
 
@@ -34,6 +34,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab is-on" data-tab="leads" role="tab">Contatos <span class="tab-count" id="lead-count" hidden></span></button>
       <button class="tab" data-tab="cases" role="tab">Cases</button>
+      <button class="tab" data-tab="clients" role="tab">Clientes</button>
       <button class="tab" data-tab="images" role="tab">Imagens do site</button>
     </nav>
     <div class="top-r">
@@ -63,6 +64,14 @@
         <button class="btn btn-green" id="btn-new">+ Novo case</button>
       </div>
       <ul class="case-list" id="case-list"></ul>
+    </section>
+
+    <section data-panel="clients" hidden>
+      <div class="sec-head">
+        <div><h2>Clientes</h2><p class="muted">A faixa de logos que passa na Home e no topo da página Cases. Use logo em PNG com fundo transparente: no site ela aparece em branco, igual às outras. Cliente sem logo aparece com o nome escrito.</p></div>
+        <button class="btn btn-green" id="btn-new-client">+ Adicionar cliente</button>
+      </div>
+      <ul class="client-list" id="client-list"></ul>
     </section>
 
     <section data-panel="images" hidden>
