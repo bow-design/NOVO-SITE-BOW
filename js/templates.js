@@ -95,7 +95,7 @@ function pageHome() {
     '<div class="home-hero-content">' +
       '<span class="hero-tag" data-intro>Bow / Digital Studio</span>' +
       // A palavra verde troca sozinha (motion.js → initRotator) e segura mais tempo na última.
-      '<h1 data-intro-h>Soluções que fazem sua empresa <span class="rotator" data-rotator data-words="aparecer,vender,funcionar,crescer"><span class="rw dot">aparecer</span></span><span class="dot">.</span></h1>' +
+      '<h1 data-intro-h>Soluções que fazem sua empresa <span class="rot-line"><span class="rotator" data-rotator data-words="aparecer,vender,funcionar,crescer"><span class="rw dot">aparecer</span></span><span class="dot">.</span></span></h1>' +
       '<p class="hero-sub" data-intro>Do marketing aos sistemas sob medida, a Bow cria as soluções que a sua empresa precisa para ir mais longe.</p>' +
       '<a class="hero-link" data-intro href="#contato" data-scroll-to="contato">Começar um projeto <span class="dot arrow">→</span></a>' +
     "</div></section>" +
