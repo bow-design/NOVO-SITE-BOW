@@ -102,6 +102,11 @@ main { position: relative; z-index: 1; display: block; background: var(--black);
 .home-hero h1 { margin: 0; font-weight: 600; font-size: clamp(2.1rem, 4.8vw, 4.3rem); line-height: 1.05; letter-spacing: -.03em; max-width: 16ch; }
 /* Palavra e ponto final sempre juntos: o ponto nunca cai sozinho na linha de baixo. */
 .rot-line { white-space: nowrap; }
+/* No computador o título fica em 2 linhas: "Soluções que fazem sua empresa" e, embaixo, a palavra que troca. */
+@media (min-width: 900px) {
+  .home-hero h1 { max-width: none; white-space: nowrap; }
+  .home-hero h1 .rot-line { display: block; }
+}
 .rotator { display: inline-block; position: relative; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; white-space: nowrap; }
 .rotator .rw { display: inline-block; }
 .hero-sub { margin: 0; font-size: clamp(.95rem, 1.1vw, 1.05rem); line-height: 1.6; color: rgba(255, 255, 255, .62); max-width: 50ch; }
